@@ -1,0 +1,105 @@
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3><?=htmlspecialchars($this->server->getName())?></h3>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <?php include '_tabs.phtml'; ?>
+                <div class="x_panel" style="margin-top:0;">
+
+                    <?php foreach ($this->server->getPlugins() as $name => $status) { ?>
+                        <div style="margin:5px;">
+                            <input type="checkbox" class="js-switch js-plugin" name="<?=htmlspecialchars($name)?>" <?=($status?'checked':'')?> /> <?=htmlspecialchars($name)?><br>
+                        </div>
+                    <?php } ?>
+
+                    <hr>
+
+                    <form action="/ajax/pluginsearch" class="form-horizontal form-label-left js-pluginsearch" method="post">
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Search</label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="input-group">
+                                    <input type="text" name="q" autocomplete="false" class="form-control">
+                                    <span class="input-group-btn">
+                                                <input type="submit" class="btn btn-default" value="Search">
+                                          </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div id="searchresult">
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #searchresult div:nth-child(2n+1).sresult   {
+        background-color:#eee;
+    }
+</style>
+
+<script>
+
+    var template  = '' +
+        '<div class="row sresult">' +
+        '  <div class="col-md-2">' +
+        '    <img width="80" height="80" src="data:image/png;base64,{icon}">' +
+        '  </div>' +
+        '  <div class="col-md-6">' +
+        '    <h4><a href="https://www.spigotmc.org/resources/.{id}/">{name}</a></h4>' +
+        '    {tag}' +
+        '  </div>' +
+        '  <div class="col-md-4" style="margin-top:20px;">' +
+        '    <button type="button" class="btn btn-default btn-sm pull-right">download &amp; install</button>' +
+        '  </div>' +
+        '</div>' +
+        '';
+
+
+        $(function() {
+
+        $('.js-pluginsearch').submit(function(e) {
+            e.preventDefault();
+            $.post($(this).attr('action'), $(this).serialize(), function(data){
+                $('#searchresult').html('');
+                for (n in data) {
+                    var div = template;
+                    div = div.replace('{name}', data[n].name);
+                    div = div.replace('{icon}', data[n].icon.data);
+                    div = div.replace('{tag}', data[n].tag);
+                    div = div.replace('{id}', data[n].id);
+                    $('#searchresult').append(div);
+                }
+                console.log(data);
+            });
+        })
+
+        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+        elems.forEach(function(html) {
+            var name = $(html).attr('name');
+            var switchery = new Switchery(html, { size: 'small' });
+            html.onchange=function() {
+                $.post('/server/<?=$this->server->getName()?>/switchplugin', {'name': name, 'checked': this.checked}, function(data){
+                    $('#restartneeded').show();
+                    console.log(data);
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,328 @@
+{
+    "allow-flight": {
+        "cmd": "allow-flight",
+        "type": "boolean",
+        "default": "false",
+        "value": "false",
+        "en": "Allows users to use flight on your server while in Survival mode, if they have a <a href=\"\/Mod\" title=\"Mod\" class=\"mw-redirect\">mod<\/a> that provides flight installed.\r\n<p>With allow-flight enabled, <a href=\"\/Griefers\" title=\"Griefers\" class=\"mw-redirect\">griefers<\/a> will possibly be more common, because it will make their work easier. In Creative mode this has no effect.<\/p>\r\n<dl>\r\n<dd><b>false<\/b> - Flight is not allowed (players in air for at least 5 seconds will be kicked).<\/dd>\r\n<dd><b>true<\/b> - Flight is allowed, and used if the player has a fly mod installed.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Erlaubt es Spielern, auch im <a href=\"\/%C3%9Cberlebensmodus\" title=\"\u00dcberlebensmodus\">\u00dcberlebensmodus<\/a> zu fliegen, sofern diese eine <a href=\"\/Mod\" title=\"Mod\" class=\"mw-redirect\">Mod<\/a> zum Fliegen installiert haben. Wenn diese Option aktiviert ist, kann es mehr <a href=\"\/Griefing\" title=\"Griefing\">Griefing<\/a> geben, weil dies durch Fliegen vereinfacht wird. Im <a href=\"\/Kreativmodus\" title=\"Kreativmodus\">Kreativmodus<\/a> hat die Option keine Auswirkung.\r\n<dl>\r\n<dd><b>false<\/b> - Fliegen ist nicht erlaubt (Spieler, die mehr als 5 Sekunden in der Luft sind, werden vom Server gekickt).<\/dd>\r\n<dd><b>true<\/b> - Das Fliegen ist erlaubt und kann genutzt werden, wenn entsprechende Mods installiert sind.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "allow-nether": {
+        "cmd": "allow-nether",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Allows players to travel to the <a href=\"\/Nether\" title=\"Nether\">Nether<\/a>.\r\n<dl>\r\n<dd><b>false<\/b> - <a href=\"\/Nether\" title=\"Nether\">Nether<\/a> portals will not work.<\/dd>\r\n<dd><b>true<\/b> - The server will allow <a href=\"\/Portal\" title=\"Portal\">portals<\/a> to send players to the Nether.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Erlaubt es Spielern, in den <a href=\"\/Nether\" title=\"Nether\" class=\"mw-redirect\">Nether<\/a> zu reisen.\r\n<dl>\r\n<dd><b>false<\/b> - <a href=\"\/Netherportal\" title=\"Netherportal\">Netherportale<\/a> sind deaktiviert.<\/dd>\r\n<dd><b>true<\/b> - Es ist m\u00f6glich, durch Portale in den Nether zu reisen.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "announce-player-achievements": {
+        "cmd": "announce-player-achievements",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Allows server to announce when a player gets an <a href=\"\/Achievement\" title=\"Achievement\" class=\"mw-redirect\">achievement<\/a>.",
+        "de": "Erzielt ein Spieler einen <a href=\"\/Erfolg\" title=\"Erfolg\" class=\"mw-redirect\">Erfolg<\/a>, erhalten die anderen Spieler eine Nachricht.\r\n<dl>\r\n<dd><b>false<\/b> - Keine \u00f6ffentlichen Erfolgsnachrichten.<\/dd>\r\n<dd><b>true<\/b> - Erfolgsnachrichten werden \u00fcber den Chat ver\u00f6ffentlicht.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "difficulty": {
+        "cmd": "difficulty",
+        "type": "integer (0-3)",
+        "default": "1",
+        "value": "1",
+        "en": "Defines the <a href=\"\/Difficulty\" title=\"Difficulty\">difficulty<\/a> (such as damage dealt by mobs and the way hunger and poison affects players) of the server.\r\n<dl>\r\n<dd><b>0<\/b> - Peaceful<\/dd>\r\n<dd><b>1<\/b> - Easy<\/dd>\r\n<dd><b>2<\/b> - Normal<\/dd>\r\n<dd><b>3<\/b> - Hard<\/dd>\r\n<\/dl>\r\n",
+        "de": "Definiert den <a href=\"\/Schwierigkeitsgrad\" title=\"Schwierigkeitsgrad\">Schwierigkeitsgrad<\/a> auf dem Server.\r\n<dl>\r\n<dd><b>0<\/b> - Friedlich<\/dd>\r\n<dd><b>1<\/b> - Einfach<\/dd>\r\n<dd><b>2<\/b> - Normal<\/dd>\r\n<dd><b>3<\/b> - Schwer<\/dd>\r\n<\/dl>\r\n"
+    },
+    "enable-query": {
+        "cmd": "enable-query",
+        "type": "boolean",
+        "default": "false",
+        "value": "false",
+        "en": "Enables GameSpy4 protocol server listener. Used to get information about server.",
+        "de": "Wenn diese Option aktiviert ist, k\u00f6nnen Informationen \u00fcber den Server von au\u00dfen abgefragt werden. Das Datenformat ist <i>GameSpy4<\/i> und wird hier erl\u00e4utert: <a target=\"_self\" rel=\"nofollow\" class=\"external free\" href=\"http:\/\/wiki.vg\/Query\">http:\/\/wiki.vg\/Query<\/a>. Wenn man ein entsprechendes PHP-Skript programmiert, kann man z.B. auf einer Webseite anzeigen, welche Spieler auf dem Server aktiv sind."
+    },
+    "enable-rcon": {
+        "cmd": "enable-rcon",
+        "type": "boolean",
+        "default": "false",
+        "value": "false",
+        "en": "Enables remote access to the server console.",
+        "de": "Aktiviert den Fernzugriff f\u00fcr die Server-Konsole (rcon = <i>remote control<\/i>). Das Protokoll wird hier erl\u00e4utert: <a target=\"_self\" rel=\"nofollow\" class=\"external free\" href=\"http:\/\/wiki.vg\/Rcon\">http:\/\/wiki.vg\/Rcon<\/a>."
+    },
+    "enable-command-block": {
+        "cmd": "enable-command-block",
+        "type": "boolean",
+        "default": "false",
+        "value": "false",
+        "en": "Enables command blocks",
+        "de": "Aktiviert\/deaktiviert den Befehlsblock.\r\n<dl>\r\n<dd><b>true<\/b> - Aktiviert den Befehlsblock.<\/dd>\r\n<dd><b>false<\/b> - Deaktiviert den Befehlsblock.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "force-gamemode": {
+        "cmd": "force-gamemode",
+        "type": "boolean",
+        "default": "false",
+        "value": "false",
+        "en": "Force players to join in the default <a href=\"\/Game_mode\" title=\"Game mode\" class=\"mw-redirect\">game mode<\/a>.\r\n<dl>\r\n<dd><b>false<\/b> - Players will join in the gamemode they left in.<\/dd>\r\n<dd><b>true<\/b> - Players will always join in the default gamemode.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Legt fest, in welchem <a href=\"\/Spielmodus\" title=\"Spielmodus\">Spielmodus<\/a> die Spieler dem Server beitreten.\r\n<dl>\r\n<dd><b>false<\/b> - Spieler werden bei Serverbeitritt in dem Spielmodus sein, in dem sie den Server verlassen haben.<\/dd>\r\n<dd><b>true<\/b> - Spieler werden bei Serverbeitritt immer im Standardspielmodus sein, der mit der Option <b>gamemode<\/b> festgelegt ist.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "gamemode": {
+        "cmd": "gamemode",
+        "type": "integer (0-3)",
+        "default": "0",
+        "value": "0",
+        "en": "Defines the <a href=\"\/Game_mode\" title=\"Game mode\" class=\"mw-redirect\">mode of gameplay<\/a>.\r\n<dl>\r\n<dd><b>0<\/b> - Survival<\/dd>\r\n<dd><b>1<\/b> - Creative<\/dd>\r\n<dd><b>2<\/b> - Adventure<\/dd>\r\n<dd><b>3<\/b> - Spectator<\/dd>\r\n<\/dl>\r\n",
+        "de": "Definiert den <a href=\"\/Spielmodus\" title=\"Spielmodus\">Spielmodus<\/a>, den Spieler beim ersten Besuch des Servers erhalten.\r\n<dl>\r\n<dd><b>0<\/b> - \u00dcberlebensmodus<\/dd>\r\n<dd><b>1<\/b> - Kreativmodus<\/dd>\r\n<dd><b>2<\/b> - Abenteuermodus<\/dd>\r\n<dd><b>3<\/b> - Zuschauermodus<\/dd>\r\n<\/dl>\r\n"
+    },
+    "generate-structures": {
+        "cmd": "generate-structures",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Defines whether <a href=\"\/Structures\" title=\"Structures\" class=\"mw-redirect\">structures<\/a> (such as villages) will be generated.\r\n<dl>\r\n<dd><b>false<\/b> - Structures will not be generated in new chunks.<\/dd>\r\n<dd><b>true<\/b> - Structures will be generated in new chunks.<\/dd>\r\n<\/dl>\r\n<p><b>Note:<\/b> <i>Dungeons will still generate if this is set to false.<\/i><\/p>\r\n",
+        "de": "Definiert, ob Geb\u00e4ude (wie <a href=\"\/Dorf\" title=\"Dorf\">D\u00f6rfer<\/a>) generiert werden.\r\n<dl>\r\n<dd><b>false<\/b> - In neuen <a href=\"\/Chunk\" title=\"Chunk\">Chunks<\/a> werden Geb\u00e4ude nicht generiert.<\/dd>\r\n<dd><b>true<\/b> - In neuen Chunks werden Geb\u00e4ude generiert.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "generator-settings": {
+        "cmd": "generator-settings",
+        "type": "string",
+        "default": "",
+        "value": "",
+        "en": "The settings used to customize world generation. See <a href=\"\/Superflat\" title=\"Superflat\">Superflat<\/a> and <a href=\"\/Customized\" title=\"Customized\">Customized<\/a> for possible settings and examples.",
+        "de": "Definiert die Einstellungen zur Generierung von <a href=\"\/Flachland\" title=\"Flachland\">Flachland<\/a>- und <a href=\"\/Angepasst\" title=\"Angepasst\">Angepasst<\/a>-Welten. Beispiele siehe jeweils dort."
+    },
+    "hardcore": {
+        "cmd": "hardcore",
+        "type": "boolean",
+        "default": "false",
+        "value": "false",
+        "en": "If set to <b>true<\/b>, players will be set to spectator mode if they die.",
+        "de": "Standardm\u00e4\u00dfig fehlt diese Option in den server.properties, was gleichbedeutend mit <i>false<\/i> ist. Die Einstellung <i>true<\/i> kann nur ein einziges Mal verwendet werden, n\u00e4mlich <i>vor<\/i> dem ersten Start des Servers. Dann wird der <a href=\"\/Hardcore-Modus\" title=\"Hardcore-Modus\">Hardcore-Modus<\/a> aktiviert, d. h. Spieler werden permanent vom Server gebannt, sobald sie sterben. Die Aktivierung oder Nicht-Aktivierung des Hardcore-Modus wird bei der Generierung der Welt in die <a href=\"\/Weltdaten\" title=\"Weltdaten\">Weltdaten<\/a> eingetragen. Danach ist eine \u00c4nderung dieser Einstellung nicht mehr m\u00f6glich."
+    },
+    "level-name": {
+        "cmd": "level-name",
+        "type": "string",
+        "default": "world",
+        "value": "world",
+        "en": "The \"level-name\" value will be used as the world name and its folder name. You may also copy your saved game folder here, and change the name to the same as that folder's to load it instead.\r\n<dl>\r\n<dd>Characters such as ' (apostrophe) may need to be escaped by adding a backslash before them.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Der Name der Welt und des Ordners, wo sie gespeichert wird. Es ist auch m\u00f6glich, hier einen Pfad anzugeben, z. B. worlds\/worldname\/worlddataname, hierbei sind \"worlds\" und \"worldname\" Unterordner. \"worldname\" steht f\u00fcr den Dateinamen unter dem die Welt gespeichert werden soll. So ist es m\u00f6glich, mehrere Welten zu speichern (oder den Server-Ordner besser zu sortieren). Sonderzeichen wie ' (Apostroph) m\u00fcssen eventuell durch einen Backslash (\\) vor ihnen markiert werden."
+    },
+    "level-seed": {
+        "cmd": "level-seed",
+        "type": "string",
+        "default": "",
+        "value": "",
+        "en": "Add a <a href=\"\/Seed_(Level_Generation)\" title=\"Seed (Level Generation)\" class=\"mw-redirect\">seed<\/a> for your world, as in Singleplayer.\r\n<dl>\r\n<dd>Some examples are: minecraft, 404, 1a2b3c.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Legt den <a href=\"\/Startwert\" title=\"Startwert\">Startwert<\/a> f\u00fcr die Welt fest."
+    },
+    "level-type": {
+        "cmd": "level-type",
+        "type": "string",
+        "default": "DEFAULT",
+        "value": "DEFAULT",
+        "en": "Determines the type of map that is generated.\r\n<dl>\r\n<dd><b>DEFAULT<\/b> - Standard world with hills, valleys, water, etc.<\/dd>\r\n<dd><b>FLAT<\/b> - A flat world with no features, meant for building.<\/dd>\r\n<dd><b>LARGEBIOMES<\/b> - Same as default but all biomes are larger.<\/dd>\r\n<dd><b>AMPLIFIED<\/b> - Same as default but world-generation height limit is increased.<\/dd>\r\n<dd><b>CUSTOMIZED<\/b> - Same as default unless <b>generator-settings<\/b> is set to a preset.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Bestimmt den <a href=\"\/Welttyp\" title=\"Welttyp\">Welttyp<\/a>. ACHTUNG! Nach einer \u00c4nderung dieser Option sollte eine neue Serverwelt gestartet werden. Falls die Welt beibehalten wird, kommt es zu unerw\u00fcnschten Schnitten in der Landschaft, an allen Stellen, an denen neue Chunks generiert werden.\r\n<dl>\r\n<dd><b>DEFAULT<\/b> - Normalwelt mit H\u00fcgeln, T\u00e4lern, D\u00f6rfern, etc.<\/dd>\r\n<dd><b>FLAT<\/b> - Eine komplett flache Welt. Der Aufbau der Ebenen kann \u00fcber die Option <i>generator-settings<\/i> individuell festgelegt werden.<\/dd>\r\n<dd><b>LARGEBIOMES<\/b> - \u00c4hnlich wie die Standardwelt, nur mit extrem gro\u00dfen Biomen.<\/dd>\r\n<dd><b>AMPLIFIED<\/b> - \u00c4hnlich wie die Standardwelt, nur mit extremen H\u00f6henunterschieden und zerkl\u00fcfteten Bergen bis in <a href=\"\/H%C3%B6he\" title=\"H\u00f6he\">H\u00f6he<\/a> 256. Die Verteilung der Biome bleibt dabei gleich.<\/dd>\r\n<dd><b>CUSTOMIZED<\/b> - Eine individuell gestaltete Welt, deren Aufbau \u00fcber die Option <i>generator-settings<\/i> festgelegt wird.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "max-build-height": {
+        "cmd": "max-build-height",
+        "type": "integer",
+        "default": "256",
+        "value": "256",
+        "en": "The maximum height in which building is allowed. Terrain may still naturally generate above a low height limit.",
+        "de": "Die maximale H\u00f6he, in der gebaut werden kann. Der <a href=\"\/Weltgenerator\" title=\"Weltgenerator\" class=\"mw-redirect\">Weltgenerator<\/a> beachtet diese H\u00f6he nicht."
+    },
+    "max-players": {
+        "cmd": "max-players",
+        "type": "integer (0-2147483647)",
+        "default": "20",
+        "value": "20",
+        "en": "The maximum number of players that can play on the server at the same time. Note that if more players are on the server it will use more resources. Note also, op player connections are not supposed to count against the max players, but ops currently cannot join a full server. Extremely large values for this field result in the client-side user list being broken.",
+        "de": "Die maximale Anzahl an Spielern, die gleichzeitig auf diesem Server spielen k\u00f6nnen. Je mehr Spieler auf einem Server sind, desto mehr Leistung ben\u00f6tigt dieser Server. Operatoren z\u00e4hlen auch als Spieler. Wenn die maximale Anzahl an Spielern erreicht ist, kann auch ein Operator dem Server nicht beitreten. Bei sehr hohen Werten kann die Spielerliste, die per <kbd class=\"keyboard-key nowrap\" style=\"border: 1px solid #aaa; -moz-border-radius: 2px; -webkit-border-radius: 2px; border-radius: 2px; -moz-box-shadow: 1px 2px 2px #ddd; -webkit-box-shadow: 1px 2px 2px #ddd; box-shadow: 1px 2px 2px #ddd; background-color: #f9f9f9; background-image: -moz-linear-gradient(top, #eee, #f9f9f9, #eee); background-image: -ms-linear-gradient(top, #eee, #f9f9f9, #eee); background-image: -o-linear-gradient(top, #eee, #f9f9f9, #eee); background-image: -webkit-linear-gradient(top, #eee, #f9f9f9, #eee); background-image: linear-gradient(top, #eee, #f9f9f9, #eee); padding: 1px 3px; font-family: inherit; font-size: 0.85em;\">Tab \u21b9<\/kbd> ge\u00f6ffnet werden kann, nicht mehr alle Spieler anzeigen."
+    },
+    "max-tick-time": {
+        "cmd": "max-tick-time",
+        "type": "integer (0\u2013(2^63 - 1))",
+        "default": "60000",
+        "value": "60000",
+        "en": "The maximum number of milliseconds a single tick may take before the server watchdog stops the server with the message, <i>A single server tick took 60.00 seconds (should be max 0.05); Considering it to be crashed, server will forcibly shutdown.<\/i> Once this criteria is met, it calls System.exit(1).\r\n<dl>\r\n<dd><b>-1<\/b> - disable watchdog entirely (this disable option was added in 14w32a)<\/dd>\r\n<\/dl>\r\n",
+        "de": "Das Spiel ist <a href=\"\/Tick\" title=\"Tick\">Tick<\/a>-basiert, d.h. mit jedem Tick werden Aktionen in der Welt ausgef\u00fchrt, auch wenn der Spieler sich nicht bewegt. Ein Tick findet normalerweise alle 50 Millisekunden statt. Ist der Server zu stark belastet, finden die Ticks seltener statt, z.B. bei riesigen Tierpopulationen oder gigantischen Drop-Anzahlen durch umfangreiche TNT-Explosionen. Dann bewegen sich die Monster und anderen Objekte so langsam, dass man nicht mehr vern\u00fcnftig spielen kann. Mit diesem Parameter kann man einstellen, dass sich der Server von selbst stoppt, sobald ein Tick einen bestimmten Wert (Standard = 60 Sekunden) \u00fcberschreitet. Die Meldung lautet dann: \"A single server tick took 60.00 seconds (should be max 0.05); Considering it to be crashed, server will forcibly shutdown.\"\r\n<dl>\r\n<dd><b>-1<\/b> deaktiviert die Selbst\u00fcberwachung.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "max-world-size": {
+        "cmd": "max-world-size",
+        "type": "integer (1-29999984)",
+        "default": "29999984",
+        "value": "29999984",
+        "en": "This sets the maximum possible size in blocks, expressed as a radius, that the <a href=\"\/World_border\" title=\"World border\">world border<\/a> can obtain. Setting the world border bigger causes the commands to complete successfully but the actual border will not move past this block limit. Setting the max-world-size higher than the default doesn't appear to do anything.\r\n<p>Examples:<\/p>\r\n<ul>\r\n<li>Setting max-world-size to 1000 will allow you to have a 2000x2000 world border.<\/li>\r\n<li>Setting max-world-size to 4000 will give you an 8000 x 8000 world border.<\/li>\r\n<\/ul>\r\n",
+        "de": "Maximalradius der <a href=\"\/Weltbarriere\" title=\"Weltbarriere\">Weltbarriere<\/a>. Standardm\u00e4\u00dfig liegt er einen <a href=\"\/Chunk\" title=\"Chunk\">Chunk<\/a> (16 Bl\u00f6cke) unter der maximalen Weltgr\u00f6\u00dfe von \u00b1 30.000.000 Bl\u00f6cken, ein gr\u00f6\u00dferer Wert wird nicht beachtet. Der Maximalradius legt fest, wie weit die Weltbarriere mit dem <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/worldborder\" title=\"Befehl\/worldborder\">\/worldborder<\/a><\/code> im Spiel ver\u00e4ndert werden kann. Achtung: der Befehl \u00e4ndert den Durchmesser, hier wird der maximale Radius angegeben."
+    },
+    "motd": {
+        "cmd": "motd",
+        "type": "string",
+        "default": "<i>A Minecraft Server<\/i>",
+        "value": "<i>A Minecraft Server<\/i>",
+        "en": "This is the message that is displayed in the server list of the client, below the name.\r\n<ul>\r\n<li>The MOTD does support <a href=\"\/Formatting_codes\" title=\"Formatting codes\">color and formatting codes<\/a>.<\/li>\r\n<li>The MOTD supports special characters, such as \"\u2665\". However, such characters must be converted to escaped Unicode form. An online converter can be found <a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/www.freeformatter.com\/string-utilities.html#charinfo\">here<\/a><\/li>\r\n<li>If the MOTD is over 59 characters, the server list will likely report a communication error.<\/li>\r\n<\/ul>\r\n",
+        "de": "Ein Text, der in der Serverliste unter dem Namen des Servers angezeigt wird (motd = <i>Message of the Day<\/i>).\r\n<ul>\r\n<li>Die Motd unterst\u00fctzt <a href=\"\/Formatierungscodes\" title=\"Formatierungscodes\">Formatierungscodes<\/a>, die den Farben und Formatierungsm\u00f6glichkeiten entsprechen, die man bei <a href=\"\/JSON-Text\" title=\"JSON-Text\">JSON-Texten<\/a> verwenden kann.<\/li>\r\n<li>Eine lange Motd wird \u00fcber maximal zwei Zeilen angezeigt. Alle weiteren Zeichen werden abgeschnitten.<\/li>\r\n<li>Ein Zeilenumbruch kann mit dem Code <code>\\u000A<\/code> herbeigef\u00fchrt werden.<\/li>\r\n<\/ul>\r\n"
+    },
+    "network-compression-threshold": {
+        "cmd": "network-compression-threshold",
+        "type": "integer",
+        "default": "256",
+        "value": "256",
+        "en": "By default it allows packets that are <i>n-1<\/i> bytes big to go normally, but a packet that <i>n<\/i> bytes or more will be compressed down. So, lower number means more compression but compressing small amounts of bytes might actually end up with a larger result than what went in.\r\n<dl>\r\n<dd><b>-1<\/b> - disable compression entirely<\/dd>\r\n<dd><b>0<\/b> - compress everything<\/dd>\r\n<\/dl>\r\n<p><b>Note:<\/b> <i>The Ethernet spec requires that packets less than 64 bytes become padded to 64 bytes. Thus, setting a value lower than 64 may not be beneficial. It is also not recommended to exceed the MTU, typically 1500 bytes.<\/i><\/p>\r\n",
+        "de": "Zwischen <a href=\"\/Client-Server-Konzept\" title=\"Client-Server-Konzept\">Client und Server<\/a> werden st\u00e4ndig Datenpakete ausgetauscht: Der Server informiert den Client, wie die Welt aussieht und wo sich alle Spieler und Kreaturen befinden, und der Client stellt dies als Bild dar. Umgekehrt informiert der Client den Server \u00fcber aller Aktionen des Spielers, damit der Server die Welt entsprechend aktualisieren kann. Diese Datenpakete k\u00f6nnen unkomprimiert oder komprimiert durch die Netzverbindung laufen. Die Einstellung <i>network-compression-threshold<\/i> gibt die Gr\u00f6\u00dfe in Bytes an, ab der die versendeten Datenpakete komprimiert werden. Eine niedrige Zahl bedeutet h\u00e4ufigeres Komprimieren und somit kleinere Pakete. Wird die Einstellung jedoch zu niedrig gew\u00e4hlt, kann es vorkommen, dass die komprimierten Pakete sogar gr\u00f6\u00dfer als die urspr\u00fcnglichen sind (Beispiel: komprimiert man eine 64 Byte gro\u00dfe Textdatei beispielweise mit <i>zip<\/i>, ist das Ergebnis 131 Bytes gro\u00df.)\r\n<ul>\r\n<li>-1 bedeutet \u00fcberhaupt keine Komprimierung<\/li>\r\n<li>0 bedeutet Komprimierung unabh\u00e4ngig von der Paketgr\u00f6\u00dfe<\/li>\r\n<li>gr\u00f6\u00dfere Zahlen geben die Gr\u00f6\u00dfe an, ab der die Pakete komprimiert werden<\/li>\r\n<\/ul>\r\n<p>Die <a href=\"http:\/\/de.wikipedia.org\/wiki\/Ethernet\" class=\"extiw\" title=\"de.wikipedia:Ethernet\">Ethernet<\/a>-Spezifikation erfordert, dass Pakete kleiner als 64 Bytes auf 64 Bytes aufgef\u00fcllt werden. Aus diesem Grund macht es keinen Sinn, einen Wert kleiner als 64 einzugeben. Ebenfalls ist es nicht zu empfehlen, die <a href=\"http:\/\/de.wikipedia.org\/wiki\/Maximum_Transmission_Unit\" class=\"extiw\" title=\"de.wikipedia:Maximum Transmission Unit\">Maximum Transmission Unit<\/a> (maximal transportierbare Paketgr\u00f6\u00dfe, MTU) von normalerweise 1500 Bytes zu \u00fcberschreiten.<\/p>\r\n"
+    },
+    "online-mode": {
+        "cmd": "online-mode",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Server checks connecting players against Minecraft's account database. Only set this to false if your server is <b>not<\/b> connected to the Internet. Hackers with fake accounts can connect if this is set to false! If minecraft.net is down or inaccessible, no players will be able to connect if this is set to true. Setting this variable to off purposely is called \"cracking\" a server, and servers that are presently with online mode off are called \"cracked\" servers, allowing players with unlicensed copies of <a href=\"\/Minecraft\" title=\"Minecraft\">Minecraft<\/a> to join.\r\n<dl>\r\n<dd><b>true<\/b> - Enabled. The server will assume it has an Internet connection and check every connecting player.<\/dd>\r\n<dd><b>false<\/b> - Disabled. The server will not attempt to check connecting players.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Wenn diese Option aktiviert ist, vergleicht der Server jeden Spieler, der sich verbinden will, mit der Datenbank von <a href=\"\/Mojang\" title=\"Mojang\" class=\"mw-redirect\">Mojang<\/a>. Diese Option sollte nur auf <i>false<\/i> gesetzt werden, wenn der Server nicht mit dem Internet verbunden ist und wenn keine White-List existiert (siehe Option <i>white-list<\/i>). Die Option <i>online-mode<\/i> dient der Sicherheit, denn es wird gepr\u00fcft, ob der Spieler einen g\u00fcltigen Account hat. Fake-Accounts werden damit aufgedeckt. Server deren <i>online-mode<\/i> auf <i>false<\/i> steht, werden \"<a href=\"\/Crack\" title=\"Crack\">cracked<\/a>\" Server genannt.\r\n<p>Wenn die Dienste von Mojang allerdings offline oder anderweitig nicht erreichbar sind (siehe <a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"https:\/\/help.mojang.com\/\">Status der Mojang-Server<\/a>), kann kein Spieler mehr dem Spiel-Server beitreten, falls die Option auf <i>true<\/i> steht.<\/p>\r\n<dl>\r\n<dd><b>true<\/b> - Aktiviert. Der Server nimmt an, dass eine Internetverbindung besteht und vergleicht jeden verbundenen Spieler mit der Datenbank von Mojang.<\/dd>\r\n<dd><b>false<\/b> - Deaktiviert. Der Server vergleicht verbindene Spieler nicht mit der Datenbank.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "op-permission-level": {
+        "cmd": "op-permission-level",
+        "type": "integer (1-4)",
+        "default": "4",
+        "value": "4",
+        "en": "Sets the default permission level for ops when using \/op. All levels inherit abilities and commands from levels before them.\r\n<dl>\r\n<dd><b>1<\/b> - Ops can bypass spawn protection.<\/dd>\r\n<dd><b>2<\/b> - Ops can use all singleplayer cheats commands (except \/publish, as it is not on servers; along with \/debug) and use command blocks. Command blocks and Realms operators\/owners have this level.<\/dd>\r\n<dd><b>3<\/b> - Ops can use most multiplayer-exclusive commands (all except level 4 commands).<\/dd>\r\n<dd><b>4<\/b> - Ops can use all commands including \/stop, \/save-all, \/save-on, and \/save-off.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Bestimmt das Standard-Berechtigungslevel f\u00fcr Spieler, die mit dem <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/op\" title=\"Befehl\/op\">\/op<\/a><\/code> zum <a href=\"\/Operator\" title=\"Operator\">Operator<\/a> gemacht wurden. Danach ist eine individuelle Anpassung des Levels f\u00fcr einzelne Spieler \u00fcber die Datei \"ops.json\" m\u00f6glich (siehe unten).\r\n<dl>\r\n<dd><b>1<\/b> - Operatoren mit Level 1 k\u00f6nnen Ver\u00e4nderungen im ansonsten gesch\u00fctzen <a href=\"\/Spawn\" title=\"Spawn\">Spawnbereich<\/a> vornehmen.<\/dd>\r\n<dd><b>2<\/b> - Operatoren mit Level 2 k\u00f6nnen Befehlsbl\u00f6cke editieren und alle Cheat-<a href=\"\/Befehl\" title=\"Befehl\">Befehle<\/a> ausf\u00fchren au\u00dfer denen von Level 3 und 4.<\/dd>\r\n<dd><b>3<\/b> - Operatoren mit Level 3 k\u00f6nnen die Server-<a href=\"\/Befehl\" title=\"Befehl\">Befehle<\/a> zur Spielersanktion (<a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/kick\" title=\"Befehl\/kick\">\/kick<\/a><\/code>, <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/ban\" title=\"Befehl\/ban\">\/ban<\/a><\/code> etc.) und zur Ernennung weiter Operatoren (<a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/op\" title=\"Befehl\/op\">\/op<\/a><\/code>) ausf\u00fchren.<\/dd>\r\n<dd><b>4<\/b> - Operatoren mit Level 4 k\u00f6nnen mit dem <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/stop\" title=\"Befehl\/stop\">\/stop<\/a><\/code> den Server stoppen.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "player-idle-timeout": {
+        "cmd": "player-idle-timeout",
+        "type": "integer",
+        "default": "0",
+        "value": "0",
+        "en": "If non-zero, players are kicked from the server if they are idle for more than that many minutes.\r\n<dl>\r\n<dd><b>Note:<\/b> <i>Idle time is reset when the server receives one of the following packets:<\/i>\r\n<ul>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Click_Window\">Click Window<\/a><\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Enchant_Item\">Enchant Item<\/a><\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Update_Sign\">Update Sign<\/a><\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Player_Digging\">Player Digging<\/a><\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Player_Block_Placement\">Player Block Placement<\/a><\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Held_Item_Change_.28serverbound.29\">Held Item Change<\/a><\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Animation_.28serverbound.29\">Animation<\/a> (swing arm)<\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Entity_Action\">Entity Action<\/a><\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Client_Status\">Client Status<\/a><\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Chat_Message_.28serverbound.29\">Chat Message<\/a><\/li>\r\n<li><a target=\"_self\" rel=\"nofollow\" class=\"external text\" href=\"http:\/\/wiki.vg\/Protocol#Use_Entity\">Use Entity<\/a><\/li>\r\n<\/ul>\r\n<\/dd>\r\n<\/dl>\r\n",
+        "de": "Wenn der Wert nicht 0 ist, werden inaktive Spieler nach der angegeben Zeit in Minuten vom Server gekickt. Die Zeit wird f\u00fcr einen Spieler zur\u00fcckgesetzt, wenn er eine Aktion im Spiel ausl\u00f6st, sich bewegt, einen Men\u00fcpunkt aufruft oder im Chat schreibt. Im Einzelnen sind es folgende Signale, die die Inaktiv-Zeit zur\u00fccksetzen:\r\n<dl>\r\n<dd>\r\n<ul>\r\n<li>3 (0x3) Chat<\/li>\r\n<li>7 (0x7) UseEntity<\/li>\r\n<li>14 (0xe) BlockDig<\/li>\r\n<li>15 (0xf) Place<\/li>\r\n<li>16 (0x10) BlockItemSwitch<\/li>\r\n<li>18 (0x12) ArmAnimation<\/li>\r\n<li>19 (0x13) EntityAction<\/li>\r\n<li>102 (0x66) WindowClick<\/li>\r\n<li>108 (0x6c) ButtonClick<\/li>\r\n<li>130 (0x82) UpdateSign<\/li>\r\n<li>205 (0xcd) ClientCommand<\/li>\r\n<\/ul>\r\n<\/dd>\r\n<\/dl>\r\n"
+    },
+    "prevent-proxy-connections": {
+        "cmd": "prevent-proxy-connections",
+        "type": "boolean",
+        "default": "false",
+        "value": "false",
+        "en": "If the ISP\/AS sent from the server is different from the one from Mojang's authentication server, the player is kicked\r\n<p>true - <b>Enabled. Server prevents users from using vpns or proxies.<\/b><\/p>\r\n<p>false - Disabled. The server doesn't prevent users from using vpns or proxies.<\/p>\r\n"
+    },
+    "pvp": {
+        "cmd": "pvp",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Enable PvP on the server. Players shooting themselves with arrows will only receive damage if PvP is enabled.\r\n<dl>\r\n<dd><b>true<\/b> - Players will be able to kill each other.<\/dd>\r\n<dd><b>false<\/b> - Players cannot kill other players (also known as <b>Player versus Environment<\/b> (<b>PvE<\/b>)).<\/dd>\r\n<\/dl>\r\n<p><b>Note:<\/b> <i>Indirect damage sources spawned by players (such as <a href=\"\/Lava\" title=\"Lava\">lava<\/a>, <a href=\"\/Fire\" title=\"Fire\">fire<\/a>, <a href=\"\/TNT\" title=\"TNT\">TNT<\/a> and to some extent <a href=\"\/Water\" title=\"Water\">water<\/a>, <a href=\"\/Sand\" title=\"Sand\">sand<\/a> and <a href=\"\/Gravel\" title=\"Gravel\">gravel<\/a>) will still deal damage to other players.<\/i><\/p>\r\n",
+        "de": "Aktiviert PvP (<b>Player versus Player<\/b>) auf dem Server. Im PvP-Modus k\u00f6nnen sich Spieler gegenseitig direkten Schaden zuf\u00fcgen. Ohne PvP k\u00f6nnen sie sich nur indirekt sch\u00e4digen, z.B. durch <a href=\"\/Lava\" title=\"Lava\">Lava<\/a>, <a href=\"\/Feuer\" title=\"Feuer\">Feuer<\/a>, <a href=\"\/TNT\" title=\"TNT\">TNT<\/a> und im weiteren Sinne mit <a href=\"\/Wasser\" title=\"Wasser\">Wasser<\/a>, <a href=\"\/Sand\" title=\"Sand\">Sand<\/a> und <a href=\"\/Kies\" title=\"Kies\">Kies<\/a>.\r\n<dl>\r\n<dd><b>true<\/b> - Spieler k\u00f6nnen andere Spieler t\u00f6ten.<\/dd>\r\n<dd><b>false<\/b> - Spieler k\u00f6nnen andere Spieler nicht t\u00f6ten (auch genannt <i>Player versus Environment<\/i> (PvE)).<\/dd>\r\n<\/dl>\r\n"
+    },
+    "query.port": {
+        "cmd": "query.port",
+        "type": "integer (1-65534)",
+        "default": "25565",
+        "value": "25565",
+        "en": "Sets the port for the query server (see <b>enable-query<\/b>).",
+        "de": "Definiert den Port f\u00fcr den Query-Server (siehe <b>enable-query<\/b>)."
+    },
+    "rcon.password": {
+        "cmd": "rcon.password",
+        "type": "string",
+        "default": "",
+        "value": "",
+        "en": "Sets the password to rcon.",
+        "de": "Defniert das Passwort f\u00fcr den Fernzugriff auf den Server (siehe <b>enable-rcon<\/b>)."
+    },
+    "rcon.port": {
+        "cmd": "rcon.port",
+        "type": "integer (1-65534)",
+        "default": "25575",
+        "value": "25575",
+        "en": "Sets the port to rcon.",
+        "de": "Definiert den Port f\u00fcr den Fernzugriff auf den Server (siehe <b>enable-rcon<\/b>)."
+    },
+    "resource-pack": {
+        "cmd": "resource-pack",
+        "type": "string",
+        "default": "",
+        "value": "",
+        "en": "Optional URI to a <a href=\"\/Resource_pack\" title=\"Resource pack\">resource pack<\/a>. The player may choose to use it.",
+        "de": "Ein Server kann ein <a href=\"\/Ressourcenpaket\" title=\"Ressourcenpaket\">Ressourcenpaket<\/a> empfehlen, um z.B. zus\u00e4tzliche Sounds zur Verf\u00fcgung zu stellen (sind \u00fcber <a href=\"\/Befehlsblock\" title=\"Befehlsblock\">Befehlsbl\u00f6cke<\/a> abspielbar) oder eine spezielle \u00dcbersetzung einzelner Texte (z.B. der <a href=\"\/Tod\" title=\"Tod\">Todesmeldungen<\/a>) oder auch besondere <a href=\"\/Textur\" title=\"Textur\" class=\"mw-redirect\">Texturen<\/a>. Dazu ist hier die Webadresse (URL) des Downloads einzutragen. Dabei gibt es einige Einschr\u00e4nkungen:\r\n<ul>\r\n<li>Die URL muss auf eine zip-Datei verweisen. Eine andere Kompression oder ein unkomprimiertes Ressourcenpaket sind nicht m\u00f6glich.<\/li>\r\n<li>Das Ressourcenpaket darf maximal 50 MB gro\u00df sein.<\/li>\r\n<li>Die Datei muss die <a href=\"\/Ressourcenpaket#Aufbau\" title=\"Ressourcenpaket\">Bedingungen f\u00fcr ein Ressourcenpaket<\/a> erf\u00fcllen (z.B. muss sie die Datei <i>pack.mcmeta<\/i> enthalten).<\/li>\r\n<\/ul>\r\n<p>Sobald sich ein Client erstmalig mit dem Server verbindet (siehe <a href=\"\/Client-Server-Konzept\" title=\"Client-Server-Konzept\">Client-Server-Konzept<\/a>), wird - je nach <a href=\"\/Men%C3%BC\/Mehrspieler\/Bearbeiten\" title=\"Men\u00fc\/Mehrspieler\/Bearbeiten\">gew\u00e4hlter Einstellung<\/a> - die Datei mit oder ohne R\u00fcckfrage oder gar nicht im Hintergrund herunterladen und installiert.<\/p>\r\n"
+    },
+    "resource-pack-sha1": {
+        "cmd": "resource-pack-sha1",
+        "type": "string",
+        "default": "",
+        "value": "",
+        "en": "Optional SHA-1 digest of the resource pack, in lowercase hexadecimal. It's recommended to specify this. This is not yet used to verify the integrity of the resource pack, but improves the effectiveness and reliability of caching.",
+        "de": "Optionale Pr\u00fcfsumme (\"<a href=\"http:\/\/de.wikipedia.org\/wiki\/Secure_Hash_Algorithm\" class=\"extiw\" title=\"de.wikipedia:Secure Hash Algorithm\">SHA1-Digest<\/a>\") des <a href=\"\/Ressourcenpaket\" title=\"Ressourcenpaket\">Ressourcenpaketes<\/a> in kleingeschriebenen Hexadezimalzeichen. Es wird empfohlen, die Pr\u00fcfsumme anzugeben. Sie wird zwar bislang nicht f\u00fcr ihren eigentlichen Zweck verwendet, zu pr\u00fcfen, ob das Ressourcenpaket nachtr\u00e4glich ver\u00e4ndert wurde, aber sie verbessert die Wirksamkeit und Zuverl\u00e4ssigkeit der Datenzwischenspeicherung."
+    },
+    "server-ip": {
+        "cmd": "server-ip",
+        "type": "string",
+        "default": "",
+        "value": "",
+        "en": "Set this if you want the server to bind to a particular IP. It is strongly recommended that you leave server-ip blank!\r\n<dl>\r\n<dd>Set to blank, or the IP you want your server to run (listen) on.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Wenn der Server unter einer bestimmten IP-Adresse laufen soll, muss diese hier eingetragen werden. Es ist zu empfehlen, diesen Wert leer zu lassen."
+    },
+    "server-port": {
+        "cmd": "server-port",
+        "type": "integer (1-65534)",
+        "default": "25565",
+        "value": "25565",
+        "en": "Changes the port the server is hosting (listening) on. This port must be <a href=\"https:\/\/en.wikipedia.org\/wiki\/Port_forwarding\" class=\"extiw\" title=\"wikipedia:Port forwarding\">forwarded<\/a> if the server is hosted in a network using <a href=\"https:\/\/en.wikipedia.org\/wiki\/Network_address_translation\" class=\"extiw\" title=\"wikipedia:Network address translation\">NAT<\/a> (If you have a home router\/firewall).",
+        "de": "Der Port, auf dem der Server l\u00e4uft. Wenn das Netzwerk, in dem der Server l\u00e4uft, <a href=\"http:\/\/de.wikipedia.org\/wiki\/Network_Address_Translation\" class=\"extiw\" title=\"de.wikipedia:Network Address Translation\">NAT<\/a> benutzt (z.B. durch einen Router), muss der Port dort <a href=\"http:\/\/de.wikipedia.org\/wiki\/Portweiterleitung\" class=\"extiw\" title=\"de.wikipedia:Portweiterleitung\">weitergeleitet<\/a> werden."
+    },
+    "snooper-enabled": {
+        "cmd": "snooper-enabled",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Sets whether the server sends snoop data regularly to <a target=\"_self\" rel=\"nofollow\" class=\"external free\" href=\"http:\/\/snoop.minecraft.net\">http:\/\/snoop.minecraft.net<\/a>.\r\n<dl>\r\n<dd><b>false<\/b> - disable snooping.<\/dd>\r\n<dd><b>true<\/b> - enable snooping.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Legt fest, ob der Server anonyme Daten \u00fcber den Server an <a target=\"_self\" rel=\"nofollow\" class=\"external free\" href=\"http:\/\/snoop.minecraft.net\">http:\/\/snoop.minecraft.net<\/a> senden darf.\r\n<dl>\r\n<dd><b>false<\/b> - Deaktiviert das Senden von Daten.<\/dd>\r\n<dd><b>true<\/b> - Aktiviert das Senden von Daten.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "spawn-animals": {
+        "cmd": "spawn-animals",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Determines if <a href=\"\/Animal\" title=\"Animal\" class=\"mw-redirect\">animals<\/a> will be able to spawn.\r\n<dl>\r\n<dd><b>true<\/b> - Animals spawn as normal.<\/dd>\r\n<dd><b>false<\/b> - Animals will immediately vanish.<\/dd>\r\n<\/dl>\r\n<p><i>Tip: if you have major lag, turn this off\/set to false.<\/i><\/p>\r\n",
+        "de": "Bestimmt, ob Tiere spawnen k\u00f6nnen. Bei Leistungsproblem des Servers sollte diese Option deaktiviert werden.\r\n<dl>\r\n<dd><b>true<\/b> - Tiere k\u00f6nnen spawnen.<\/dd>\r\n<dd><b>false<\/b> - Tiere verschwinden, nachdem sie gespawnt sind, sofort wieder.<br><\/dd>\r\n<\/dl>\r\n"
+    },
+    "spawn-monsters": {
+        "cmd": "spawn-monsters",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Determines if monsters will be spawned.\r\n<dl>\r\n<dd><b>true<\/b> - Enabled. Monsters will appear at night and in the dark.<\/dd>\r\n<dd><b>false<\/b> - Disabled. No monsters.<\/dd>\r\n<\/dl>\r\n<p>This setting has no effect if difficulty = 0 (peaceful). If difficulty is not = 0, a monster can still spawn from a <a href=\"\/Monster_Spawner\" title=\"Monster Spawner\">Monster Spawner<\/a>.<\/p>\r\n<p><i>Tip: if you have major lag, turn this off\/set to false.<\/i><\/p>\r\n",
+        "de": "Bestimmt, ob Monster au\u00dferhalb von Monsterspawnern spawnen k\u00f6nnen. Bei Leistungsproblem des Servers sollte diese Option deaktiviert werden.\r\n<dl>\r\n<dd><b>true<\/b> - Monster spawnen au\u00dferhalb von Monsterspawnern. <a href=\"\/Ozelot\" title=\"Ozelot\">Ozelots<\/a> spawnen im Dschungel.<\/dd>\r\n<dd><b>false<\/b> - Monster spawnen nur an Monsterspawnern und Ozelots spawnen gar nicht.<\/dd>\r\n<\/dl>\r\n<p>Diese Option ist nutzlos, wenn difficulty = 0 (friedlich) ist.<\/p>\r\n"
+    },
+    "spawn-npcs": {
+        "cmd": "spawn-npcs",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Determines whether villagers will be spawned.\r\n<dl>\r\n<dd><b>true<\/b> - Enabled. Villagers will spawn.<\/dd>\r\n<dd><b>false<\/b> - Disabled. No villagers.<\/dd>\r\n<\/dl>\r\n",
+        "de": "Bestimmt, ob <a href=\"\/Dorfbewohner\" title=\"Dorfbewohner\">Dorfbewohner<\/a> spawnen k\u00f6nnen.\r\n<dl>\r\n<dd><b>true<\/b> - Dorfbewohner k\u00f6nnen spawnen.<\/dd>\r\n<dd><b>false<\/b> - Dorfbewohner k\u00f6nnen nicht spawnen.<\/dd>\r\n<\/dl>\r\n"
+    },
+    "spawn-protection": {
+        "cmd": "spawn-protection",
+        "type": "integer",
+        "default": "16",
+        "value": "16",
+        "en": "Determines the radius of the spawn protection as (x*2)+1. Setting this to 0 will not disable spawn protection. 0 will protect the single block at the spawn point. 1 will protect a 3x3 area centered on the spawn point. 2 will protect 5x5, 3 will protect 7x7, etc. This option is not generated on the first server start and appears when the first player joins. If there are no <a href=\"\/Operator\" title=\"Operator\" class=\"mw-redirect\">ops<\/a> set on the server, the spawn protection will be disabled automatically.",
+        "de": "Legt den Radius eines gesch\u00fctzen Bereiches um den <a href=\"\/Spawnpunkt\" title=\"Spawnpunkt\" class=\"mw-redirect\">Spawnpunkt<\/a> fest. Der Bereich ist in s\u00e4mtlichen <a href=\"\/H%C3%B6he\" title=\"H\u00f6he\">Ebenen<\/a> von 0 bis 255 gesch\u00fctzt. Der Wert 0 sch\u00fctzt nur den Block des Spawnpunktes (siehe <i>SpawnX<\/i> und <i>SpawnZ<\/i> in den <a href=\"\/Weltdaten\" title=\"Weltdaten\">Weltdaten<\/a>). Der Wert 1 entspricht einem Radius von einem Block um den zentralen Block, also einem 3\u00d73 Bl\u00f6cke gro\u00dfen Bereich, etc. Der Standardradius sind 16 Bl\u00f6cke, was einen gesch\u00fctzten Bereich von 33\u00d733 Bl\u00f6cken ergibt.\r\n<p>Spieler ohne <a href=\"\/Operator\" title=\"Operator\">Operator<\/a>-Rechte (siehe <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/op\" title=\"Befehl\/op\">\/op<\/a><\/code>) k\u00f6nnen dort weder Bl\u00f6cke abbauen noch setzen noch irgendwelche <a href=\"\/Redstone-Element\" title=\"Redstone-Element\">Redstone-Signalgeber oder -Empf\u00e4nger<\/a> bet\u00e4tigen (also keine Kn\u00f6pfe, Hebel, T\u00fcren, Zauntore etc.). Einzige Ausnahme: <a href=\"\/Druckplatte\" title=\"Druckplatte\">Druckplatten<\/a>.<\/p>\r\n<p>Allerdings k\u00f6nnen explodierende <a href=\"\/Creeper\" title=\"Creeper\">Creeper<\/a> (wenn es nicht \u00fcber den <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/gamerule\" title=\"Befehl\/gamerule\">\/gamerule<\/a><\/code> abgeschaltet wurde) auch im gesch\u00fctzen Bereich Schaden anrichten, genauso wie <a href=\"\/TNT\" title=\"TNT\">TNT<\/a>, das an der Grenze zum gesch\u00fctzten Bereich gez\u00fcndet wurde. Wasser und Lava k\u00f6nnen hineinflie\u00dfen und Feuer kann (wenn es nicht \u00fcber den <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/gamerule\" title=\"Befehl\/gamerule\">\/gamerule<\/a><\/code> abgeschaltet wurde) auf den gesch\u00fctzten Bereich \u00fcbergreifen. Auch Kolben k\u00f6nnen Bl\u00f6cke in diesen Bereich hinein schieben.<\/p>\r\n<p>Die Option <i>spawn-protection<\/i> ist nicht in den initialen server.properties enthalten. Sie erscheint erst, wenn der erste Spieler den Server betritt.<\/p>\r\n"
+    },
+    "use-native-transport": {
+        "cmd": "use-native-transport",
+        "type": "boolean",
+        "default": "true",
+        "value": "true",
+        "en": "Linux server performance improvements: optimized packet sending\/receiving on Linux\r\n<dl>\r\n<dd><b>true<\/b> - Enabled. Enable Linux packet sending\/receiving optimization<\/dd>\r\n<dd><b>false<\/b> - Disabled. Disable Linux packet sending\/receiving optimization<\/dd>\r\n<\/dl>\r\n"
+    },
+    "view-distance": {
+        "cmd": "view-distance",
+        "type": "integer (2-32)",
+        "default": "10",
+        "value": "10",
+        "en": "Sets the amount of world data the server sends the client, measured in chunks in each direction of the player (radius, not diameter). It determines the server-side viewing distance. (see <a href=\"\/Frame_rate#Render_distance\" title=\"Frame rate\" class=\"mw-redirect\">Render distance<\/a>)\r\n<p><i>10 is the default\/recommended. If you have major lag, reduce this value.<\/i><\/p>\r\n",
+        "de": "Definiert die Menge an Welt-Daten, die der Server an den Client sendet, gemessen in <a href=\"\/Chunk\" title=\"Chunk\">Chunks<\/a>. Bestimmt wird dadurch die serverseitig festgelegte Sichtweite. Bei der Standard-Einstellung von 10 Chunks werden insgesamt 441 Chunks gesendet (10 Chunks vor und hinter dem Spielerchunk = 21, dasselbe rechts und links = 21 x 21). Die Anzahl an Chunks, die der Server l\u00e4dt, kann im <a href=\"\/Debug-Bildschirm\" title=\"Debug-Bildschirm\">Debug-Bildschirm<\/a> eingesehen werden. Bei Leistungsproblem des Servers sollte der Wert verkleinert werden."
+    },
+    "white-list": {
+        "cmd": "white-list",
+        "type": "boolean",
+        "default": "false",
+        "value": "false",
+        "en": "Enables a whitelist on the server.\r\n<p>With a whitelist enabled, users not on the whitelist will be unable to connect. Intended for private servers, such as those for real-life friends or strangers carefully selected via an application process, for example.<\/p>\r\n<dl>\r\n<dd><b>false<\/b> - No white list is used.<\/dd>\r\n<dd><b>true<\/b> - The file whitelist.json is used to generate the white list.<\/dd>\r\n<\/dl>\r\n<p><b>Note:<\/b> <i>Ops are automatically white listed, and there is no need to add them to the whitelist.<\/i><\/p>\r\n",
+        "de": "Aktiviert eine White-List auf dem Server. Wenn die White-List aktiviert ist, k\u00f6nnen nur Spieler dem Server beitreten, die auf dieser gelistet sind. Diese Option ist f\u00fcr Privat-Server, auf denen nur ausgew\u00e4hlte Freunde spielen sollen und f\u00fcr Server, die ihre Mitglieder durch ein Bewerbungsverfahren aussuchen, zu empfehlen. Wenn diese Option aktiviert ist, muss die Option <i>online-mode<\/i> aktiviert sein. Das ist auch sinnvoll, denn ansonsten k\u00f6nnte trotz White-List jeder beliebige Spieler dem Server beitreten, wenn er einfach einen dort gelisteten Namen verwendet, falls er einen solchen kennt. Die White-List wird \u00fcber die <a href=\"\/Server-Konsole\" title=\"Server-Konsole\">Server-Konsole<\/a> mit dem <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/whitelist\" title=\"Befehl\/whitelist\">\/whitelist<\/a><\/code> verwaltet.\r\n<dl>\r\n<dd><b>false<\/b> - Es wird keine White-List benutzt.<\/dd>\r\n<dd><b>true<\/b> - Jeder Spieler, der sich mit dem Server verbinden will, muss in der White-List eingetragen sein.<\/dd>\r\n<\/dl>\r\n"
+    }
+}

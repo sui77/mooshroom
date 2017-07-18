@@ -1,0 +1,124 @@
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3><?=!empty($this->formdata['name'])?'Edit ' . $this->formdata['name']:'Add new'?></h3>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel" style="margin-top:0;">
+
+
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Plugin</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($this->files as $file) { ?>
+                                <tr>
+                                    <td><?=$file?></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+
+                        <hr>
+
+
+
+                        <form action="/upload/upload/<?=$this->getParam('type')?>" class="js-upload form-horizontal form-label-left" method="post">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="files[]">Upload from Computer</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <span class="btn btn-success fileinput-button">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <span>Select File</span>
+                                        <input xclass="js-upload" data-target="/ajax/upload" type="file" name="files[]" multiple>
+
+                                    </span>
+                                    <div id="progress" class="progress">
+                                        <div class="progress-bar progress-bar-success"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form action="/upload/uploadurl/<?=$this->getParam('type')?>" class="form-horizontal form-label-left" method="post">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Upload from Url</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="input-group">
+                                        <input type="text" name="url" autocomplete="false" class="form-control">
+                                        <span class="input-group-btn">
+                                                <input type="submit" class="btn btn-danger" value="Upload">
+                                          </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <?php if ($this->getParam('type') == 'binaries') { ?>
+                        <form action="/upload/uploadurl/<?=$this->getParam('type')?>" class="form-horizontal form-label-left" method="post">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Upload from Url</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="input-group">
+                                        <select name="url" class="form-control">
+                                            <?php foreach (\Mooshroom\Mojang::getDownloadUrls() as $k => $v) { ?>
+                                                <option value="<?=htmlspecialchars($v)?>">minecraft_server.<?=$k?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <span class="input-group-btn">
+                                            <input type="submit" class="btn btn-danger" value="Upload">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <?php } ?>
+
+                    </div>
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- /page content -->
+
+
+<script>
+    $(function () {
+
+        $('.js-upload').fileupload({
+
+            url: $(this).data('target'),
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result, function (index, file) {
+                    $('<p/>').text(file).appendTo('#files');
+                });
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css(
+                    'width',
+                    progress + '%'
+                );
+            }
+        }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+</script>

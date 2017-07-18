@@ -1,0 +1,76 @@
+<div class="right_col" role="main">
+
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Server</h3>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="x_panel" style="margin-top:0;">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Hostname</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($this->servers as $s) {  ?>
+                        <tr>
+                            <td><?=$s->get('name')?></td>
+                            <td><?=$s->get('hostname')?></td>
+                            <td><?=$s->get('supervisorapi')?></td>
+                        </tr>
+                    <?php } ?>
+                    </tbody>
+                </table>
+
+
+
+
+                <a href="/server/add"><button class="btn btn-success">Create new server</button></a>
+
+
+
+
+        </div>
+    </div>
+
+
+
+</div>
+
+<script>
+    $(function() {
+        $('.js-dsv').click(function(e) {
+            $.post('/hosts/supervisor', $('#addhost').serialize(), function(data){
+                if (typeof data.error != 'undefined') {
+                    alert(data.error);
+                } else {
+                    console.log(data);
+                    $('input[name=supervisorapi]').val( 'http://' + data.username + ':' + data.password + '@' + $('input[name=hostname]').val() + ':' + data.port + '/RPC2');
+                }
+
+            });
+        });
+
+        $('#addhost').submit(function(e) {
+            e.preventDefault();
+            $.post('/hosts/add', $(this).serialize(), function(data){
+                if (typeof data.error != 'undefined') {
+                    alert(data.error);
+                } else {
+                    self.location.href=self.location.href;
+                }
+
+            });
+        });
+    })
+</script>

@@ -1,0 +1,103 @@
+<!-- page content -->
+<div class="right_col" role="main">
+
+
+        <div class="page-title">
+            <div class="title_left">
+                <h3><?=htmlspecialchars($this->server->getName())?></h3>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <?php include '_tabs.phtml'; ?>
+                <div class="x_panel" style="margin-top:0;">
+
+
+                    <div class="ln_solid"></div>
+
+                            <form class="form-horizontal form-label-left" method="post">
+
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-3 col-xs-12" style="text-align:right" for="name">Name</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <?=htmlspecialchars($this->formdata['name'])?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-3 col-xs-12" style="text-align:right" for="name">Host</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <?=htmlspecialchars($this->server->getHost()->getName() . ' (' . $this->server->getHost()->get('hostname') . ')' )?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 col-sm-3 col-xs-12" style="text-align:right" for="name">Server Address</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <?=htmlspecialchars($this->server->getHost()->get('hostname') . ':' . $this->server->getServerProperties()->get('server-port')  )?>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="jar">Jar</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select name="jar" class="form-control col-md-7 col-xs-12">
+                                            <?php foreach ($this->binaries as $b) { ?>
+                                                <option value="<?=htmlspecialchars($b)?>" <?=($this->server->get('jar') == $b) ? 'selected' : ''?>><?=htmlspecialchars($b)?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Memory</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" name="memory" value="<?=htmlspecialchars($this->formdata['memory'])?>" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <input type="hidden" name="action" value="change">
+                                        <input type="submit" class="btn btn-success" value="Save changes">
+                                    </div>
+                                </div>
+                            </form>
+
+
+                            <hr>
+
+                            <form class="form-horizontal form-label-left" method="post">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Type "delete".</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="input-group">
+                                            <input type="text" name="confirm" autocomplete="false" class="form-control">
+                                            <input type="hidden" name="action" value="delete">
+                                            <span class="input-group-btn">
+
+                                                <input type="submit" class="btn btn-danger" value="Delete">
+                                          </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+</div>
+
+

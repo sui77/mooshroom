@@ -1,0 +1,10 @@
+{
+  "name": "mg-phing",
+  "version": "0.0.1",
+  "dependencies": {
+    "dateformat": "1.0.12",
+    "socket.io": "1.4.6",
+    "socket.io-redis": "1.1.1",
+    "redis": "2.6.0-2"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "mcadmin",
+  "version": "0.0.1",
+  "description": "Minecraft server admin webinterface.",
+  "dependencies": {
+  },
+  "author": "Suat Özgür",
+  "license": "ISC"
+}

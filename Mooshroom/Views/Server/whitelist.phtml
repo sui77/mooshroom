@@ -1,0 +1,64 @@
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3><?=htmlspecialchars($this->server->getName())?></h3>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <?php include '_tabs.phtml'; ?>
+                <div class="x_panel" style="margin-top:0;">
+
+
+
+                                <br>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Avatar</th>
+                                        <th>Name</th>
+                                        <?php if ($this->server->isRunning()) { ?><th>Action</th><?php } ?>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($this->server->getWhitelist() as $op) { ?>
+                                        <tr>
+                                            <td><img src="data:image/png;base64,<?=\Mooshroom\Mojang::getHead($op['uuid'])?>"></td>
+                                            <td><?=$op['name']?><br><?=$op['uuid']?></td>
+                                            <?php if ($this->server->isRunning()) { ?><td><a href="/server/<?=$this->server->getName()?>/whitelist?username=<?=$op['name']?>">delete</a></td><?php } ?>
+                                        </tr>
+                                    <?php } ?>
+                                    </tbody>
+                                </table>
+
+
+                                <?php if ($this->server->isRunning()) { ?>
+                                <form method="post" class="upform">
+                                    <div class="input-group">
+                                        <input type="text" name="username" class="form-control">
+                                        <span class="input-group-btn">
+                                                <input type="submit" class="btn btn-default" value="add">
+                                          </span>
+                                    </div>
+                                </form>
+                                <?php } else { ?>
+                                    You can not edit the whitelist as long as the server is not running.
+                                <?php } ?>
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- /page content -->
