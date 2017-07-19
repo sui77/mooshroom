@@ -137,6 +137,7 @@ class MooshroomInstaller {
             '/var/lib/mooshroom',
             '/var/lib/mooshroom/sshkeys/',
             '/var/lib/mooshroom/source/',
+            '/var/lib/mooshroom/tmp/',
             '/var/lib/mooshroom/files/',
             '/var/lib/mooshroom/files/jar',
             '/var/lib/mooshroom/files/plugins',
@@ -149,6 +150,7 @@ class MooshroomInstaller {
                 passthru('mkdir ' . $d . '; chown ' . $this->_linuxUser . ':' . $this->_linuxUser . ' ' . $d );
             }
         }
+        passthru('chmod 777 /var/lib/mooshroom/tmp/');
     }
 
     private function createSshKeys() {
@@ -255,7 +257,8 @@ class MooshroomInstaller {
             'name' => $name,
             'ip' => $ip,
             'port' => $port,
-            'sshUsername' => $this->_linuxUser
+            'sshUsername' => $this->_linuxUser,
+            'home' => $this->_linuxHomeDir
         )));
 
         echo file_get_contents($webCp . '/api/addhost?data=' . $data);
@@ -303,6 +306,7 @@ class MooshroomInstaller {
         fputs($fp, "HSET mcadmin:hosts:localhost name localhost\r\n");
         fputs($fp, "HSET mcadmin:hosts:localhost hostname localhost\r\n");
         fputs($fp, "HSET mcadmin:hosts:localhost sshUsername " . $this->_linuxUser . "\r\n");
+        fputs($fp, "HSET mcadmin:hosts:localhost home " . $this->_linuxHomeDir. "\r\n");
         fputs($fp, "HSET mcadmin:hosts:localhost id 1\r\n");
         fputs($fp, "HSET mcadmin:hosts:localhost port 22\r\n");
         fputs($fp, "HSET mcadmin:hosts:localhost supervisorapi http://" . $this->_supervisorRpc['username'] . ":" . $this->_supervisorRpc['password'] . "@localhost:" . $this->_supervisorRpc['port'] . "/RPC2\r\n");

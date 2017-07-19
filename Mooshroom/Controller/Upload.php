@@ -24,7 +24,7 @@ class Upload extends ControllerAbstract {
         $tmp = explode('/', $url);
         $filename = $tmp[ count($tmp) - 1];
         if (preg_match(Config::get('files.' . $this->getParam('type') . '.type'), $filename)) {
-            $tmp = '/tmp/' . $filename;
+            $tmp = Config::get('tmpDir') . '/' . $filename;
             copy($url, $tmp);
             $host = \Mooshroom\Model\Hosts::getInstance('localhost');
             $host->scpSend($tmp, Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $filename );

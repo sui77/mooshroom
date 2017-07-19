@@ -17,8 +17,6 @@ class Hosts extends KeyValueModelAbstract {
         if ($this->_sshConnection == null) {
             $auth = Config::get('sshkey');
             $auth['username'] = $this->get('sshUsername');
-            print_r($this->_data);
-            print_r($auth);
             $this->_sshConnection = new Ssh($this->get('hostname'), $this->get('port'), $auth);
         }
         return $this->_sshConnection;

@@ -60,11 +60,6 @@ abstract class KeyValueModelAbstract {
         $this->_redis->del(static::$_redisKey . ':' . $this->getName() );
     }
 
-    /**
-     * @param $name
-     * @param null $data
-     * @return $this
-     */
     public static function create($name, $data = null) {
         if (! ($s = static::getInstance($name))) {
 

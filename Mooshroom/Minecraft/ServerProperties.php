@@ -3,6 +3,8 @@
 namespace Mooshroom\Minecraft;
 
 
+use Mooshroom\Config;
+
 class ServerProperties {
 
     private $_file;
@@ -17,7 +19,7 @@ class ServerProperties {
         $this->_ssh = $ssh;
 
         if ($ssh != null) {
-            $this->_file = '/tmp/' . md5($file);
+            $this->_file = Config::get('tmpDir') . '/' . md5($file);
             $this->_ssh->scpReceive($this->_origFile, $this->_file);
         }
 

@@ -13,16 +13,6 @@ class Hosts extends ControllerAbstract {
 
     }
 
-    public function supervisorAction() {
-        header('Content-type: text/json');
-        //ini_set('display_errors', 0);
-        $ssh = $this->_checkSsh();
-        $ssh->scpSend( Config::get('baseDir') . '/scripts/detectSupervisorConfig.php', '/tmp/dsc.php');
-        echo $ssh->exec('php /tmp/dsc.php');
-        $ssh->exec('rm /tmp/dsc.php');
-        exit();
-    }
-
     public function addAction() {
         header('Content-type: text/json');
         ini_set('display_errors', 0);

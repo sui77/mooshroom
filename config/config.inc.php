@@ -2,7 +2,7 @@
 
 return array(
     'baseDir'    => dirname(__FILE__) . '/../',
-    'gameDir' => '/home/minecraft',
+    'tmpDir'     => '/var/lib/mooshroom/tmp',
     'admin' => array(
         'user' => 'user',
         'pass' => 'testtest',

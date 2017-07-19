@@ -34,6 +34,7 @@ class Api extends ControllerAbstract {
             'hostname' => $data['ip'],
             'port' => $data['port'],
             'sshUsername' => $data['username'],
+            'home' => $data['home'],
             'supervisorapi' => 'http://' . $config['supervisor']['username'] . ':' . $config['supervisor']['password'] . '@' . $data['ip'] . ':' . $config['supervisor']['port'] . '/RPC2'
         ));
         print_r($data);
