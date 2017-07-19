@@ -31,7 +31,7 @@ abstract class KeyValueModelAbstract {
         }
         $redis = new Client(Config::get('redis'));
         foreach ($key as $k => $v) {
-            if ($this->_data[$k] != $v) {
+            if (!isset($this->_data[$k]) || $this->_data[$k] != $v) {
                 $this->_data[$k] = $v;
                 $redis->hset(static::$_redisKey . ':' . $this->getName(), $k, $v);
                 $m = 'onChange_' . $k;
@@ -60,6 +60,11 @@ abstract class KeyValueModelAbstract {
         $this->_redis->del(static::$_redisKey . ':' . $this->getName() );
     }
 
+    /**
+     * @param $name
+     * @param null $data
+     * @return $this
+     */
     public static function create($name, $data = null) {
         if (! ($s = static::getInstance($name))) {
 

@@ -26,49 +26,16 @@
                             <tr>
                                 <td><?=$host->get('name')?></td>
                                 <td><?=$host->get('hostname')?></td>
-                                <td><?=$host->get('supervisorapi')?></td>
                             </tr>
                         <?php } ?>
                         </tbody>
                     </table>
-                    <form class="form-horizontal form-label-left" method="post" id="addhost">
 
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" name="name" placeholder="" autocomplete="off" value="" class="form-control col-md-7 col-xs-12">
-                            </div>
-                        </div>
+                    <div class="ln_solid"></div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">ssh Hostname:Port</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" name="hostname" placeholder="" autocomplete="off" value="" class="form-control col-md-7 col-xs-12">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Supervisor API Url</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="input-group">
-                                    <input type="text" name="supervisorapi" value="" placeholder="" autocomplete="off" class="form-control">
-                                    <span class="input-group-btn">
-                                        <button id="#detectsupervisor" type="button" class="js-dsv btn btn-primary">Detect</button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ln_solid"></div>
-                        <div class="form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <input type="submit" class="btn btn-success" value="Submit">
-                            </div>
-                        </div>
-
-                        <!--input name="name" placeholder="name"><input name="hostname" placeholder="IP or hostname"><input id="addhost" type="submit" value="add"-->
-                    </form>
-
+                    <div style="font-family:courier,serif;color:#eee;background-color:#000;padding:5px;">
+                        wget -O - http://<?=$_SERVER['SERVER_NAME']?>/api/getinstaller &gt; install.php; php install.php<br>
+                    </div>
 
 
                 </div>
@@ -81,30 +48,3 @@
 
 </div>
 
-<script>
-    $(function() {
-        $('.js-dsv').click(function(e) {
-            $.post('/hosts/supervisor', $('#addhost').serialize(), function(data){
-                if (typeof data.error != 'undefined') {
-                    alert(data.error);
-                } else {
-                    console.log(data);
-                    $('input[name=supervisorapi]').val( 'http://' + data.username + ':' + data.password + '@' + $('input[name=hostname]').val() + ':' + data.port + '/RPC2');
-                }
-
-            });
-        });
-
-        $('#addhost').submit(function(e) {
-            e.preventDefault();
-            $.post('/hosts/add', $(this).serialize(), function(data){
-                if (typeof data.error != 'undefined') {
-                    alert(data.error);
-                } else {
-                    self.location.href=self.location.href;
-                }
-
-            });
-        });
-    })
-</script>

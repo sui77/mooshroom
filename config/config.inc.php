@@ -8,26 +8,25 @@ return array(
         'pass' => 'testtest',
     ),
     'sshkey' => array(
-        'username'   => 'minecraft',
-        'public'     => dirname(__FILE__) . '/sshkey/id_rsa.pub',
-        'private'    => dirname(__FILE__) . '/sshkey/id_rsa',
+        'public'     => '/var/lib/mooshroom/sshkeys/id_rsa_www-data.pub',
+        'private'    => '/var/lib/mooshroom/sshkeys/id_rsa_www-data',
         'passphrase' => '',
     ),
     'files' => array(
         'binaries' => array(
             'type' => '/\.jar$/',
-            'localDir'  => dirname(__FILE__) . '/../upload/binaries',
-            'remoteDir' => '/home/minecraft/mcadmin_files/binaries',
+            'localDir'  => '/var/lib/mooshroom/files/jar',
+            'remoteDir' => '/var/lib/mooshroom/files/jar',
         ),
         'plugins' => array(
             'type' => '/\.jar$/',
-            'localDir'  => dirname(__FILE__) . '/../upload/plugins',
-            'remoteDir' => '/home/minecraft/mcadmin_files/plugins',
+            'localDir'  => '/var/lib/mooshroom/files/plugins',
+            'remoteDir' => '/var/lib/mooshroom/files/plugins',
         ),
         'schematics' => array(
             'type' => '/\.schematic/',
-            'localDir'  => dirname(__FILE__) . '/../upload/schematics',
-            'remoteDir' => '/home/minecraft/mcadmin_files/schematics',
+            'localDir'  => '/var/lib/mooshroom/files/schematics',
+            'remoteDir' => '/var/lib/mooshroom/files/schematics',
         ),
     )
 );

@@ -55,6 +55,11 @@ return array(
         'params' => array('action'),
     ),
 
+    '^\/api\/(.*)' => array(
+        'controller' => 'Api',
+        'params' => array('action'),
+    ),
+
     '^\/logout' => array(
         'controller' => 'Index',
         'action' => 'logout',
