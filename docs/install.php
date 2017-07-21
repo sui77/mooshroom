@@ -14,8 +14,10 @@ MooshroomInstaller::run();
 class MooshroomInstaller {
 
     private $extensions = array('gd', 'ssh2', 'curl', 'xmlrpc');
-    private $packages   = array('supervisor', 'nodejs-legacy', 'npm', 'git', 'tar');
-    private $packagesAdminserver = array('redis-server', 'openjdk-8-jre-headless', 'composer');
+    private $packages   = array('supervisor', 'nodejs-legacy', 'npm', 'git', 'tar', 'composer');
+    private $packagesAdminserver = array('redis-server', 'openjdk-8-jre-headless');
+
+    private $_missingPackages = array();
 
     private $_installationType = 1;
     private $_linuxUser        = 'mooshroom';
@@ -30,15 +32,23 @@ class MooshroomInstaller {
     }
 
     public static function run() {
+        global $argv;
         $m = new self();
 
+        if (isset($argv[1]) && $argv[1] == 'delete') {
+            $m->echoBanner();
+            $m->_testCleanup();
+            exit();
+        }
 
         $m->checkUser();
         $m->echoBanner();
         $m->checkDistro();
         $m->getInstallationType();
-        $m->installPhpExtensions();
-        $m->installPackages();
+        $m->installApache();
+        $m->checkPhpExtensions();
+        $m->checkPackages();
+        $m->installMissingPackages();
         $m->createLinuxUser();
         $m->createDirectories();
         $m->createSshKeys();
@@ -48,6 +58,25 @@ class MooshroomInstaller {
         $m->addHostToAdmin();
         $m->initDatabase();
         $m->saveConfig();
+    }
+
+    private function _testCleanup() {
+        foreach ($this->extensions as $p) {
+            echo '===' . $p . "\n";
+            passthru('apt-get purge -y php-' . $p);
+        }
+        foreach ($this->packages as $p) {
+            echo '===' . $p . "\n";
+            passthru('apt-get purge -y ' . $p);
+        }
+        foreach ($this->packagesAdminserver as $p) {
+            echo '===' . $p . "\n";
+            passthru('apt-get purge -y ' . $p);
+        }
+        echo "\n";
+        passthru("apt autoremove");
+        passthru('deluser --remove-home mooshroom');
+        passthru('rm -rf /var/lib/mooshroom');
     }
 
     private function echoBanner() {
@@ -81,32 +110,46 @@ class MooshroomInstaller {
         $this->_installationType = $this->_confirm('Do you want to install a adminserver (1) or an additional node (2)', array('1', '2'), $this->_installationType);
     }
 
-    private function installPhpExtensions() {
+    private function installApache() {
+        if ($this->_installationType == 1 && !$this->_packageExists('apache2')) {
+            if ($this->_confirm('Apache not installed. Install it? (You may also use another webserver, but setup might be difficult)', array('y', 'n'), null) ) {
+                $this->_missingPackages[] = 'apache2';
+                $this->_missingPackages[] = 'libapache2-mod-php';
+            }
+        }
+    }
+
+    private function checkPhpExtensions() {
         if ($this->_installationType == 2) {
             return;
         }
+
         foreach ($this->extensions as $name) {
             if (!extension_loaded($name)) {
-                if ($this->_confirm('php extension "' . $name . '" missing. Do you want install it?', array('y', 'n'), 'y') == 'y') {
-                    passthru("apt-get install php-" . $name);
-                } else {
-                    $this->_error('Installation aborted.');
-                }
+                $this->_missingPackages[] = 'php-' . $name;
             }
         }
-        passthru("apache2ctl restart");
     }
 
-    private function installPackages() {
+    private function checkPackages() {
         $packages = ($this->_installationType == 1) ? array_merge($this->packages, $this->packagesAdminserver) : $this->packages;
         foreach ($packages as $name) {
             if (!$this->_packageExists($name)) {
-                if ($this->_confirm('"' . $name . '" missing. Do you want install it?', array('y', 'n'), 'y') == 'y') {
-                    passthru("apt-get install " . ($name));
-                } else {
-                    $this->_error('Installation aborted.');
-                }
+                $this->_missingPackages[] = $name;
             }
+        }
+
+    }
+
+    private function installMissingPackages() {
+
+        if (count($this->_missingPackages) == 0) {
+            return;
+        }
+        if ($this->_confirm('Do you want install these missing packages? ' . implode(', ', $this->_missingPackages) , array('y', 'n'), 'y') == 'y') {
+            passthru("apt-get install " . implode(' ', $this->_missingPackages) );
+        } else {
+            $this->_error('Installation aborted.');
         }
     }
 
@@ -157,7 +200,7 @@ class MooshroomInstaller {
             passthru('chown ' . $this->_linuxUser . ':' . $this->_linuxUser . ' ' . $this->_linuxHomeDir . '/.ssh');
             passthru('chmod 700 ' . $this->_linuxHomeDir . '/.ssh');
         }
-        exit('createsshfolder');
+
     }
 
     private function createSshKeys() {
@@ -184,7 +227,7 @@ class MooshroomInstaller {
 
     private function _authorizeKey($pubkey) {
         echo "authorize " . $pubkey . "\n=======\n";
-        $authorized = file_get_contents($this->_linuxHomeDir . '/.ssh/authorized_keys');
+        $authorized = @file_get_contents($this->_linuxHomeDir . '/.ssh/authorized_keys');
         if (strstr($authorized, $pubkey) === false) {
             passthru('echo "' . $pubkey . '" >> ' . $this->_linuxHomeDir . '/.ssh/authorized_keys');
         }
@@ -220,7 +263,7 @@ class MooshroomInstaller {
         $url = parse_url($this->_baseUrl);
 
         if (!file_exists('/etc/apache2/sites-available/mooshroom.conf')) {
-            if ($this->_confirm('Do you want me to set up apache vhost config?', array('y', 'n'), 'y')) {
+            if ($this->_confirm('Do you want me to set up apache vhost config?', array('y', 'n'), 'y') == 'y') {
                 $tmp = file_get_contents('/var/lib/mooshroom/current/config/templates/mooshroom_apache.conf');
                 $tmp = str_replace( array('{servername}'), array($url['host']), $tmp);
                 echo "=== vhost config: ===\n";
@@ -266,7 +309,8 @@ class MooshroomInstaller {
             'ip' => $ip,
             'port' => $port,
             'sshUsername' => $this->_linuxUser,
-            'home' => $this->_linuxHomeDir
+            'home' => $this->_linuxHomeDir,
+            'supervisor' => 'http://' . $this->_supervisorRpc,
         )));
 
         echo file_get_contents($webCp . '/api/addhost?data=' . $data);
@@ -296,16 +340,18 @@ class MooshroomInstaller {
             file_put_contents('/etc/supervisor/supervisord.conf', $s);
         }
 
+
+
         if ($this->_installationType == 1) {
             $tmp = file_get_contents('/var/lib/mooshroom/current/config/templates/mooshroom_supervisor.conf');
             $tmp = str_replace(array('{user}', '{name}', '{command}'), array($this->_linuxUser, 'websocket', 'node start.js'), $tmp);
-            file_put_contents('/var/lib/mooshroom/supervisord.conf/mooshroom.conf', $tmp);
+            file_put_contents('/var/lib/mooshroom/supervisord.conf/mooshroom_websocket.conf', $tmp);
             exec('supervisorctl update; supervisorctl restart mooshroom_websocket');
         }
 
         $tmp = file_get_contents('/var/lib/mooshroom/current/config/templates/mooshroom_supervisor.conf');
         $tmp = str_replace(array('{user}', '{name}', '{command}'), array($this->_linuxUser, 'logtail', 'node logObserver.js'), $tmp);
-        file_put_contents('/var/lib/mooshroom/supervisord.conf/mooshroom.conf', $tmp);
+        file_put_contents('/var/lib/mooshroom/supervisord.conf/mooshroom_logobserver.conf', $tmp);
         exec('supervisorctl update; supervisorctl restart mooshroom_logtail');
 
 
@@ -382,7 +428,7 @@ class MooshroomInstaller {
     }
 
     private function _packageExists($name) {
-        exec('dpkg -l ' . ($name), $out );
+        exec('dpkg -l ' . ($name), $out, $err);
         return preg_match('/Version/s', implode('', $out)) && substr($out[count($out)-1], 1, 1) == 'i';
     }
 

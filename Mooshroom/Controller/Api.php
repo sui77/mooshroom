@@ -28,14 +28,12 @@ class Api extends ControllerAbstract {
         $auth = Config::get('sshkey');
         $auth['username'] = $data['sshUsername'];
 
-        $ssh = new Ssh($data['ip'], $data['port'], $auth);
-        $config = json_decode( $ssh->exec('cat /var/lib/mooshroom/config.json'), 1);
         \Mooshroom\Model\Hosts::create($data['name'], array(
             'hostname' => $data['ip'],
             'port' => $data['port'],
             'sshUsername' => $data['sshUsername'],
             'home' => $data['home'],
-            'supervisorapi' => 'http://' . $config['supervisor']['username'] . ':' . $config['supervisor']['password'] . '@' . $data['ip'] . ':' . $config['supervisor']['port'] . '/RPC2'
+            'supervisorapi' => $data['supervisor']
         ));
         print_r($data);
     }
