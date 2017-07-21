@@ -33,6 +33,7 @@ abstract class ControllerAbstract {
 
     protected function init() {
         $this->_needAuth();
+        $this->user = User::getLoggedInUser();
     }
 
     protected function _needAuth() {

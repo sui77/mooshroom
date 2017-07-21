@@ -14,12 +14,16 @@ var client = {
         console.log("observe " + name);
         var self = this;
         self._redis.hmget('mcadmin:server:' + name, 'name', 'host', function(err, r2) {
-            console.log(n + " " + self._name + "  | " + r2[1]);
-            if (self._name == r2[1]) {
+                    console.log(r2);
+                    console.log(n + " " + self._name + "  | " + r2[1]);
+                    if (self._name == r2[1]) {
+                        console.log('client write...');
+                        self._redis.hget('mcadmin:hosts:' + self._name, 'home', function(err, r3) {
 
-                self._client.write('observe ' + r2[0].trim() + '|||'  );
+                            self._client.write('observe ' + r2[0].trim() + ' ' + r3 + '/moo_' + r2[0].trim() + '/logs/latest.log|||');
+                        });
 
-            }
+                    }
 
         });
     },
@@ -47,7 +51,7 @@ var client = {
         var net = require('net');
         this._client = net.Socket();
 
-        console.log('Connecting to ' + host + ' ' + port);
+      //  console.log('Connecting to ' + host + ' ' + port);
 
         this._client.connect(port, host, function() {
             self.observeAll();
@@ -86,7 +90,7 @@ var client = {
 
         this._client.on('close', function() {
             self._isConnected = false;
-            console.log('Connection closed');
+           // console.log('Connection closed');
         });
     },
 

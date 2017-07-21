@@ -11,7 +11,7 @@ var pio = {
     },
 
     isTokenValid: function(user, token, cb) {
-        cb(true);
+        cb(true); return;
         this.redis.lrange('user:' + user + ':auth', 0, 10, function(err, r) {
             for (n in r) {
                 if (r[n] == token) {
@@ -32,20 +32,28 @@ var pio = {
             server: null,
         }
 
+
         socket.join('all');
 
         socket.on('auth', function(d, cb) {
+            console.log('auth', d);
             var cb = typeof cb == "function" ? cb : function() {};
             self.isTokenValid(d.username, d.token, function(r) {
                 if (r) {
-                    self.redis.hgetall('user:' + d.username, function(err, r2) {
-                        socket.userdata = r2;
-                        socket.userdata.name = d.username;
-                        socket.join('user-' + d.username);
-                        if (socket.userdata.admin) {
-                            socket.join('admin');
+                    self.redis.hgetall('mcadmin:user:' + d.username, function(err, r2) {
+                        console.log('mcadmin:user:' + d.username);
+                        console.log(r2);
+                        if (r2 != null) {
+                            socket.userdata = r2;
+                            socket.userdata.name = d.username;
+                            socket.join('user-' + d.username);
+                            if (socket.userdata.admin) {
+                                socket.join('admin');
+                            }
+                            cb(true);
+                        } else {
+                            cb(false);
                         }
-                        cb(true);
                     });
                 } else {
                     cb(false);

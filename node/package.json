@@ -5,6 +5,7 @@
     "dateformat": "1.0.12",
     "socket.io": "1.4.6",
     "socket.io-redis": "1.1.1",
-    "redis": "2.6.0-2"
+    "redis": "2.6.0-2",
+    "tail": "1.2.2"
   }
 }

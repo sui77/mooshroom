@@ -3,10 +3,6 @@
 return array(
     'baseDir'    => dirname(__FILE__) . '/../',
     'tmpDir'     => '/var/lib/mooshroom/tmp',
-    'admin' => array(
-        'user' => 'user',
-        'pass' => 'testtest',
-    ),
     'sshkey' => array(
         'public'     => '/var/lib/mooshroom/sshkeys/id_rsa_www-data.pub',
         'private'    => '/var/lib/mooshroom/sshkeys/id_rsa_www-data',

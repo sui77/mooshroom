@@ -43,7 +43,7 @@
         var height = $('#mcconsole')[0].scrollHeight;
         $('#mcconsole').scrollTop(height);
 
-        MCAdminWs('ws://mc.sui.li:1437', 'user', 'token');
+
         myIo.emit('join', '<?=$this->server->getName()?>');
 
         $('.js-ajax').submit( function(e) {

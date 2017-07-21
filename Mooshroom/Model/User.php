@@ -24,7 +24,10 @@ class User {
     public static function login($user, $pass) {
         $user = strtolower($user);
 
-        if ($user == Config::get('admin.user') && $pass == Config::get('admin.pass')) {
+        $redis = new Client( Config::get('redis') );
+        $userdata = $redis->hgetall('mcadmin:user:' . $user);
+
+        if ($user == $userdata['username'] && $pass == $userdata['pass']) {
             $userObj = User::getInstance($user);
             $_SESSION['userName'] = $userObj->getUsername();
             $userObj->setWebsocketToken();
@@ -36,12 +39,12 @@ class User {
 
     public function setCookieAuthToken() {
         $auth = sha1( $this->getUserName() . time() . uniqid('asdf'));
-        $this->_redis->hset('user:' . $this->getUserName(), 'cookieAuth', $auth);
+        $this->_redis->hset('mcadmin:user:' . $this->getUserName(), 'cookieAuth', $auth);
         return sha1($auth);
     }
 
     public function verifyCookieAuthToken($token) {
-        $tokenDb = $this->_redis->hget('user:' . $this->getUserName(),  'cookieAuth');
+        $tokenDb = $this->_redis->hget('mcadmin:user:' . $this->getUserName(),  'cookieAuth');
         return (!empty($tokenDb) && sha1($tokenDb) == $token);
     }
 
@@ -61,7 +64,7 @@ class User {
     }
 
     public function setWebsocketToken() {
-        $rKey = 'user:' . $this->getUserName() . ':auth';
+        $rKey = 'mcadmin:user:' . $this->getUserName() . ':auth';
         $n = $this->_redis->lpush($rKey, md5(uniqid('x').time()));
         if ($n > 3) {
             $this->_redis->rpop($rKey);

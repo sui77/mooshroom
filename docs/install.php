@@ -151,6 +151,13 @@ class MooshroomInstaller {
             }
         }
         passthru('chmod 777 /var/lib/mooshroom/tmp/');
+
+        if (!file_exists($this->_linuxHomeDir . '/.ssh')) {
+            passthru('mkdir ' . $this->_linuxHomeDir . '/.ssh');
+            passthru('chown ' . $this->_linuxUser . ':' . $this->_linuxUser . ' ' . $this->_linuxHomeDir . '/.ssh');
+            passthru('chmod 700 ' . $this->_linuxHomeDir . '/.ssh');
+        }
+        exit('createsshfolder');
     }
 
     private function createSshKeys() {
@@ -166,11 +173,6 @@ class MooshroomInstaller {
             passthru('chown www-data:www-data /var/lib/mooshroom/sshkeys/id_rsa_www-data.pub');
         }
 
-        if (!file_exists($this->_linuxHomeDir . '/.ssh')) {
-            passthru('mkdir ' . $this->_linuxHomeDir . '/.ssh');
-            passthru('chown ' . $this->_linuxUser . ':' . $this->_linuxUser . ' ' . $this->_linuxHomeDir . '/.ssh');
-            passthru('chmod 700 ' . $this->_linuxHomeDir . '/.ssh');
-        }
         if (!file_exists($this->_linuxHomeDir . '/.ssh/authorized_keys')) {
             passthru('touch ' . $this->_linuxHomeDir . '/.ssh/authorized_keys');
             passthru('chown ' . $this->_linuxUser . ':' . $this->_linuxUser . ' '. $this->_linuxHomeDir . '/.ssh/authorized_keys');
@@ -181,6 +183,7 @@ class MooshroomInstaller {
     }
 
     private function _authorizeKey($pubkey) {
+        echo "authorize " . $pubkey . "\n=======\n";
         $authorized = file_get_contents($this->_linuxHomeDir . '/.ssh/authorized_keys');
         if (strstr($authorized, $pubkey) === false) {
             passthru('echo "' . $pubkey . '" >> ' . $this->_linuxHomeDir . '/.ssh/authorized_keys');
@@ -236,20 +239,25 @@ class MooshroomInstaller {
             return;
         }
 
-        $name = $this->_confirm('Unique name for this server');
+        $repeat = true;
+        do {
+            $name = $this->_confirm('Unique name for this server');
 
-        $webCp = $this->_confirm('Mooshroom webadmin URL:', null, 'http://mooshroom/');
-        $webCp = preg_replace('/\/*$/', '', $webCp);
+            $webCp = $this->_confirm('Mooshroom webadmin URL:', null, 'http://mooshroom/');
+            $webCp = preg_replace('/\/*$/', '', $webCp);
 
-        if ($info = json_decode(file_get_contents($webCp . '/api/getinfo?name=' . urlencode($name) ), 1 )) {
-            if (isset($info['pubKey']) && preg_match('/^ssh/', $info['pubKey'])) {
-                $this->_authorizeKey($info['pubKey']);
+            if ($info = json_decode(file_get_contents($webCp . '/api/getinfo?name=' . urlencode($name)), 1)) {
+                if (isset($info['pubKey']) && preg_match('/^ssh/', $info['pubKey'])) {
+
+                    $this->_authorizeKey($info['pubKey']);
+                    $repeat = false;
+                } else {
+                    $this->_error('Could not retreive public key from ' . $webCp . '/api/getinfo');
+                }
             } else {
-                $this->_error('Could not retreive public key from ' . $webCp . '/api/getinfo');
+                $this->_error('Could not connect to ' . $webCp . '/api/getinfo');
             }
-        } else {
-            $this->_error('Could not connect to ' . $webCp . '/api/getinfo');
-        }
+        } while ($repeat);
         $ip = $this->_confirm('Public IP from this server:', null, $info['yourIP']);
         $port = $this->_confirm('Ssh port from this server:', null, 22);
 
@@ -287,10 +295,20 @@ class MooshroomInstaller {
             $s = preg_replace('/files\s+=[^\n]*/si', 'files = ' . $sconfig['include']['files'] . ' /var/lib/mooshroom/supervisord.conf/*.conf', $s);
             file_put_contents('/etc/supervisor/supervisord.conf', $s);
         }
+
+        if ($this->_installationType == 1) {
+            $tmp = file_get_contents('/var/lib/mooshroom/current/config/templates/mooshroom_supervisor.conf');
+            $tmp = str_replace(array('{user}', '{name}', '{command}'), array($this->_linuxUser, 'websocket', 'node start.js'), $tmp);
+            file_put_contents('/var/lib/mooshroom/supervisord.conf/mooshroom.conf', $tmp);
+            exec('supervisorctl update; supervisorctl restart mooshroom_websocket');
+        }
+
         $tmp = file_get_contents('/var/lib/mooshroom/current/config/templates/mooshroom_supervisor.conf');
-        $tmp = str_replace( array('{user}', '{directory}'), array($this->_linuxUser, '/var/lib/mooshroom/current/node'), $tmp);
+        $tmp = str_replace(array('{user}', '{name}', '{command}'), array($this->_linuxUser, 'logtail', 'node logObserver.js'), $tmp);
         file_put_contents('/var/lib/mooshroom/supervisord.conf/mooshroom.conf', $tmp);
-        exec('supervisorctl update; supervisorctl restart mooshroom_websocket');
+        exec('supervisorctl update; supervisorctl restart mooshroom_logtail');
+
+
         $this->_supervisorRpc = $sconfig['inet_http_server'];
         echo('http://' . $sconfig['inet_http_server']['username'] . ':' . $sconfig['inet_http_server']['password'] . '@mooshroom:' . $sconfig['inet_http_server']['port']) . "\n";
     }

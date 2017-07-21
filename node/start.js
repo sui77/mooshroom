@@ -8,8 +8,8 @@ console.log('Starting server at port ' + serverConfig.http.port);
 io.listen(serverConfig.http.port);
 
 // cluster setup
-var ioRedis = require('socket.io-redis');
-io.adapter(ioRedis({ host: 'localhost', port: 6379 }));
+//var ioRedis = require('socket.io-redis');
+//io.adapter(ioRedis({ host: 'localhost', port: 6379 }));
 
 
 // init actions
@@ -29,7 +29,7 @@ var logObservers = [];
 
 var redis = require("redis").createClient( serverConfig.redis  )
 redis.smembers('mcadmin:hosts', function(err, r) {
-    r = ["127.0.0.1"];
+    //r = ["127.0.0.1"];
     for (n in r) {
         logObservers[r[n]] = require('./module/logObserverClient.js');
         logObservers[r[n]].init('localhost', 1337, r[n], myIo);
@@ -57,5 +57,4 @@ var server = net.createServer(function(socket) {
 });
 
 server.listen(1337, '127.0.0.1');
-
 */

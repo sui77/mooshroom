@@ -14,7 +14,7 @@ var server = net.createServer(function(socket) {
     socket.buf = "";
 
     socket.on('data', function(data) {
-
+console.log(data);
         socket.tails = {};
 
         var tmp = (socket.buf + data.toString()).split('|||');
@@ -27,11 +27,12 @@ var server = net.createServer(function(socket) {
             var tmp2 = tmp[n].toString().trim().split(' ');
             if (tmp2[0] == 'observe') {
                 var name = tmp2[1];
+                var path = tmp2[2];
                 console.log("===" + name + "===");
                 console.log('observing ' + name + "\n");
                 if (typeof tails[name] == 'undefined') {
 
-                    tails[name]  = new Tail("/home/minecraft/mc_" + name + "/logs/latest.log");
+                    tails[name]  = new Tail(path);
                     tails[name].name = name;
                     tails[name].on("line", function (data) {
                         socket.write(this.name + ' ' + data + '|||');

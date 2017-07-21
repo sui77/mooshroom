@@ -103,10 +103,7 @@ class Server extends KeyValueModelAbstract {
     public function delete() {
         parent::delete();
         $this->_redis->del(static::$_redisKey . ':log:' . $this->getName() );
-
-        if (preg_match('/^\/home\/minecraft\/moo_/', $this->getGameDirectory())) {
-            $this->getHost()->ssh('rm -rf ' . $this->getGameDirectory());
-        }
+        $this->getHost()->ssh('rm -rf ' . $this->getGameDirectory());
 
         try {
             $supervisor = $this->getHost()->getSupervisor();
