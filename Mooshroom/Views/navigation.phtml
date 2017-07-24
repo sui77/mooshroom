@@ -1,40 +1,45 @@
-<div class="col-md-3 left_col">
-    <div class="left_col scroll-view">
-        <div class="navbar nav_title" style="border: 0;margin-top:12px;">
-            <a href="/" class="site_title"><i class="fa fa-paw"></i> <span>MCAdmin</span></a>
-        </div>
+<?php
+    $nav = array(
+        array(
+            'url'    => '/server',
+            'title'  => 'Minecraft Server',
+            'active' => false,
+            'icon'   => 'ti-server',
+        ),
+        array(
+            'url'   => '/hosts',
+            'title' => 'Hosts',
+            'active' => false,
+            'icon'   => 'ti-harddrives',
+        ),
+        array(
+            'url'   => '/upload/index/binaries',
+            'title' => 'Binaries',
+            'active' => false,
+            'icon'   => 'ti-folder',
+        ),
+        array(
+            'url'   => '/upload/index/plugins',
+            'title' => 'Plugins',
+            'active' => false,
+            'icon'   => 'ti-plug',
+        ),
+        array(
+            'url'   => '/upload/index/schematics',
+            'title' => 'Schematics',
+            'active' => false,
+            'icon'   => 'ti-gallery',
+        ),
+    );
+?>
+<ul class="nav">
+    <?php foreach ($nav as $k => $v) { ?>
+    <li class="">
+        <a href="<?=$v['url']?>">
+            <i class="<?=$v['icon']?>"></i>
+            <p><?=$v['title']?></p>
+        </a>
+    </li>
+    <?php } ?>
+</ul>
 
-        <div class="clearfix"></div>
-
-
-
-        <!-- sidebar menu -->
-        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-            <div class="menu_section">
-                <h3>General</h3>
-                <ul class="nav side-menu">
-                    <li><a href="/server/index"><i class="fa fa-home active"></i> Server <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu " style="display:block;">
-                            <?php foreach ($this->servers as $server) { ?>
-                                <li><a href="/server/<?=urlencode($server->getName())?>/general"><?=htmlspecialchars($server->getName())?></a></li>
-                            <?php } ?>
-                            <li><a href="/server/add">+ Add</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/hosts"><i class="fa fa-home active"></i> Hosts <span class="fa fa-chevron-down"></span></a></li>
-                    <li>
-                        <a href=""><i class="fa fa-file-archive-o"></i> Library<span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu" style="display:block;">
-                            <li><a href="/upload/index/binaries"><i class="fa fa-home active"></i> Binaries</a></li>
-                            <li><a href="/upload/index/plugins"><i class="fa fa-home active"></i> Plugins</a></li>
-                            <li><a href="/upload/index/schematics"><i class="fa fa-home active"></i> Schematics</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-        <!-- /sidebar menu -->
-
-    </div>
-</div>

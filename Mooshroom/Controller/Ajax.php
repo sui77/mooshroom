@@ -29,8 +29,10 @@ class Ajax extends ControllerAbstract {
 
 
     public function uploadAction() {
+
+
         if (file_exists($_FILES['files']['tmp_name'][0])) {
-            move_uploaded_file( $_FILES['files']['tmp_name'][0], BASE_PATH . '/config/plugins/' . $_FILES['files']['name'][0] );
+            $ssh = \Mooshroom\Model\Hosts::getInstance('localhost')->scpSend( $_FILES['files']['tmp_name'][0], Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $_FILES['files']['name'][0]);
             echo json_encode(
               array( $_FILES['files']['name'][0] )
             );

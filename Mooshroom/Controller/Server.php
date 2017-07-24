@@ -20,6 +20,9 @@ class Server extends ControllerAbstract {
         );
 
         $this->server = MCServer::getInstance($this->getParam('server'));
+        if ($this->server) {
+            $this->title = $this->server->getName();
+        }
     }
 
 
@@ -42,6 +45,8 @@ class Server extends ControllerAbstract {
     }
 
     public function createAction() {
+        $this->title = 'Create a new minecraft server';
+
         $this->binaries = Binaries::getAll('binaries');
 
         if (isset($_POST['name'])) {
@@ -99,6 +104,7 @@ class Server extends ControllerAbstract {
     }
 
     public function indexAction() {
+        $this->title = 'Minecraft Server';
 
     }
 

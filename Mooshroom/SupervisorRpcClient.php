@@ -4,8 +4,9 @@ namespace Mooshroom;
 
 class SupervisorRpcClient extends XmlRpcAbstract {
 
+    private $_allProcessInfo = null;
+
     public function getAllProcessInfo() {
-        echo $this->_url;
         return $this->executeRpcCall('supervisor.getAllProcessInfo', array());
     }
 
@@ -23,7 +24,13 @@ class SupervisorRpcClient extends XmlRpcAbstract {
     }
 
     public function getProcessInfo($name) {
-        return $this->executeRpcCall('supervisor.getProcessInfo', array($name));
+        if (!isset($this->_allProcessInfo)) {
+            $tmp = $this->getAllProcessInfo();
+            foreach ($tmp as $l) {
+                $this->_allProcessInfo[$l['name']] = $l;
+            }
+        }
+        return $this->_allProcessInfo[$name];
     }
 
     public function removeProcessGroup($name) {

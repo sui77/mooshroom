@@ -1,50 +1,46 @@
-<div class="right_col" role="main">
-
-        <div class="page-title">
-            <div class="title_left">
-                <h3>Hosts</h3>
-            </div>
-        </div>
-
-        <div class="clearfix"></div>
-
+<div class="content">
+    <div class="container-fluid">
         <div class="row">
-
-            <div class="col-md-12 col-sm-12 col-xs-12">
-
-                <div class="x_panel" style="margin-top:0;">
-
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Hostname</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($this->hosts as $host) {  ?>
-                            <tr>
-                                <td><?=$host->get('name')?></td>
-                                <td><?=$host->get('hostname')?></td>
-                            </tr>
-                        <?php } ?>
-                        </tbody>
-                    </table>
-
-                    <div class="ln_solid"></div>
-
-                    <div style="font-family:courier,serif;color:#eee;background-color:#000;padding:5px;">
-                        wget -O - http://<?=$_SERVER['SERVER_NAME']?>/api/getinstaller &gt; install.php; php install.php<br>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
                     </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-striped">
+                            <thead>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Hostname/IP</th>
+                            <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($this->hosts as $host) {  ?>
+                                <tr>
+                                    <td><?=$host->get('id')?></td>
+                                    <td><?=$host->get('name')?></td>
+                                    <td><?=$host->get('hostname')?></td>
+                                    <td>...</td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
 
-
+                    </div>
                 </div>
 
+                <div class="card">
+                    <div class="content">
+                        To add a new host, log in as root to the new server and execute the installer script:
+                        <div style="font-family:courier,serif;color:#eee;background-color:#000;padding:5px;">
+                            wget -O - http://<?=$_SERVER['SERVER_NAME']?>/api/getinstaller &gt; install.php; php install.php<br>
+                        </div>
 
+                    </div>
+                </div>
             </div>
+
+
         </div>
-
-
-
+    </div>
 </div>
 

@@ -33,6 +33,9 @@ class ServerProperties {
     }
 
     public function get($key) {
+        if ($this->_data[$key]['type'] == 'boolean') {
+            return $this->_data[$key]['value'] === 'true';
+        }
         return $this->_data[$key]['value'];
     }
 

@@ -16,7 +16,7 @@ class Upload extends ControllerAbstract {
 
     public function indexAction() {
         $this->files = \Mooshroom\Model\Binaries::getAll( $this->getParam('type') );
-        //Binaries::syncAll();
+        $this->title = ucfirst( $this->getParam('type') );
     }
 
     public function uploadurlAction() {
@@ -28,7 +28,6 @@ class Upload extends ControllerAbstract {
             copy($url, $tmp);
             $host = \Mooshroom\Model\Hosts::getInstance('localhost');
             $host->scpSend($tmp, Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $filename );
-            //Binaries::sync($this->getParam('type'));
             echo json_encode(
                 array($filename)
             );
@@ -44,11 +43,8 @@ class Upload extends ControllerAbstract {
         }
 
         if (file_exists($_FILES['files']['tmp_name'][0]) && preg_match(Config::get('files.' . $this->getParam('type') . '.type'), $_FILES['files']['name'][0] )) {
+            \Mooshroom\Model\Hosts::getInstance('localhost')->scpSend( $_FILES['files']['tmp_name'][0], Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $_FILES['files']['name'][0]);
 
-            @mkdir ($dir, 0777, true);
-
-            move_uploaded_file( $_FILES['files']['tmp_name'][0], $dir . '/' . $_FILES['files']['name'][0] );
-            //Binaries::sync( $this->getParam('type') );
             echo json_encode(
                 array( $_FILES['files']['name'][0] )
             );

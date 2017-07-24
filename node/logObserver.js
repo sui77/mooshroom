@@ -30,7 +30,10 @@ console.log(data);
                 var path = tmp2[2];
                 console.log("===" + name + "===");
                 console.log('observing ' + name + "\n");
-                if (typeof tails[name] == 'undefined') {
+                if (typeof tails[name] != 'undefined') {
+                    tails[name].unwatch();
+                    delete (tails[name]);
+                }
 
                     tails[name]  = new Tail(path);
                     tails[name].name = name;
@@ -42,11 +45,12 @@ console.log(data);
                     });
 
                     tails[name].on("error", function (error) {
+                        delete(tails[name]);
                         console.log('ERROR: ', error);
                     });
 
 
-                }
+
             }
         }
 

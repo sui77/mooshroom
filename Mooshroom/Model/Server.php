@@ -33,20 +33,13 @@ class Server extends KeyValueModelAbstract {
         return $this->getHost()->get('home') . '/moo_' . $this->getName();
     }
 
-    public function getStatus() {
-        if (is_null($this->_status)) {
-            try {
-                $this->_status = $this->getHost()->getSupervisor()->getProcessInfo('moo_' . $this->getName());
-            } catch (\Exception $e) {
-
-            }
-        }
-        return $this->_status;
+    public function getStatus($key = 'statename') {
+        $status = $this->getHost()->getSupervisor()->getProcessInfo('moo_' . $this->getName());
+        return $status[$key];
     }
 
     public function isRunning() {
-        $s = $this->getStatus();
-        return $s['statename'] == 'RUNNING';
+        return $this->getStatus() == 'RUNNING';
     }
 
     public function getEulaUrl() {
@@ -65,6 +58,7 @@ class Server extends KeyValueModelAbstract {
     }
 
     public function getPlugins() {
+        $plugins = array();
         $dir = opendir( Config::get('files.plugins.localDir'));
         while ($f = readdir($dir)) {
             if (preg_match('/\.jar$/', $f)) {

@@ -1,76 +1,41 @@
-<div class="right_col" role="main">
-
-    <div class="page-title">
-        <div class="title_left">
-            <h3>Server</h3>
-        </div>
-    </div>
-
-    <div class="clearfix"></div>
-
-    <div class="row">
-
-        <div class="col-md-12 col-sm-12 col-xs-12">
-
-            <div class="x_panel" style="margin-top:0;">
-
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Hostname</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($this->servers as $s) {  ?>
-                        <tr>
-                            <td><?=$s->get('name')?></td>
-                            <td><?=$s->get('hostname')?></td>
-                            <td><?=$s->get('supervisorapi')?></td>
-                        </tr>
-                    <?php } ?>
-                    </tbody>
-                </table>
-
-
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-striped">
+                            <thead>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Host</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($this->servers as $s) {  ?>
+                                <tr>
+                                    <td><?=$s->get('id')?></td>
+                                    <td><a href="/server/<?=$s->get('name')?>/general"><?=$s->get('name')?></a></td>
+                                    <td><?=$s->get('host')?></td>
+                                    <td><?=$s->getStatus()?></td>
+                                    <td>...</td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                        <div class="content">
+                        <a href="/server/add"><button class="btn btn-success">Create new server</button></a>
+                        </div>
+                    </div>
+                </div>
 
 
-                <a href="/server/add"><button class="btn btn-success">Create new server</button></a>
-
-
+            </div>
 
 
         </div>
     </div>
-
-
-
 </div>
-
-<script>
-    $(function() {
-        $('.js-dsv').click(function(e) {
-            $.post('/hosts/supervisor', $('#addhost').serialize(), function(data){
-                if (typeof data.error != 'undefined') {
-                    alert(data.error);
-                } else {
-                    console.log(data);
-                    $('input[name=supervisorapi]').val( 'http://' + data.username + ':' + data.password + '@' + $('input[name=hostname]').val() + ':' + data.port + '/RPC2');
-                }
-
-            });
-        });
-
-        $('#addhost').submit(function(e) {
-            e.preventDefault();
-            $.post('/hosts/add', $(this).serialize(), function(data){
-                if (typeof data.error != 'undefined') {
-                    alert(data.error);
-                } else {
-                    self.location.href=self.location.href;
-                }
-
-            });
-        });
-    })
-</script>

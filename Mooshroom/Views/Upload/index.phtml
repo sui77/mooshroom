@@ -1,60 +1,65 @@
-<!-- page content -->
-<div class="right_col" role="main">
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3><?=!empty($this->formdata['name'])?'Edit ' . $this->formdata['name']:'Add new'?></h3>
-            </div>
-        </div>
-
-        <div class="clearfix"></div>
-
+<div class="content">
+    <div class="container-fluid">
         <div class="row">
+            <div class="col-md-12">
 
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel" style="margin-top:0;">
+                <div class="card">
+                    <div class="header">
+                    </div>
 
+                    <?php if (count($this->files) == 0) { ?>
+                        <div class="content">
+                            No files.
+                        </div>
+                    <?php } else { ?>
+                        <div class="content table-responsive table-full-width">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>File</th>
+                                    <th>Action</th>
+                                </thead>
+                                <tbody id="filelist">
+                                <?php foreach ($this->files as $file) { ?>
+                                    <tr>
+                                        <td><?=$file?></td>
+                                        <td></td>
+                                    </tr>
+                                <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php } ?>
+                </div>
 
-
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Plugin</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($this->files as $file) { ?>
-                                <tr>
-                                    <td><?=$file?></td>
-                                </tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
-
-                        <hr>
-
-
-
+                <div class="card">
+                    <div class="header">
+                        Upload from Computer
+                    </div>
+                    <div class="content">
                         <form action="/upload/upload/<?=$this->getParam('type')?>" class="js-upload form-horizontal form-label-left" method="post">
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="files[]">Upload from Computer</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <span class="btn btn-success fileinput-button">
-                                        <i class="glyphicon glyphicon-plus"></i>
-                                        <span>Select File</span>
-                                        <input xclass="js-upload" data-target="/ajax/upload" type="file" name="files[]" multiple>
-
-                                    </span>
-                                    <div id="progress" class="progress">
+                                    <div id="uploadinput">
+                                        <input data-target="/ajax/upload" type="file" name="files[]" multiple>
+                                    </div>
+                                    <div id="progress" class="progress" style="display:none">
                                         <div class="progress-bar progress-bar-success"></div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
 
-                        <form action="/upload/uploadurl/<?=$this->getParam('type')?>" class="form-horizontal form-label-left" method="post">
+                <div class="card">
+                    <div class="header">
+                        Upload from Url
+                    </div>
+                    <div class="content">
+                        <form action="/upload/uploadurl/<?=$this->getParam('type')?>" class="js-uploadurl form-horizontal form-label-left" method="post">
                             <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Upload from Url</label>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Url</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="input-group">
                                         <input type="text" name="url" autocomplete="false" class="form-control">
@@ -65,9 +70,16 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
 
-                        <?php if ($this->getParam('type') == 'binaries') { ?>
-                        <form action="/upload/uploadurl/<?=$this->getParam('type')?>" class="form-horizontal form-label-left" method="post">
+                <?php if ($this->getParam('type') == 'binaries') { ?>
+                <div class="card">
+                    <div class="header">
+                        Upload vanilla from mojang
+                    </div>
+                    <div class="content">
+                        <form action="/upload/uploadurl/<?=$this->getParam('type')?>" class="js-uploadurl form-horizontal form-label-left" method="post">
                             <div class="form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Upload from Url</label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -84,23 +96,34 @@
                                 </div>
                             </div>
                         </form>
-                        <?php } ?>
-
                     </div>
-
+                </div>
+                <?php } ?>
 
 
             </div>
+
+
         </div>
-
-
     </div>
 </div>
-<!-- /page content -->
+
+
 
 
 <script>
     $(function () {
+
+        $('.js-uploadurl').submit(function(e) {
+            e.preventDefault();
+            $.post($(this).attr('target'), $(this).serialize(), function(data) {
+                $.each(data.result, function (index, file) {
+                    $('#filelist').append( $('<tr><td>' + file + '</td><td></td></tr>') ); // text(file).appendTo('#files');
+                });
+
+            });
+
+        });
 
         $('.js-upload').fileupload({
 
@@ -108,10 +131,15 @@
             dataType: 'json',
             done: function (e, data) {
                 $.each(data.result, function (index, file) {
-                    $('<p/>').text(file).appendTo('#files');
+                    $('#filelist').append( $('<tr><td>' + file + '</td><td></td></tr>') ); // text(file).appendTo('#files');
                 });
+                $('#progress').hide();
+                $('#uploadinput').show();
             },
             progressall: function (e, data) {
+                $('#progress').show();
+                $('#uploadinput').hide();
+
                 var progress = parseInt(data.loaded / data.total * 100, 10);
                 $('#progress .progress-bar').css(
                     'width',

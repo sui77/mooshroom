@@ -1,10 +1,7 @@
 
-<div class="x_panel">
+<div class="card">
+    <div class="content">
 
-
-    <?php
-        $status = $this->server->getStatus();
-    ?>
 
     <?php if (!$this->server->get('eula')) {?>
         <div class="alert alert-warning">
@@ -21,11 +18,11 @@
     <?php } else { ?>
         <div class="row" style="margin-top:4px;">
             <div class="col-xs-6">
-                <?=$status['description']?><br>
+                <?=$this->server->getStatus('description')?><br>
                 <span id="restartneeded" <?= $this->server->get('restartneeded') ? '' : 'style="display:none"' ?>>Restart needed</span>
             </div>
             <div class="col-xs-6">
-                <?php if ( in_array($status['statename'], array('RUNNING', 'STARTING', 'STOPPING'))) { ?>
+                <?php if ( in_array($this->server->getStatus(), array('RUNNING', 'STARTING', 'STOPPING'))) { ?>
                     <a href="/server/<?=$this->server->getName()?>/stop"><button class="btn btn-danger pull-right">Stop</button></a>
                     <a href="/server/<?=$this->server->getName()?>/restart"><button class="btn btn-warning pull-right">Restart</button></a>
                 <?php } else { ?>
@@ -34,16 +31,17 @@
             </div>
         </div>
     <?php } ?>
-
+    </div>
 </div>
 
-
-<div class="" role="tabpanel" data-example-id="togglable-tabs">
-    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist" style="margin-bottom:0;border-bottom:0;">
+<div class="" role="tabpanel">
+    <ul class="nav nav-tabs bar_tabs" role="tablist" style="margin-bottom:0;border-bottom:0;">
         <li role="presentation" class="<?=$this->_params['action']=='general'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/general">General</a></li>
         <li role="presentation" class="<?=$this->_params['action']=='serverproperties'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/serverproperties">server.properties</a></li>
         <li role="presentation" class="<?=$this->_params['action']=='plugins'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/plugins">Plugins</a></li>
-        <li role="presentation" class="<?=$this->_params['action']=='whitelist'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/whitelist">Whitelist</a></li>
+        <?php if ($this->server->getServerProperties()->get('white-list')) { ?>
+            <li role="presentation" class="<?=$this->_params['action']=='whitelist'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/whitelist">Whitelist</a></li>
+        <?php } ?>
         <li role="presentation" class="<?=$this->_params['action']=='ops'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/ops">Ops</a></li>
         <li role="presentation" class="<?=$this->_params['action']=='console'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/console">Console</a></li>
     </ul>

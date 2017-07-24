@@ -76,7 +76,12 @@ var client = {
 
                 var name = tmp2.shift();
                 self._io.io.to(name).emit( 'log', tmp2.join(' ') );
-                console.log(name + "|" + tmp2.join(' '));
+                self._redis.lpush('mcadmin:log:' + name, tmp2.join(' '), function(err, r) {
+                    if (r > 50) {
+                        self._redis.rpop('mcadmin:log:' + name);
+                    }
+                } );
+
             }
 
 
