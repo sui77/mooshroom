@@ -108,7 +108,7 @@ class MooshroomInstaller {
 
     private function getInstallationType() {
         global $argv;
-        
+
         if (isset($argv[1]) && $argv[1] == 'node') {
             $this->_installationType = 2;
             return;

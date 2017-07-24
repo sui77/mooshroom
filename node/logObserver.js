@@ -7,7 +7,6 @@ Tail = require('tail').Tail;
 
 var tails = {};
 
-var redis = require("redis").createClient( serverConfig.redis  )
 var net = require('net');
 var server = net.createServer(function(socket) {
 
