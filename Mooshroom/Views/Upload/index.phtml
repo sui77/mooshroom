@@ -116,7 +116,7 @@
 
         $('.js-uploadurl').submit(function(e) {
             e.preventDefault();
-            $.post($(this).attr('target'), $(this).serialize(), function(data) {
+            $.post( $(this).attr('action'), $(this).serialize(), function(data) {
                 $.each(data.result, function (index, file) {
                     $('#filelist').append( $('<tr><td>' + file + '</td><td></td></tr>') ); // text(file).appendTo('#files');
                 });

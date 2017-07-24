@@ -14,8 +14,8 @@ MooshroomInstaller::run();
 class MooshroomInstaller {
 
     private $extensions = array('gd', 'ssh2', 'curl', 'xmlrpc');
-    private $packages   = array('supervisor', 'nodejs-legacy', 'npm', 'git', 'tar', 'composer');
-    private $packagesAdminserver = array('redis-server', 'openjdk-8-jre-headless');
+    private $packages   = array('supervisor', 'nodejs-legacy', 'npm', 'git', 'tar', 'composer', 'openjdk-8-jre-headless');
+    private $packagesAdminserver = array('redis-server');
 
     private $_missingPackages = array();
 
@@ -107,6 +107,12 @@ class MooshroomInstaller {
     }
 
     private function getInstallationType() {
+        global $argv;
+        
+        if (isset($argv[1]) && $argv[1] == 'node') {
+            $this->_installationType = 2;
+            return;
+        }
         $this->_installationType = $this->_confirm('Do you want to install a adminserver (1) or an additional node (2)', array('1', '2'), $this->_installationType);
     }
 
@@ -147,6 +153,7 @@ class MooshroomInstaller {
             return;
         }
         if ($this->_confirm('Do you want install these missing packages? ' . implode(', ', $this->_missingPackages) , array('y', 'n'), 'y') == 'y') {
+            passthru("apt-get update");
             passthru("apt-get install " . implode(' ', $this->_missingPackages) );
         } else {
             $this->_error('Installation aborted.');
@@ -239,16 +246,18 @@ class MooshroomInstaller {
             $tmp = explode('/', $m[1]);
             $version = str_replace('v', '', $tmp[ count($tmp) - 1]);
             if (!file_exists('/var/lib/mooshroom/source/mooshroom-' . $version)) {
-                echo "downloading latest release ($version) from github\n";
-                copy('https://github.com' . $m[1] . '.tar.gz', '/var/lib/mooshroom/source/' . $version . '.tar.gz');
-
-                passthru('cd /var/lib/mooshroom/source; tar xzvf ' . $version . '.tar.gz' );
-                passthru('chown -R ' . $this->_linuxUser . ':' . $this->_linuxUser . ' /var/lib/mooshroom/source/mooshroom-' . $version );
-                passthru('runuser -l ' . $this->_linuxUser . ' -c \'cd /var/lib/mooshroom/source/mooshroom-' . $version . '; composer install\'');
-                passthru('runuser -l ' . $this->_linuxUser . ' -c \'cd /var/lib/mooshroom/source/mooshroom-' . $version . '/node; npm install\'');
-
-                exec('ln -sfT /var/lib/mooshroom/source/mooshroom-' . (str_replace('v', '', $version)) . ' /var/lib/mooshroom/current');
+                passthru('rm -rf /var/lib/mooshroom/source/mooshroom-' . $version);
             }
+            echo "downloading latest release ($version) from github\n";
+            copy('https://github.com' . $m[1] . '.tar.gz', '/var/lib/mooshroom/source/' . $version . '.tar.gz');
+
+            passthru('cd /var/lib/mooshroom/source; tar xzvf ' . $version . '.tar.gz' );
+            passthru('chown -R ' . $this->_linuxUser . ':' . $this->_linuxUser . ' /var/lib/mooshroom/source/mooshroom-' . $version );
+            passthru('runuser -l ' . $this->_linuxUser . ' -c \'cd /var/lib/mooshroom/source/mooshroom-' . $version . '; composer install\'');
+            passthru('runuser -l ' . $this->_linuxUser . ' -c \'cd /var/lib/mooshroom/source/mooshroom-' . $version . '/node; npm install\'');
+
+            exec('ln -sfT /var/lib/mooshroom/source/mooshroom-' . (str_replace('v', '', $version)) . ' /var/lib/mooshroom/current');
+
         }
     }
 
@@ -310,7 +319,7 @@ class MooshroomInstaller {
             'port' => $port,
             'sshUsername' => $this->_linuxUser,
             'home' => $this->_linuxHomeDir,
-            'supervisor' => 'http://' . $this->_supervisorRpc,
+            'supervisor' => "http://" . $this->_supervisorRpc['username'] . ":" . $this->_supervisorRpc['password'] . "@" . $ip . ":" . $this->_supervisorRpc['port'] . "/RPC2",
         )));
 
         echo file_get_contents($webCp . '/api/addhost?data=' . $data);
@@ -333,6 +342,7 @@ class MooshroomInstaller {
             fputs($fp, "password=" . $sconfig['inet_http_server']['password'] . "\n");
             fputs($fp, "port=" . $sconfig['inet_http_server']['port'] . "\n");
             fclose($fp);
+            passthru('service supervisor restart');
         }
         if (!preg_match('/mooshroom/si', $sconfig['include']['files'])) {
             $s = file_get_contents('/etc/supervisor/supervisord.conf');
@@ -391,6 +401,9 @@ class MooshroomInstaller {
         );
         fputs($fp, json_encode($config, JSON_PRETTY_PRINT));
         fclose($fp);
+        if ($this->_packageExists('apache2')) {
+            passthru("apache2ctl restart");
+        }
     }
 
 

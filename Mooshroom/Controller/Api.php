@@ -22,6 +22,11 @@ class Api extends ControllerAbstract {
         echo json_encode($result);
     }
 
+    public function getinstallerAction() {
+        header('Content-type: text/plain');
+        header('Content-Disposition: attachment; filename="install.php"');
+        echo file_get_contents( Config::get('baseDir') . '/docs/install.php');
+    }
 
     public function addhostAction() {
         $data = json_decode( base64_decode( $_GET['data'] ), 1);

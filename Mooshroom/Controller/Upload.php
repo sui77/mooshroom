@@ -20,9 +20,11 @@ class Upload extends ControllerAbstract {
     }
 
     public function uploadurlAction() {
+
         $url = $_POST['url'];
         $tmp = explode('/', $url);
         $filename = $tmp[ count($tmp) - 1];
+
         if (preg_match(Config::get('files.' . $this->getParam('type') . '.type'), $filename)) {
             $tmp = Config::get('tmpDir') . '/' . $filename;
             copy($url, $tmp);
