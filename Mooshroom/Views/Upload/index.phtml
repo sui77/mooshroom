@@ -31,79 +31,78 @@
                     <?php } ?>
                 </div>
 
-                <div class="card">
-                    <div class="header">
-                        Upload from Computer
-                    </div>
-                    <div class="content">
-                        <form action="/upload/upload/<?=$this->getParam('type')?>" class="js-upload form-horizontal form-label-left" method="post">
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="files[]">Upload from Computer</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div id="uploadinput">
-                                        <input data-target="/ajax/upload" type="file" name="files[]" multiple>
-                                    </div>
-                                    <div id="progress" class="progress" style="display:none">
-                                        <div class="progress-bar progress-bar-success"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+
 
                 <div class="card">
-                    <div class="header">
-                        Upload from Url
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#up1" data-toggle="tab">Upload</a></li>
+                            <li><a href="#up2" data-toggle="tab">Upload from URL</a></li>
+                            <?php if ($this->getParam('type') == 'binaries') { ?><li><a href="#up3" data-toggle="tab">Vanilla</a></li><?php } ?>
+                        </ul>
                     </div>
-                    <div class="content">
-                        <form action="/upload/uploadurl/<?=$this->getParam('type')?>" class="js-uploadurl form-horizontal form-label-left" method="post">
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Url</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="input-group">
-                                        <input type="text" name="url" autocomplete="false" class="form-control">
-                                        <span class="input-group-btn">
-                                                <input type="submit" class="btn btn-danger" value="Upload">
-                                          </span>
+
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="up1">
+
+                                <form action="/upload/upload/<?=$this->getParam('type')?>" class="js-upload form-horizontal form-label-left" method="post">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="files[]">File</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div id="uploadinput">
+                                                <input data-target="/ajax/upload" type="file" name="files[]" multiple>
+                                            </div>
+                                            <div id="progress" class="progress" style="display:none">
+                                                <div class="progress-bar progress-bar-success"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <div class="tab-pane fade" id="up2">
+
+                                <form class="js-upload form-horizontal form-label-left">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Url</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="input-group">
+                                            <input id="url-simple" class="form-control">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-simple">Upload</button>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                                </form>
 
-                <?php if ($this->getParam('type') == 'binaries') { ?>
-                <div class="card">
-                    <div class="header">
-                        Upload vanilla from mojang
-                    </div>
-                    <div class="content">
-                        <form action="/upload/uploadurl/<?=$this->getParam('type')?>" class="js-uploadurl form-horizontal form-label-left" method="post">
-                            <div class="form-group">
-                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Upload from Url</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="input-group">
-                                        <select name="url" class="form-control">
-                                            <?php foreach (\Mooshroom\Mojang::getDownloadUrls() as $k => $v) { ?>
-                                                <option value="<?=htmlspecialchars($v)?>">minecraft_server.<?=$k?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <span class="input-group-btn">
-                                            <input type="submit" class="btn btn-danger" value="Upload">
+                            </div>
+                            <div class="tab-pane fade" id="up3">
+
+                                <form class="js-upload form-horizontal form-label-left">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Minecraft vanilla version</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="input-group">
+                                            <select id="url-mojang" class="form-control">
+                                                <?php foreach (\Mooshroom\Mojang::getDownloadUrls() as $k => $v) { ?>
+                                                    <option value="<?=htmlspecialchars($v)?>">minecraft_server.<?=$k?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <span class="input-group-btn">
+                                            <button class="btn btn-default js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-mojang">Upload</button>
                                         </span>
+                                        </div>
                                     </div>
                                 </div>
+                                </form>
+
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
-                <?php } ?>
-
-
             </div>
-
-
         </div>
     </div>
 </div>
@@ -111,14 +110,34 @@
 
 
 
+
+
 <script>
     $(function () {
 
-        $('.js-uploadurl').submit(function(e) {
-            e.preventDefault();
-            $.post( $(this).attr('action'), $(this).serialize(), function(data) {
-                $.each(data.result, function (index, file) {
-                    $('#filelist').append( $('<tr><td>' + file + '</td><td></td></tr>') ); // text(file).appendTo('#files');
+        $('.js-uploadurl').click(function(e) {
+            self = this;
+            $(this).html( $('<i class="fa fa-spinner fa-spin "></i>'));
+            $(this).attr('disabled', true);
+            $.post( $(this).data('target'), {url: $( $(this).data('input') ).val() }, function(data) {
+
+                $(self).html( 'Upload' );
+                $(self).removeAttr('disabled');
+
+                if (typeof data.error != 'undefined') {
+                    $.notify({
+                        /*icon: 'ti-gift',*/
+                        message: data.error
+
+                    },{
+                        type: 'danger',
+                        timer: 4000
+                    });
+                    return;
+                }
+
+                $.each(data, function (index, file) {
+                    $('#filelist').append( $('<tr><td>' + file + '</td><td></td></tr>') );
                 });
 
             });

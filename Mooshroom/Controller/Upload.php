@@ -20,25 +20,31 @@ class Upload extends ControllerAbstract {
     }
 
     public function uploadurlAction() {
-
+        header('Content-type: text/json');
         $url = $_POST['url'];
         $tmp = explode('/', $url);
         $filename = $tmp[ count($tmp) - 1];
 
-        if (preg_match(Config::get('files.' . $this->getParam('type') . '.type'), $filename)) {
+        if (false && preg_match(Config::get('files.' . $this->getParam('type') . '.type'), $filename)) {
             $tmp = Config::get('tmpDir') . '/' . $filename;
             copy($url, $tmp);
+            
+
             $host = \Mooshroom\Model\Hosts::getInstance('localhost');
             $host->scpSend($tmp, Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $filename );
             echo json_encode(
                 array($filename)
+            );
+        } else {
+            echo json_encode(
+                array('error' => 'Invalid file')
             );
         }
         exit();
     }
 
     public function uploadAction() {
-
+        header('Content-type: text/json');
         $dir = Config::get('files.' . $this->getParam('type') . '.localDir');
         if (empty($dir)) {
             exit('invalid type');
