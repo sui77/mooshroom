@@ -1,7 +1,50 @@
-.js-uploadurl {
+.btngrp {
     width:150px;
     height:34px;
     font-size:12px !important;
 }
 
+
+
+.twitter-typeahead .tt-query, .twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+}
+
+.twitter-typeahead .tt-hint {
+    display: none;
+}
+.tt-menu {
+    background-clip: padding-box;
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+    cursor: pointer;
+    display: none;
+    float: left;
+    font-size: 14px;
+    left: 0;
+    list-style: outside none none;
+    margin: 2px 0 0;
+    min-width: 160px;
+    padding: 5px 0;
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+}
+.tt-suggestion {
+    clear: both;
+    color: #333333;
+    display: block;
+    font-weight: normal;
+    line-height: 1.42857;
+    padding: 3px 20px;
+    white-space: nowrap;
+}
+.tt-suggestion:hover, .tt-suggestion:focus {
+    background-color: #428bca;
+    color: #ffffff;
+    outline: 0 none;
+    text-decoration: none;
+}
 

@@ -7,6 +7,7 @@
 
                     <div class="content">
 
+                        <input class="js-plugins">
 
                         <?php
                             $plugins = $this->server->getPlugins();
@@ -25,6 +26,37 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    var substringMatcher = function(q, cb) {
+
+        var strs = <?=json_encode( array_keys($this->server->getPlugins()))?>;
+        var matches, substringRegex;
+        matches = [];
+        substrRegex = new RegExp(q, 'i');
+        $.each(strs, function(i, str) {
+            if (substrRegex.test(str)) {
+                matches.push({name: str});
+            }
+        });
+        cb(matches);
+    };
+
+    $('input.js-plugins').tagsinput({
+        tagClass: function(item) {
+            return "label label-primary label-success";
+        },
+        typeaheadjs: {
+            name: 'aclgroups',
+            displayKey: 'name',
+            valueKey: 'name',
+            source: substringMatcher //aclgroups.ttAdapter()
+        },
+
+    });
+</script>
+
 <?php /*
 <style>
     #searchresult div:nth-child(2n+1).sresult   {

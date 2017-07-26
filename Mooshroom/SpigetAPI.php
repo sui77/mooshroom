@@ -11,6 +11,8 @@ namespace Mooshroom;
 class SpigetAPI
 {
 
+    public static $lastFilename;
+
     /**
      * The useragent that we'll be using
      */
@@ -50,9 +52,27 @@ class SpigetAPI
     {
         $options = stream_context_create(["http" => ["user_agent" => SpigetAPI::user_agent]]);
 
-        $response = file_get_contents("https://api.spiget.org/v2/" . $method, false, $options);
+        //$response = file_get_contents("https://api.spiget.org/v2/" . $method, false, $options);
 
-        return $response;
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => "https://api.spiget.org/v2/" . $method,
+            CURLOPT_HEADER => 1,
+            CURLOPT_USERAGENT => SpigetAPI::user_agent,
+        ));
+
+        $response = curl_exec($curl);
+        $tmp = explode("\r\n\r\n", $response, 2);
+        $aHeader = explode("\r\n", $tmp[0]);
+        self::$lastFilename = '';
+        foreach ($aHeader as $l) {
+            if (preg_match('/filename=(.*)/si', $l, $match)) {
+                self::$lastFilename = trim($match[1]);
+            }
+        }
+
+        return $tmp[1];
     }
 
     /**

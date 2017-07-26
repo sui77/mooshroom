@@ -39,6 +39,7 @@
                             <li class="active"><a href="#up1" data-toggle="tab">Upload</a></li>
                             <li><a href="#up2" data-toggle="tab">Upload from URL</a></li>
                             <?php if ($this->getParam('type') == 'binaries') { ?><li><a href="#up3" data-toggle="tab">Vanilla</a></li><?php } ?>
+                            <?php if ($this->getParam('type') == 'plugins') { ?><li><a href="#up4" data-toggle="tab">Spiget API</a></li><?php } ?>
                         </ul>
                     </div>
 
@@ -63,14 +64,14 @@
                             </div>
                             <div class="tab-pane fade" id="up2">
 
-                                <form class="js-upload form-horizontal form-label-left">
+                                <form class="form-horizontal form-label-left">
                                 <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Url</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="input-group">
                                             <input id="url-simple" class="form-control">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-simple">Upload</button>
+                                                <button class="btn btn-default btngrp js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-simple">Upload</button>
                                             </span>
                                         </div>
                                     </div>
@@ -80,7 +81,7 @@
                             </div>
                             <div class="tab-pane fade" id="up3">
 
-                                <form class="js-upload form-horizontal form-label-left">
+                                <form class="form-horizontal form-label-left">
                                 <div class="form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Minecraft vanilla version</label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -91,12 +92,30 @@
                                                 <?php } ?>
                                             </select>
                                             <span class="input-group-btn">
-                                            <button class="btn btn-default js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-mojang">Upload</button>
+                                            <button class="btn btn-default btngrp js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-mojang">Upload</button>
                                         </span>
                                         </div>
                                     </div>
                                 </div>
                                 </form>
+
+                            </div>
+                            <div class="tab-pane fade" id="up4">
+
+                                <form class="form-horizontal form-label-left">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Search for a plugin</label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <div class="input-group">
+                                                <input id="q" class="form-control">
+                                                <span class="input-group-btn">
+                                            <button class="js-pluginsearch btn btn-default btngrp">Search</button>
+                                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="searchresult"></div>
 
                             </div>
                         </div>
@@ -114,6 +133,78 @@
 
 <script>
     $(function () {
+
+        $(document).on('click', '.js-spiget-download', function() {
+
+            $(this).html( $('<i class="fa fa-spinner fa-spin "></i>'));
+            $(this).attr('disabled', true);
+            self = this;
+
+            $.post( '/upload/spiget/plugin', {id: $(this).data('id') }, function(data) {
+
+                $(self).html( 'Upload' );
+                $(self).removeAttr('disabled');
+
+                if (typeof data.error != 'undefined') {
+                    $.notify({
+                        /*icon: 'ti-gift',*/
+                        message: data.error
+
+                    },{
+                        type: 'danger',
+                        timer: 4000
+                    });
+                    return;
+                }
+                $.each(data, function (index, file) {
+                    $('#filelist').append( $('<tr><td>' + file + '</td><td></td></tr>') );
+                });
+
+            });
+
+
+        });
+
+        var template  = '' +
+            '<div class="row sresult">' +
+            '  <div class="col-md-2">' +
+            '    <img width="80" height="80" src="data:image/png;base64,{icon}">' +
+            '  </div>' +
+            '  <div class="col-md-6">' +
+            '    <h4><a target="_blank" href="https://www.spigotmc.org/resources/.{id}/">{name}</a></h4>' +
+            '    {tag}' +
+            '  </div>' +
+            '  <div class="col-md-4" style="margin-top:20px;">' +
+            '    <button type="button" data-id="{id}" class="js-spiget-download btn btn-default btn-sm pull-right">download</button>' +
+            '  </div>' +
+            '</div>' +
+            '';
+        var noIcon = 'iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAMAAADVRocKAAAAb1BMVEUAAAAqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzUqLzWfQQVEAAAAJHRSTlMA8dIZFAV7ZtzWDGD74HLlzoBaTm9qwrof9LysiCQKmedTPJq/1DqVAAABn0lEQVRo3u3YXbNDMBAGYEcIQijqs/p59v//xmOMmSBHNZFemNnnrtPtvrp7I7EQQgghhGSk8P2CWN9CPA497n0nwoltGNmxY5l2ozZM2PRmmcTiABaCmJkbTiHaTyMKM4MioQ+CP/sQkv1P79nTjikh6TTC9vb9C/d8AiFJa6tXpwkIp7Nrqj29WqMrNRHBZsN5UDJbDH3MBsXUZx8GIPCOSLvvOAhB6KgNJ1us9r+ixbozlUHdQeD9alfUKQfhrhAQSauVyOuOFAKa8ScJrbdKa5qMj9MoBPzAoPusuoPBj3rA5fVJ8euiFTBG5Fuled9eL2BUZe8KswpAM0Bon2tlzxbAQABEbc7kGpa3EewMEMplBMtLEPQDhCp3xfduXgHsDZAjQmsUivZ7AmSlN7QvAUwHiIgsk9obDYAoArMBMgzAAAw4SkADGhqlFy8NkdKro4ZfxZdfRXbmKr++KwhCR/8Ass322M4jlMzUKS3ejDjF7t5j7PvhOOYO4jI/JEe4Sli7DKHsSNc5qxdSh7pSGyIKzs/EQgghhBCS/AGl5/EsY7rqBgAAAABJRU5ErkJggg==';
+
+
+
+        $('.js-pluginsearch').click(function(e) {
+            e.preventDefault();
+            $.post('/ajax/pluginsearch', {q: $('#q').val() }, function(data){
+                $('#searchresult').html('');
+                for (n in data) {
+                    var div = template;
+                    div = div.replace('{name}', data[n].name);
+                    if ( data[n].icon.data == '') {
+                        div = div.replace('{icon}', noIcon);
+                    } else {
+                        div = div.replace('{icon}', data[n].icon.data);
+                    }
+                    div = div.replace('{tag}', data[n].tag);
+                    div = div.replace('{id}', data[n].id);
+                    div = div.replace('{id}', data[n].id);
+                    $('#searchresult').append(div);
+                }
+                console.log(data);
+            });
+        });
+
+
 
         $('.js-uploadurl').click(function(e) {
             self = this;

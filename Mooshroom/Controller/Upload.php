@@ -6,9 +6,11 @@ use Mooshroom\Config;
 use Mooshroom\Model\Binaries;
 use Mooshroom\Model\User;
 use Mooshroom\Mojang;
+use Mooshroom\SpigetAPI;
 use Mooshroom\Ssh;
 
 class Upload extends ControllerAbstract {
+
 
     public function init() {
         parent::init();
@@ -17,6 +19,29 @@ class Upload extends ControllerAbstract {
     public function indexAction() {
         $this->files = \Mooshroom\Model\Binaries::getAll( $this->getParam('type') );
         $this->title = ucfirst( $this->getParam('type') );
+    }
+
+    public function spigetAction() {
+        header('Content-type: text/json');
+        $f = SpigetAPI::downloadResource($_POST['id']);
+        if (!empty(SpigetAPI::$lastFilename)) {
+
+            $filename = SpigetAPI::$lastFilename;
+
+            $tmp = Config::get('tmpDir') . '/' . $filename;
+            $fp = fopen( $tmp, 'w');
+            fputs($fp, $f);
+            fclose($fp);
+
+            $host = \Mooshroom\Model\Hosts::getInstance('localhost');
+            $host->scpSend($tmp, Config::get('files.plugins.localDir') . '/' . $filename );
+
+
+        }
+
+
+        echo json_encode( array(SpigetAPI::$lastFilename) );
+        exit();
     }
 
     public function uploadurlAction() {
@@ -28,7 +53,7 @@ class Upload extends ControllerAbstract {
         if (false && preg_match(Config::get('files.' . $this->getParam('type') . '.type'), $filename)) {
             $tmp = Config::get('tmpDir') . '/' . $filename;
             copy($url, $tmp);
-            
+
 
             $host = \Mooshroom\Model\Hosts::getInstance('localhost');
             $host->scpSend($tmp, Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $filename );
