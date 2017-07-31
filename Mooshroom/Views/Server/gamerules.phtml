@@ -1,0 +1,88 @@
+<div class="col-md-12">
+
+    <?php include '_control.phtml'; ?>
+
+    <div class="card">
+        <?php include '_tabs.phtml'; ?>
+
+        <div class="content">
+            <form class="form-horizontal form-label-left" method="post">
+
+
+
+                <?php foreach ($this->server->getGameRules()->getData() as $k => $v) { ?>
+                    <?php if ($v['value'] != 'not available') { ?>
+
+                        <div class="form-group">
+                            <label class="col-md-4 col-sm-4 col-xs-12" style="text-align:right" for="name"><?=$k?> <i data-title="<?=$k?>" data-content="#help-<?=$k?>" class="ti-help-alt js-help"></i></label>
+                            <div class="helptext" id="help-<?=$k?>">
+                                <div class="helptext-inner"><p>
+                                        <?=($v['en'])?>
+                                    </p></div>
+                            </div>
+
+
+                            <div class="col-md-5 col-sm-5 col-xs-12">
+
+                                <?php if ($v['type'] == 'boolean') { ?>
+
+                                    <input class="js-gamerule switch-icon switch" <?=($v['value'] == 'true') ? 'checked' : '' ?> type="checkbox" data-name="<?=htmlspecialchars($k)?>" value="true" data-url="/server/<?=$this->server->getName()?>/gamerules">
+
+                                <?php } else if (preg_match('/^integer/', $v['type'])) { ?>
+                                    <input type="text" name="sp[<?=htmlspecialchars($k)?>]" value="<?=htmlspecialchars($v['value'])?>" class="form-control col-md-7 col-xs-12">
+                                <?php } else if ($v['type'] == 'string') { ?>
+                                    <input type="text" name="sp[<?=htmlspecialchars($k)?>]" value="<?=htmlspecialchars($v['value'])?>" class="form-control col-md-7 col-xs-12">
+                                <?php } else { ?>
+                                    unknown type
+                                <?php } ?>
+
+                            </div>
+                        </div>
+
+
+
+                    <?php } ?>
+                <?php } ?>
+
+
+            </form>
+
+
+        </div>
+        <div class="card-content text-center">
+
+        </div>
+</div>
+
+
+<script>
+    $(function() {
+
+
+
+        $('.switch').bootstrapSwitch({
+            onColor: 'primary',
+            onText: 'true',
+            offText: 'false',
+            onSwitchChange: function() {
+                $.post($(this).data('url'), {
+                    action: 'change',
+                    key: $(this).data('name'),
+                    value: $(this).prop('checked')
+                });
+            }
+
+        });
+
+
+
+
+    });
+</script>
+<style>
+
+    .tooltip-inner {
+        text-align:left;
+        width:400px;
+    }
+</style>

@@ -23,8 +23,8 @@ class SupervisorRpcClient extends XmlRpcAbstract {
         }
     }
 
-    public function getProcessInfo($name) {
-        if (!isset($this->_allProcessInfo)) {
+    public function getProcessInfo($name, $reload = false) {
+        if ($reload || !isset($this->_allProcessInfo)) {
             $tmp = $this->getAllProcessInfo();
             foreach ($tmp as $l) {
                 $this->_allProcessInfo[$l['name']] = $l;

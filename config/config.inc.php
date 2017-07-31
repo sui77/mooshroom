@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'baseUrl'    => '/',
     'baseDir'    => dirname(__FILE__) . '/../',
     'tmpDir'     => '/var/lib/mooshroom/tmp',
     'sshkey' => array(

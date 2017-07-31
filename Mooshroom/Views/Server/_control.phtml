@@ -1,0 +1,66 @@
+<div class="card">
+    <div class="card-content">
+
+
+        <?php if (!$this->server->get('eula')) {?>
+            <div class="alert alert-warning">
+                <div class="row">
+                    <div class="col-xs-10">
+                        You need to agree to the EULA in order to run the server. <br>
+                        <a href="<?=$this->server->getEulaUrl()?>"><?=$this->server->getEulaUrl()?></a>
+                    </div>
+                    <div class="col-xs-2">
+                        <a href="/server/<?=$this->server->getName()?>/accepteula"><button class="btn btn-success pull-right">Agree</button></a>
+                    </div>
+                </div>
+            </div>
+        <?php } else { ?>
+            <div class="row" style="margin-top:4px;">
+                <div class="col-xs-6">
+                    <?=$this->server->getStatusText()?><br>
+                    <span id="restartneeded" <?= $this->server->get('restartneeded') ? '' : 'style="display:none"' ?>>Restart needed</span>
+                </div>
+                <div class="col-xs-6">
+                    <button data-action="stop" class="js-server-control js-server-status js-server-online btn btn-danger pull-right">Stop</button>
+                    <button data-action="restart" class="js-server-control js-server-status js-server-online btn btn-warning pull-right">Restart</button>
+                    <button data-action="start" class="js-server-control js-server-status js-server-offline btn btn-success pull-right">Start</button>
+                    <button data-action="start" class="js-server-status js-server-status-starting btn btn-info pull-right"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Starting</button>
+                    <button data-action="start" class="js-server-status js-server-status-stopping btn btn-info pull-right"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Stopping</button>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        myIo.emit('join', '<?=$this->server->getName()?>');
+
+        $('.js-server-control').click(function() {
+            $('.js-server-status').hide();
+            if ($(this).data('action') == 'start') {
+                $('.js-server-status-starting').show();
+            } else {
+                $('.js-server-status-stopping').show();
+            }
+            $.post('/server/<?=$this->server->getName()?>/' + $(this).data('action'), {
+            }, function (data) {
+
+
+            });
+
+        });
+
+        var status = '<?=$this->server->getStatus(0)?>';
+        if (status == 'RUNNING') {
+            $('.js-server-online').show();
+        } else if (status == 'STOPPED') {
+            $('.js-server-offline').show();
+        } else if (status == 'STARTING') {
+            $('.js-server-status-starting').show();
+        } else if (status == 'STOPPING') {
+            $('.js-server-status-stopping').show();
+        }
+
+    });
+</script>

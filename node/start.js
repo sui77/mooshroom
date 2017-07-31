@@ -24,6 +24,14 @@ io.on('connection', function(socket) {
 } );
 
 
+var gameRules = [];
+var f = require('fs').readFileSync( '../config/gamerules.json');
+   var g = JSON.parse(f);
+   for (n in g) {
+       gameRules.push( n );
+   }
+   console.log(gameRules);
+
 
 var logObservers = [];
 
@@ -32,7 +40,7 @@ redis.smembers('mcadmin:hosts', function(err, r) {
     //r = ["127.0.0.1"];
     for (n in r) {
         logObservers[r[n]] = require('./module/logObserverClient.js');
-        logObservers[r[n]].init('localhost', 1337, r[n], myIo);
+        logObservers[r[n]].init('localhost', 1337, r[n], myIo, gameRules);
     }
    console.log(r);
 });

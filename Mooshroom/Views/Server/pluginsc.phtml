@@ -1,0 +1,74 @@
+<?php
+
+/** @var \Mooshroom\Model\Server $s */
+$s = $this->server;
+
+
+function rprintFiles(&$files, $d = 0, $fullpath = './', $baseUrl) {
+    if (!is_array($files)) {
+        return;
+    }
+    foreach ($files as $name => $file) {
+        if ($name != '###files') {
+            echo '<div><a data-toggle="collapse" href="#folder-' . $name . '"><i class="ti-folder"></i> ' . $name . '</a></div>';
+
+            echo '<div class="collapse in" id="folder-' . $name . '" style="margin-left:' . $d . 'px">';
+            rprintFiles($file, $d + 0, $fullpath . $name . '/', $baseUrl);
+            echo '</div>';
+
+        }
+
+    }
+    if (isset($files['###files'])) {
+        foreach ($files['###files'] as $ff) {
+            echo '<i class="ti-file"></i> <a href="' . $baseUrl . '?f=' . urlencode($fullpath . $ff) . '">' . $ff . '</a><br>';
+        }
+
+    }
+}
+?>
+
+<div class="col-md-12">
+    <?php include '_control.phtml'; ?>
+    <div class="card">
+
+        <?php include '_tabs.phtml'; ?>
+    </div>
+
+
+    <div class="row">
+
+
+
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-content">
+                    <?php
+                        $files = $s->getConfigfiles()->getFiles();
+                        rprintFiles($files['root'], 25, './', '/server/' . $s->getName() . '/pluginsc');
+                    ?>
+                </div>
+            </div>
+        </div>
+
+        <?php if (isset($this->fileToEdit)) { ?>
+        <div class="col-sm-9">
+            <form method="post">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title"><?=htmlspecialchars($_GET['f'])?></h4>
+                    </div>
+                    <div class="card-content">
+                        <textarea name="content" class="form-control texteditor" spellcheck="false" rows="50"><?=htmlspecialchars($this->fileToEdit)?></textarea>
+
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <input type="submit" class="btn btn-success btn-center" value="Save changes">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <?php } ?>
+    </div>
+</div>

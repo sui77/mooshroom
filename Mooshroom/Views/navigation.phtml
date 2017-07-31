@@ -1,45 +1,39 @@
-<?php
-    $nav = array(
-        array(
-            'url'    => '/server',
-            'title'  => 'Minecraft Server',
-            'active' => false,
-            'icon'   => 'ti-server',
-        ),
-        array(
-            'url'   => '/hosts',
-            'title' => 'Hosts',
-            'active' => false,
-            'icon'   => 'ti-harddrives',
-        ),
-        array(
-            'url'   => '/upload/index/binaries',
-            'title' => 'Binaries',
-            'active' => false,
-            'icon'   => 'ti-folder',
-        ),
-        array(
-            'url'   => '/upload/index/plugins',
-            'title' => 'Plugins',
-            'active' => false,
-            'icon'   => 'ti-plug',
-        ),
-        array(
-            'url'   => '/upload/index/schematics',
-            'title' => 'Schematics',
-            'active' => false,
-            'icon'   => 'ti-gallery',
-        ),
-    );
-?>
+
 <ul class="nav">
-    <?php foreach ($nav as $k => $v) { ?>
-    <li class="">
-        <a href="<?=$v['url']?>">
-            <i class="<?=$v['icon']?>"></i>
-            <p><?=$v['title']?></p>
-        </a>
-    </li>
+    <?php foreach ($this->_getNav() as $k => $v) { ?>
+
+        <?php if (isset($v['sub'])) { ?>
+            <li class="<?=$v['active']?'active':''?>">
+            <a data-toggle="collapse" href="<?=$v['url']?>">
+                <i class="<?=$v['icon']?>"></i>
+                <p><?=$v['title']?>
+                    <b class="caret"></b>
+                </p>
+            </a>
+            <div class="collapse <?=$v['active']?'in':''?>" id="<?=substr($v['url'], 1)?>">
+                <ul class="nav">
+                    <?php foreach ($v['sub'] as $k2 => $v2) { ?>
+                        <li class="<?=$v2['active']?'active':''?>">
+                            <a href="<?=$v2['url']?>">
+                                <span class="sidebar-mini">&nbsp;</span>
+                                <span class="sidebar-normal"><?=$v2['title']?></span>
+
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+            </li>
+        <?php } else { ?>
+            <li class="<?=$v['active']?'active':''?>">
+                <a href="<?=$v['url']?>">
+                    <i class="<?=$v['icon']?>"></i>
+                    <p><?=$v['title']?></p>
+                </a>
+            </li>
+        <?php } ?>
+
+
     <?php } ?>
 </ul>
 

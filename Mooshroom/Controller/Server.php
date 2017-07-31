@@ -8,7 +8,7 @@ use Mooshroom\Model\Server as MCServer;
 
 class Server extends ControllerAbstract {
 
-    /** @var  MCServer */
+    /** @var  \Mooshroom\Model\Server */
     public $server;
 
     public function init() {
@@ -23,24 +23,23 @@ class Server extends ControllerAbstract {
         if ($this->server) {
             $this->title = $this->server->getName();
         }
+
+        $this->_setActiveNav('mcserver');
     }
 
 
     public function startAction() {
         $this->server->control('start');
-        header('Location: ' . $_SESSION['lastUri']);
         exit();
     }
 
     public function stopAction() {
         $this->server->control('stop');
-        header('Location: ' . $_SESSION['lastUri']);
         exit();
     }
 
     public function restartAction() {
         $this->server->control('restart');
-        header('Location: ' . $_SESSION['lastUri']);
         exit();
     }
 
@@ -68,25 +67,27 @@ class Server extends ControllerAbstract {
         if (isset($_POST['sp'])) {
             $this->server->set('restartneeded', 1);
             $this->server->getServerProperties()->set( $_POST['sp'] );
-
-            if ($_POST['submit'] == 'Save and Restart') {
-                $this->server->control('restart');
-            }
-
             header('Location: /server/' . $this->server->getName() . '/serverproperties');
+        }
+    }
+
+    public function gamerulesAction() {
+        if (isset($_POST['action'])) {
+            $this->server->getHost()->getSupervisor()->sendProcessStdin( 'moo_'.$this->server->getName(), 'gamerule ' . $_POST['key'] . ' ' . $_POST['value'] );
+            echo "X";
+            echo '/gamerule ' . $_POST['key'] . ' ' . $_POST['value'];
+            exit();
         }
     }
 
     public function whitelistAction() {
         if (isset($_POST['username'])) {
             $this->server->addWhitelist($_POST['username']);
-            sleep(1);
-            header('Location: /server/' . $this->server->getName() . '/whitelist');
+            exit();
         }
         if (isset($_GET['username'])) {
             $this->server->removeWhitelist($_GET['username']);
-            sleep(1);
-            header('Location: /server/' . $this->server->getName() . '/whitelist');
+            exit();
         }
     }
 
@@ -109,6 +110,19 @@ class Server extends ControllerAbstract {
     }
 
     public function pluginsAction() {
+    }
+
+    public function pluginscAction() {
+        $cf = $this->server->getConfigfiles();
+
+        if (isset($_POST['content'])) {
+            $cf->saveFile($_GET['f'], $_POST['content']);
+        }
+
+        if (isset($_GET['f'])) {
+            $this->fileToEdit = $cf->getFile( $_GET['f'] );
+        }
+
     }
 
     public function switchpluginAction() {

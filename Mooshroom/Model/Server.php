@@ -3,7 +3,10 @@
 namespace Mooshroom\Model;
 
 use Mooshroom\Config;
+use Mooshroom\Configfiles;
 use Mooshroom\JobQueue;
+use Mooshroom\MCServerStatus\Minecraft\Stats;
+use Mooshroom\Minecraft\GameRules;
 use Mooshroom\Minecraft\ServerProperties;
 use Mooshroom\Ssh;
 use Mooshroom\SupervisorRpcClient;
@@ -33,13 +36,60 @@ class Server extends KeyValueModelAbstract {
         return $this->getHost()->get('home') . '/moo_' . $this->getName();
     }
 
-    public function getStatus($key = 'statename') {
-        $status = $this->getHost()->getSupervisor()->getProcessInfo('moo_' . $this->getName());
-        return $status[$key];
+    public function getStatus($refresh = true) {
+        if ($refresh) {
+            $status = $this->getHost()->getSupervisor()->getProcessInfo('moo_' . $this->getName(), $refresh);
+
+            if (in_array($status['statename'], array('STOPPED', 'BACKOFF', 'EXITED', 'FATAL'))) {
+                $this->set('status', 'STOPPED');
+            } else  if (in_array($status['statename'], array('RUNNING')) && $this->get('status') != 'STARTING') {
+                    $this->set('status', 'RUNNING');
+            }
+        }
+
+        return $this->get('status');
     }
+
 
     public function isRunning() {
         return $this->getStatus() == 'RUNNING';
+    }
+
+    public function getStatusText() {
+        return 'blah';
+    }
+
+    public function getStats() {
+
+
+            $socket = @stream_socket_client(sprintf('tcp://%s:%u', $this->getHost()->get('hostname'), $this->getServerProperties()->get('server-port')), $errno, $errstr, 1);
+
+            if (!$socket) {
+                return (object) array('is_online' => false) ;
+            }
+
+            fwrite($socket, "\xfe\x01");
+            $data = fread($socket, 1024);
+            fclose($socket);
+
+            $stats = new \stdClass;
+
+            // Is this a disconnect with the ping?
+            if ($data == false AND substr($data, 0, 1) != "\xFF") {
+                $stats->is_online = false;
+                return $stats;
+            }
+
+            $data = substr($data, 9);
+            $data = mb_convert_encoding($data, 'auto', 'UCS-2');
+            $data = explode("\x00", $data);
+
+            $stats->is_online = true;
+            list($stats->protocol_version, $stats->game_version, $stats->motd, $stats->online_players, $stats->max_players) = $data;
+
+            return $stats;
+
+
     }
 
     public function getEulaUrl() {
@@ -59,12 +109,12 @@ class Server extends KeyValueModelAbstract {
 
     public function getPlugins() {
         $plugins = array();
-        $dir = opendir( Config::get('files.plugins.localDir'));
+        /*$dir = opendir( Config::get('files.plugins.localDir'));
         while ($f = readdir($dir)) {
             if (preg_match('/\.jar$/', $f)) {
                 $plugins[ $f ] = false;
             }
-        }
+        }*/
         $remotePlugins = $this->getHost()->ls( $this->getGameDirectory() . '/plugins');
         foreach ($remotePlugins as $name) {
             if (preg_match('/\.jar$/', $name)) {
@@ -74,6 +124,10 @@ class Server extends KeyValueModelAbstract {
 
         ksort($plugins);
         return $plugins;
+    }
+
+    public function getConfigfiles() {
+        return new Configfiles($this->getHost(), $this->getGameDirectory() );
     }
 
     public function getLog() {
@@ -116,7 +170,9 @@ class Server extends KeyValueModelAbstract {
     }
 
 
-
+    /**
+     * @return Hosts
+     */
     public function getHost() {
         $h = Hosts::getInstance( $this->get('host') );
         return $h;
@@ -128,23 +184,56 @@ class Server extends KeyValueModelAbstract {
         $this->set('restartneeded', 0);
 
         if ($action == 'stop' || $action == 'restart') {
-            //try { $this->getHost()->getSupervisor()->stopProcess('mc_' . $this->getName()); } catch (\Exception $e) { }
+            echo "stop\n";
+            $this->set('status', 'STOPPING');
             try { $this->getHost()->getSupervisor()->sendProcessStdin('moo_' . $this->getName(), 'stop'); } catch (\Exception $e) { print_r($e); exit(); }
-
-            sleep(2);
+            for ($i=0; $i<10; $i++) {
+                echo time() . " " . $i . "\n";
+                $s = $this->getStatus(1);
+                echo $s;
+                if ($s == 'STOPPED') {
+                    break;
+                }
+                sleep(1);
+            }
         }
 
         if ($action == 'restart') {
-            try { $this->getHost()->getSupervisor()->removeProcessGroup('moo_' . $this->getName()); } catch (\Exception $e) { }
-            try { $this->getHost()->getSupervisor()->addProcessGroup('moo_' . $this->getName()); } catch (\Exception $e) { }
+            echo "restart\n";
+            $this->set('status', 'STARTING');
 
-        } else if ($action == 'start') {
+            try { echo $this->getHost()->getSupervisor()->removeProcessGroup('moo_' . $this->getName()); } catch (\Exception $e) { print_r($e); }
+            try { echo $this->getHost()->getSupervisor()->addProcessGroup('moo_' . $this->getName()); } catch (\Exception $e) { print_r($e);  }
+            echo "restart end\n";
+
+        } else if ($action == 'start' || $action == 'restart') {
+            echo "start\n";
+
+            $this->set('status', 'STARTING');
             try { $this->getHost()->getSupervisor()->startProcess('moo_' . $this->getName()); } catch (\Exception $e) { }
         }
     }
 
     public function getServerProperties() {
         return new ServerProperties($this->getGameDirectory() . '/server.properties', $this->getHost()->sshConnect() );
+    }
+
+    public function getGamerules() {
+        if (true || $this->get('gamerules') < time() + 60*60) {
+            $xG = new GameRules();
+            foreach ($xG->getData() as $k => $v) {
+                $this->getHost()->getSupervisor()->sendProcessStdin('moo_' . $this->getName(), 'gamerule ' . $k);
+            }
+            $this->set('gamerules', time());
+            $this->reload();
+        }
+
+        foreach ($this->_data as $k => $v) {
+            if (preg_match('/^gamerule:(.*)$/', $k, $m)) {
+                $gamerule[$m[1]] = $v;
+            }
+        }
+        return new GameRules( $gamerule );
     }
 
     public function getOps() {

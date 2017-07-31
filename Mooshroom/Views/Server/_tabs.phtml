@@ -1,48 +1,16 @@
-
-<div class="card">
-    <div class="content">
-
-
-    <?php if (!$this->server->get('eula')) {?>
-        <div class="alert alert-warning">
-            <div class="row">
-                <div class="col-xs-10">
-                    You need to agree to the EULA in order to run the server. <br>
-                    <a href="<?=$this->server->getEulaUrl()?>"><?=$this->server->getEulaUrl()?></a>
-                </div>
-                <div class="col-xs-1">
-                    <a href="/server/<?=$this->server->getName()?>/accepteula"><button class="btn btn-success">Agree</button></a>
-                </div>
-            </div>
-        </div>
-    <?php } else { ?>
-        <div class="row" style="margin-top:4px;">
-            <div class="col-xs-6">
-                <?=$this->server->getStatus('description')?><br>
-                <span id="restartneeded" <?= $this->server->get('restartneeded') ? '' : 'style="display:none"' ?>>Restart needed</span>
-            </div>
-            <div class="col-xs-6">
-                <?php if ( in_array($this->server->getStatus(), array('RUNNING', 'STARTING', 'STOPPING'))) { ?>
-                    <a href="/server/<?=$this->server->getName()?>/stop"><button class="btn btn-danger pull-right">Stop</button></a>
-                    <a href="/server/<?=$this->server->getName()?>/restart"><button class="btn btn-warning pull-right">Restart</button></a>
-                <?php } else { ?>
-                    <a href="/server/<?=$this->server->getName()?>/start"><button class="btn btn-success pull-right">Start</button></a>
-                <?php } ?>
-            </div>
-        </div>
-    <?php } ?>
+<div class="card-content" >
+<div class="nav-tabs-navigation" style="margin-bottom:10px">
+    <div class="nav-tabs-wrapper">
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+            <li class="<?=$this->_params['action']=='general'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/general">General</a></li>
+            <li class="<?=$this->_params['action']=='serverproperties'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/serverproperties">server.properties</a></li>
+            <li class="<?=$this->_params['action']=='gamerules'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/gamerules">Gamerules</a></li>
+            <li class="<?=$this->_params['action']=='pluginsc'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/pluginsc">Config Files</a></li>
+            <li class="<?=$this->_params['action']=='plugins'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/plugins">Plugins</a></li>
+            <li class="<?=$this->_params['action']=='whitelist'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/whitelist">Whitelist</a></li>
+            <li class="<?=$this->_params['action']=='ops'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/ops">Ops</a></li>
+            <li class="<?=$this->_params['action']=='console'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/console">Console</a></li>
+        </ul>
     </div>
 </div>
-
-<div class="" role="tabpanel">
-    <ul class="nav nav-tabs bar_tabs" role="tablist" style="margin-bottom:0;border-bottom:0;">
-        <li role="presentation" class="<?=$this->_params['action']=='general'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/general">General</a></li>
-        <li role="presentation" class="<?=$this->_params['action']=='serverproperties'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/serverproperties">server.properties</a></li>
-        <li role="presentation" class="<?=$this->_params['action']=='plugins'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/plugins">Plugins</a></li>
-        <?php if ($this->server->getServerProperties()->get('white-list')) { ?>
-            <li role="presentation" class="<?=$this->_params['action']=='whitelist'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/whitelist">Whitelist</a></li>
-        <?php } ?>
-        <li role="presentation" class="<?=$this->_params['action']=='ops'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/ops">Ops</a></li>
-        <li role="presentation" class="<?=$this->_params['action']=='console'?'active':''?>"><a href="/server/<?=$this->server->getName()?>/console">Console</a></li>
-    </ul>
 </div>

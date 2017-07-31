@@ -13,15 +13,16 @@ class Router {
         'action' => 'error404',
     );
 
-    public function __construct($routesConfig) {
-        $this->_routesConfig = $routesConfig;
+    public function __construct() {
+        $this->_routesConfig = include Config::get('baseDir') . '/config/routes.inc.php';
     }
 
 
     public function route($uri) {
         $tmp = explode('?', $uri);
 
-        foreach ($this->_routesConfig as $regex => $route) {
+        foreach ($this->_routesConfig as $name => $route) {
+            $regex = $route['regex'];
             if (preg_match( '/' . $regex . '/', $tmp[0], $m)) {
                 $this->_params['controller'] = $route['controller'];
                 if (isset($route['action'])) {
@@ -34,6 +35,9 @@ class Router {
                     if (count($m) > 0) {
                         $this->_params[$param] = urldecode(array_shift($m));
                     }
+                }
+                if (isset($route['activeNav'])) {
+                    $this->_params['activeNav'] = $route['activeNav'];
                 }
                 return $this;
             }

@@ -787,6 +787,125 @@ $p = '<table class="wikitable" data-description="Server properties" style="max-w
 </tr>
 </tbody></table>';
 
+
+$p = '<table class="wikitable">
+<tbody><tr>
+<td>announceAdvancements</td>
+<td>Ausgabe von <a href="/Fortschritte" title="Fortschritte">Fortschritten</a> in der <a href="/Chat" title="Chat">Chat</a>-Leiste ein/aus. Standard = <i>true</i>. Bei <i>false</i> werden errungene Fortschritte nicht im Chat für alle Spieler sichtbar angekündigt.</td>
+</tr>
+<tr>
+<td style="width:100px">commandBlockOutput</td>
+<td><a href="/Befehlsblock" title="Befehlsblock">Befehlsblock</a>-Ausgabe ein/aus. Standard = <i>true</i>. Bei <i>false</i> werden die Ergebnismeldungen von aktivierten Befehlsblöcken nicht mehr in der Chat-Konsole der Spieler angezeigt und nicht mehr als "[CHAT]" in die Protokolldateien von <a href="/Client-Server-Konzept" title="Client-Server-Konzept">Client und Server</a> geschrieben. Ausnahme: Von Befehlsblöcken ausgeführte Chat-Befehle (z.B. /say) werden weiterhin mit Anzeige und Protokollierung ausgeführt. Beispiel: in der Einstellung <i>true</i> gibt der im Befehlsblock ausgeführte <a href="/Befehl" title="Befehl">Befehl</a> <code><a href="/Befehl/time" title="Befehl/time">/time</a> set day</code> im Chat die Ergebnismeldung "<i>[@: Zeit auf 1000 gesetzt]</i>" aus und schreibt ins Protokoll "[CHAT] [@: Zeit auf 1000 gesetzt]", bei <i>false</i> nicht. Siehe auch <i>logAdminCommands</i> und <i>sendCommandFeedback</i>.</td>
+</tr>
+<tr>
+<td>disableElytraMovementCheck</td>
+<td>Beim Gleiten mit den <a href="/Elytren" title="Elytren">Elytren</a> kann man durch bestimmte Flugbewegungen plötzliche Bewegungsänderungen erzeugen, die die Cheating-Prüfung des <a href="/Client-Server-Konzept" title="Client-Server-Konzept">Servers</a> nicht von echtem Cheating (Fly-Hack) unterscheiden kann, sodass die Warnung erzeugt wird: <code>[Server] Server thread/WARN: &lt;Spielername&gt; moved too quickly!</code> (siehe Fehler <span class="bug" data-id="MC-90062"><a href="https://bugs.mojang.com/browse/MC-90062" class="extiw" title="mcbug:90062">MC-90062</a></span>). Server-Plugins, die auf diese Warnung reagieren, würden den Spieler dann automatisch vom Server werfen, obwohl er nur mit den Elytren geflogen ist. Um dies zu unterbinden, kann die Cheating-Prüfung für die Elytren ausgeschaltet werden.</td>
+</tr>
+<tr>
+<td>doDaylightCycle</td>
+<td><a href="/Tag-Nacht-Rhythmus" title="Tag-Nacht-Rhythmus">Tag-Nacht-Rhythmus</a> ein/aus. Standard = <i>true</i>. Bei <i>false</i> stoppt der Rhythmus sofort, bei <i>true</i> läuft er weiter. Das beeinflusst nur das Wandern von Sonne und Mond. Die Game <a href="/Tick" title="Tick">Ticks</a> laufen unverändert weiter.</td>
+</tr>
+<tr>
+<td>doEntityDrops</td>
+<td>Droppen von Gegenständen beim Zerstören von leblosen <a href="/Objekt" title="Objekt">Objekten</a> ein/aus. Standard = <i>true</i>. Bei <i>false</i> droppen leblose Objekte (Loren, Boote, Rahmen, Bilder, fallender Sand oder Kies) keine Gegenstände mehr. <a href="/Werfer" title="Werfer">Werfer</a> oder <a href="/Spender" title="Spender">Spender</a> funktionieren aber weiterhin.</td>
+</tr>
+<tr>
+<td>doFireTick</td>
+<td>Ausbreitung von <a href="/Feuer" title="Feuer">Feuer</a> ein/aus. Standard = <i>true</i>. Bei <i>false</i> brennt ein Feuer ewig und breitet sich nicht weiter aus.</td>
+</tr>
+<tr>
+<td>doLimitedCrafting</td>
+<td><a href="/Crafting" title="Crafting">Crafting</a> ein/aus. Standard = <i>false</i>. Bei <i>true</i> kann man Rezepte nur dann craften, wenn es die <a href="/Fortschritte" title="Fortschritte">Fortschritte</a> ermöglichen.</td>
+</tr>
+<tr>
+<td>doMobLoot</td>
+<td>Droppen von Gegenständen durch <a href="/Kreatur" title="Kreatur">Kreaturen</a> ein/aus. Standard = <i>true</i>. Bei <i>false</i> droppen weder Monster noch Tiere Gegenstände. Welche Gegenstände das sind, kann der <a href="/Drop#.C3.9Cbersicht_der_Drops" title="Drop">Drop-Liste</a> entnommen werden. Erfahrungskugeln werden dann auch nicht mehr gedroppt.</td>
+</tr>
+<tr>
+<td>doMobSpawning</td>
+<td><a href="/Spawnen" title="Spawnen" class="mw-redirect">Spawnen</a> von Kreaturen ein/aus. Standard = <i>true</i>. Bei <i>false</i> spawnen Kreaturen nicht mehr natürlich. Bereits vorhandene Kreaturen bleiben beim Umschalten der Regel erhalten, sie verschwinden nicht. Mit Spawn-Eiern können Kreaturen auch bei ausgeschalteter Regel weiterhin erzeugt werden. Auch <a href="/Monsterspawner" title="Monsterspawner">Monsterspawner</a> in Verliesen funktionieren weiterhin. Damit Monster grundsätzlich erscheinen, darf der <a href="/Schwierigkeitsgrad" title="Schwierigkeitsgrad">Schwierigkeitsgrad</a> nicht "friedlich" sein. Das Nicht-Spawnen von Tieren kann man testen, indem man mit dem <a href="/Befehl" title="Befehl">Befehl</a> <code><a href="/Befehl/kill" title="Befehl/kill">/kill</a> @e[type=!player]</code> alle <a href="/Kreatur" title="Kreatur">Kreaturen</a> tötet und prüft, ob danach neue Tiere spawnen.</td>
+</tr>
+<tr>
+<td>doTileDrops</td>
+<td>Droppen von Gegenständen beim Blockabbau ein/aus. Standard = <i>true</i>. Bei <i>false</i> droppen Blöcke - wie im Kreativmodus - beim Abbau keine Gegenstände mehr. Weder Erz, noch Holz, noch Weizen etc. Nur Erfahrungskugeln werden z.B. beim Abbau von Kohle gedroppt.</td>
+</tr>
+<tr>
+<td>doWeatherCycle</td>
+<td><a href="/Wetter" title="Wetter">Wetter</a> ein/aus. Standard = <i>true</i>. Bei <i>false</i> stoppt der Rhythmus sofort, bei <i>true</i> läuft er weiter.</td>
+</tr>
+<tr>
+<td>gameLoopFunction</td>
+<td>Standard = <code>-</code>. Legt eine Funktion fest, die in jedem <a href="/Tick" title="Tick">Tick</a> einmal aufgerufen wird. Siehe <a href="/Befehl" title="Befehl">Befehl</a> <code><a href="/Befehl/function" title="Befehl/function">/function</a></code></td>
+</tr>
+<tr>
+<td>keepInventory</td>
+<td>Das eigene <a href="/Inventar" title="Inventar">Inventar</a> bleibt nach dem Tod erhalten ein/aus. Standard = <i>false</i>. Bei <i>true</i> bleibt das Inventar komplett erhalten - auch wenn man in Lava fällt.</td>
+</tr>
+<tr>
+<td>logAdminCommands</td>
+<td>Protokollieren von Befehl-Ergebnismeldungen ein/aus. Standard = <i>true</i>. Wird die Regel auf <i>false</i> gesetzt, werden die Ergebnismeldungen von Befehlen nicht mehr in die Protokolldateien von <a href="/Client-Server-Konzept" title="Client-Server-Konzept">Client und Server</a> geschrieben (Client siehe <i><a href="/.minecraft" title=".minecraft">.minecraft</a>/logs</i>, Server siehe Unterordner <i>logs</i> im Serverordner). Chat-Ausgaben ("[CHAT]") und Chat-Befehle werden weiterhin ausgegeben. Beispiel: Der Spieler oyo123 aktiviert einen Befehlsblock mit dem Befehl <code>/time set night</code> und gibt im Chat zwei Befehle ein: <code>/time set day</code> und <code>/say huhu</code>. Bei der Einstellung <i>true</i> steht in der Protokolldatei:
+<pre> [11:26:30] [Server thread/INFO]: [@: Zeit auf 13000 gesetzt]             &lt;=== Ergebnismeldung
+ [11:26:30] [Client thread/INFO]: [CHAT] Zeit auf 13000 gesetzt
+ [11:26:36] [Server thread/INFO]: [oyo123: Zeit auf 1000 gesetzt]         &lt;=== Ergebnismeldung
+ [11:26:36] [Client thread/INFO]: [CHAT] Zeit auf 1000 gesetzt
+ [11:26:40] [Server thread/INFO]: [oyo123] huhu                           &lt;=== Chat
+ [11:26:40] [Client thread/INFO]: [CHAT] [oyo123] huhu
+</pre>
+<p>Bei der Einstellung <i>false</i> steht in der Protokolldatei:</p>
+<pre> [11:26:30] [Client thread/INFO]: [CHAT] Zeit auf 13000 gesetzt
+ [11:26:36] [Client thread/INFO]: [CHAT] Zeit auf 1000 gesetzt
+ [11:26:40] [Server thread/INFO]: [oyo123] huhu
+ [11:26:40] [Client thread/INFO]: [CHAT] [oyo123] huhu
+</pre>
+<p>Siehe auch <i>commandBlockOutput</i> und <i>sendCommandFeedback</i>.</p>
+</td>
+</tr>
+<tr>
+<td>maxCommandChainLength</td>
+<td>Standard = 65536. Wird die Anzahl auf 0 gesetzt oder negativ, kann kein <a href="/Ketten-Befehlsblock" title="Ketten-Befehlsblock" class="mw-redirect">Ketten-Befehlsblock</a> mehr <a href="/Befehl" title="Befehl">Befehle</a> ausführen. Jeder andere Wert sorgt dafür das nur diese Anzahl an Ketten-Befehlsblöcken in einer Kette aktiviert werden können.</td>
+</tr>
+<tr>
+<td>maxEntityCramming</td>
+<td>Standard = 24. Wird die Anzahl auf 0 gesetzt, so wird die Spielregel deaktiviert. Berühren sich mehr als 24 Kreaturen erstickt die 25. Kreatur.</td>
+</tr>
+<tr>
+<td>mobGriefing</td>
+<td>Zerstörungen durch Monster ein/aus. Standard = <i>true</i>. Bei <i>false</i> explodieren Creeper, sprengen aber keine Blöcke mehr. (Stationäre <a href="/Objekt" title="Objekt">Objekte</a> wie <a href="/Rahmen" title="Rahmen">Rahmen</a> oder <a href="/Gem%C3%A4lde" title="Gemälde">Gemälde</a> werden – wie alle anderen Objekte – zerstört.) Endermen nehmen keine Blöcke mehr auf und Dorfbewohner keine Gegenstände. Zombies schlagen nicht mehr an Türen (und zerbrechen sie auch nicht im Schwierigkeitsgrad "schwer"). Wither töten Lebewesen, und Ghasts schleudern Feuerbälle, aber beide zerstören dadurch keine Blöcke. Der Enderdrache zerstört keine Blöcke beim Fliegen.</td>
+</tr>
+<tr>
+<td>naturalRegeneration</td>
+<td>Regenerierung der <a href="/Gesundheit" title="Gesundheit">Gesundheit</a> ein/aus. Standard = <i>true</i>. Bei <i>false</i> regeneriert sich die Gesundheit nicht mehr, trotz Nahrungsaufnahme. Nur mit <a href="/Statuseffekt" title="Statuseffekt">Statuseffekten</a> kann die Gesundheit noch aufgefüllt werden.</td>
+</tr>
+<tr>
+<td>randomTickSpeed</td>
+<td>Häufigkeit von zufälligen Ereignissen. Standard = 3. Minecraft ist ein <a href="/Tick" title="Tick">Tick</a>-basiertes Spiel, d. h. auch wenn der Spieler still steht, läuft das Spiel mit jedem Tick (= 1/20 Sekunde) weiter, was man z.B. an der Bewegung von <a href="/Kreatur" title="Kreatur">Kreaturen</a> sieht. Die Welt ist um den Spieler herum ständig in Bewegung: In einem Umkreis von 15 <a href="/Chunk" title="Chunk">Chunks</a> um jeden Spieler werden in jeder Sektion (16 x 16 x 16 = 4096 Blöcke) standardmäßig 3 Positionen zufällig ausgewählt und erhalten einen Anstoß (<i>Block Tick</i>). Luft und die meisten Blöcke ignorieren diesen Anstoß, aber einige nutzen ihn für eine spontane Aktion: <a href="/Pflanzen" title="Pflanzen" class="mw-redirect">Pflanzen</a> wachsen oder sterben ab, <a href="/Feuer" title="Feuer">Feuer</a> geht aus, <a href="/Eis" title="Eis">Eis</a> schmilzt, <a href="/Laub" title="Laub">Laub</a> fällt ab, <a href="/Ackerboden" title="Ackerboden">Ackerboden</a> wird nass, <a href="/Erde" title="Erde">Erde</a> wird zum <a href="/Grasblock" title="Grasblock">Grasblock</a> etc. Wird der Wert erhöht, passieren alle diese Ereignisse schneller, weil mehr Positionen einen Anstoß erhalten, wodurch die Wahrscheinlichkeit steigt, dass ein bestimmter Block getroffen wird. Der Wert 1000 bedeutet, dass pro Tick 1000 zufällige Positionen in einer Sektion einen Anstoß erhalten. Der Wert 4096 bedeutet aber nicht, dass jede Position einen Anstoß erhält, denn die Positionen werden ja zufällig ausgewählt. Zu hohe Werte bewirken möglicherweise, dass der Rechner überlastet wird und kein Effekt zu sehen ist. Wird der Wert auf 0 gesetzt, erhält keine Position mehr einen Anstoß, d. h. diese zufälligen Ereignisse finden nicht mehr statt. Wird der Wert weggelassen, wird die aktuelle Einstellung angezeigt. Statt einer Zahl kann auch ein Wort als Wert angegeben werden (z.B. <i>true</i> oder <i>false</i>), was aber sinnlos ist. Die Wirkung des aktuellen Wertes ist bei zerfallendem Laub besonders anschaulich zu sehen (dazu bei einem Baum zuvor alles Holz entfernen).</td>
+</tr>
+<tr>
+<td>reducedDebugInfo</td>
+<td>Reduzierte Anzeige im <a href="/Debug-Bildschirm" title="Debug-Bildschirm">Debug-Bildschirm</a> ein/aus. Standard = <i>false</i>. Bei <i>true</i> werden die meisten Informationen zur Orientierung und zur Analyse der Umgebung für die Welt im Debug-Bildschirm deaktiviert. Die Einstellung "false" hat keine Wirkung, wenn die Deaktivierung bereits über das <a href="/Men%C3%BC/Optionen/Chateinstellungen" title="Menü/Optionen/Chateinstellungen">Menü/Optionen/Chateinstellungen</a> vorgenommen wurde.</td>
+</tr>
+<tr>
+<td>sendCommandFeedback</td>
+<td>Chatbefehl-Ausgabe ein/aus. Standard = <i>true</i>. Bei <i>false</i> werden die Ergebnismeldungen von in der Chat-Konsole eingegebenen Befehlen nicht mehr angezeigt und nicht mehr als "[CHAT]" in die Protokolldateien von <a href="/Client-Server-Konzept" title="Client-Server-Konzept">Client und Server</a> geschrieben. Ausnahme: Chat-Befehle (z.B. /say) werden weiterhin mit Anzeige und Protokollierung ausgeführt. Beispiel: in der Einstellung <i>true</i> gibt der in der Chat-Konsole eingegebene <a href="/Befehl" title="Befehl">Befehl</a> <code><a href="/Befehl/time" title="Befehl/time">/time</a> set day</code> die Ergebnismeldung "Zeit auf 1000 gesetzt" aus und schreibt ins Protokoll "[CHAT] [Zeit auf 1000 gesetzt]", bei <i>false</i> nicht. Siehe auch <i>commandBlockOutput</i> und <i>logAdminCommands</i>.</td>
+</tr>
+<tr>
+<td>showDeathMessages</td>
+<td>Sichtbarkeit von <a href="/Tod" title="Tod">Todesmeldungen</a> im Chat ein/aus. Standard = <i>true</i>. Bei <i>false</i> werden keine Todesmeldungen im Chat angezeigt.</td>
+</tr>
+<tr>
+<td>spawnRadius</td>
+<td>Gibt den Radius an, in dem man um den Welt-Spawnpunkt erscheint. Standard = 10.</td>
+</tr>
+<tr>
+<td>spectatorsGenerateChunks</td>
+<td>Gibt an, ob Spieler im <a href="/Zuschauermodus" title="Zuschauermodus">Zuschauermodus</a> neue <a href="/Chunk" title="Chunk">Chunks</a> generieren. Bei <i>false</i> fliegt der Spieler dann in ungeladene Chunks. Standard = <i>true</i>, Ausnahme: <a href="/Hardcore_Modus" title="Hardcore Modus" class="mw-redirect">Hardcore-Modus</a></td>
+</tr>
+<tr>
+<td><i>Freitext</i></td>
+<td>Punktestand für die <a href="/Anzeigetafel" title="Anzeigetafel">Anzeigetafel</a>. Als <i>Freitext</i> kann ein beliebiges Wort eingegeben werden. Die so definierte Pseudo-Grundeinstellung wird vom <a href="/Befehl" title="Befehl">Befehl</a> <code><a href="/Befehl/stats" title="Befehl/stats">/stats</a></code> verwendet, um den Punktestand eines oder mehrerer Spieler zu verändern. Es können beliebig viele Pseudo-Grundeinstellungen eingegeben werden. Der Wert einer einmal eingegebenen Pseudo-Grundeinstellung kann verändert, aber sie kann nicht mehr gelöscht werden. Allerdings scheint dieses umständliche Verfahren überflüssig zu sein, weil man dasselbe Ergebnis auch einfacher erreichen kann (siehe <a href="/Befehl" title="Befehl">Befehl</a> <code><a href="/Befehl/stats" title="Befehl/stats">/stats</a></code>).</td>
+</tr>
+</tbody></table>';
+
 preg_match_all('/<tr>(.*?)<\/tr/si', $p, $matches);
 foreach ($matches[1] as $line) {
 
@@ -794,19 +913,20 @@ foreach ($matches[1] as $line) {
 
     $dataset = array(
         'cmd' => strip_tags($m2[1][0]),
-        'type' => trim($m2[1][1]),
-        'default' => trim($m2[1][2]),
-        'value' => trim($m2[1][2]),
-        'en' => '',
+        'type' => 'boolean', //trim($m2[1][1]),
+        'default' => 'true', //trim($m2[1][2]),
+        'value' => 'true', //trim($m2[1][2]),
+        'en' => preg_replace('/<span.*?<\/span>/si', '', $m2[1][1]),
     );
-
+    $cmds[$dataset['cmd']] = $dataset;
+/*
     if (!isset($cmds[$dataset['cmd']])) {
         $dataset['en'] = preg_replace('/<span.*?<\/span>/si', '', $m2[1][3]);
         $cmds[$dataset['cmd']] = $dataset;
     } else {
         $cmds[$dataset['cmd']]['de'] = preg_replace('/<span.*?<\/span>/si', '', $m2[1][3]);
     }
-
+*/
 
 
 }

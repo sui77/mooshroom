@@ -13,7 +13,7 @@ MooshroomInstaller::run();
 
 class MooshroomInstaller {
 
-    private $extensions = array('gd', 'ssh2', 'curl', 'xmlrpc');
+    private $extensions = array('gd', 'ssh2', 'curl', 'xmlrpc', 'mbstring');
     private $packages   = array('supervisor', 'nodejs-legacy', 'npm', 'git', 'tar', 'composer', 'openjdk-8-jre-headless');
     private $packagesAdminserver = array('redis-server');
 

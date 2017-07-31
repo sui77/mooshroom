@@ -1,29 +1,27 @@
-<div class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <?php include '_tabs.phtml'; ?>
-                <div class="card">
+<div class="col-md-12">
 
-                    <div class="content">
+    <?php include '_control.phtml'; ?>
 
-                        <input class="js-plugins">
+    <div class="card">
 
-                        <?php
-                            $plugins = $this->server->getPlugins();
-                            foreach ($plugins as $name => $status) { ?>
-                            <div style="margin:5px;">
-                                <input type="checkbox" class="js-switch js-plugin" name="<?=htmlspecialchars($name)?>" <?=($status?'checked':'')?> /> <?=htmlspecialchars($name)?><br>
-                            </div>
-                        <?php } ?>
-                        <?php if (count($plugins) == 0) { ?>
-                            No Plugins installed.
-                        <?php } ?>
-                    </div>
+        <?php include '_tabs.phtml'; ?>
 
+        <div class="card-content">
+
+            <input class="js-plugins">
+
+            <?php
+                $plugins = $this->server->getPlugins();
+                foreach ($plugins as $name => $status) { ?>
+                <div style="margin:5px;">
+                    <input type="checkbox" class="js-switch js-plugin" name="<?=htmlspecialchars($name)?>" <?=($status?'checked':'')?> /> <?=htmlspecialchars($name)?><br>
                 </div>
-            </div>
+            <?php } ?>
+            <?php if (count($plugins) == 0) { ?>
+                No Plugins installed.
+            <?php } ?>
         </div>
+
     </div>
 </div>
 
@@ -31,7 +29,7 @@
 
     var substringMatcher = function(q, cb) {
 
-        var strs = <?=json_encode( array_keys($this->server->getPlugins()))?>;
+        var strs = <?=json_encode( \Mooshroom\Model\Binaries::getAll('plugins'))?>;
         var matches, substringRegex;
         matches = [];
         substrRegex = new RegExp(q, 'i');
@@ -57,60 +55,3 @@
     });
 </script>
 
-<?php /*
-<style>
-    #searchresult div:nth-child(2n+1).sresult   {
-        background-color:#eee;
-    }
-</style>
-
-<script>
-
-    var template  = '' +
-        '<div class="row sresult">' +
-        '  <div class="col-md-2">' +
-        '    <img width="80" height="80" src="data:image/png;base64,{icon}">' +
-        '  </div>' +
-        '  <div class="col-md-6">' +
-        '    <h4><a href="https://www.spigotmc.org/resources/.{id}/">{name}</a></h4>' +
-        '    {tag}' +
-        '  </div>' +
-        '  <div class="col-md-4" style="margin-top:20px;">' +
-        '    <button type="button" class="btn btn-default btn-sm pull-right">download &amp; install</button>' +
-        '  </div>' +
-        '</div>' +
-        '';
-
-
-        $(function() {
-
-        $('.js-pluginsearch').submit(function(e) {
-            e.preventDefault();
-            $.post($(this).attr('action'), $(this).serialize(), function(data){
-                $('#searchresult').html('');
-                for (n in data) {
-                    var div = template;
-                    div = div.replace('{name}', data[n].name);
-                    div = div.replace('{icon}', data[n].icon.data);
-                    div = div.replace('{tag}', data[n].tag);
-                    div = div.replace('{id}', data[n].id);
-                    $('#searchresult').append(div);
-                }
-                console.log(data);
-            });
-        })
-
-        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
-        elems.forEach(function(html) {
-            var name = $(html).attr('name');
-            var switchery = new Switchery(html, { size: 'small' });
-            html.onchange=function() {
-                $.post('/server/<?=$this->server->getName()?>/switchplugin', {'name': name, 'checked': this.checked}, function(data){
-                    $('#restartneeded').show();
-                    console.log(data);
-                });
-            }
-        });
-    });
-</script>
-*/?>

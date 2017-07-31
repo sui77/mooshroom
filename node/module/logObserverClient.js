@@ -10,6 +10,8 @@ var client = {
 
     _buf: '',
 
+    _gameRules: [],
+
     observe: function (name) {
         console.log("observe " + name);
         var self = this;
@@ -75,12 +77,60 @@ var client = {
                 var tmp2 = tmp[n].toString().trim().split(' ');
 
                 var name = tmp2.shift();
-                self._io.io.to(name).emit( 'log', tmp2.join(' ') );
-                self._redis.lpush('mcadmin:log:' + name, tmp2.join(' '), function(err, r) {
+                var line = tmp2.join(' ');
+                self._io.io.to(name).emit( 'log', line );
+                self._redis.lpush('mcadmin:log:' + name, line, function(err, r) {
                     if (r > 50) {
                         self._redis.rpop('mcadmin:log:' + name);
                     }
                 } );
+
+                console.log(line);
+                console.log(self._gameRules.join("|"));
+                var match;
+                if (match = line.match(/\[Server thread\/INFO\]: Game rule (.*?) has been updated to (.*)/)) {
+
+                    // change gamerule
+                    self._redis.hset('mcadmin:server:' + name, "gamerule:" + match[1], match[2] );
+                    self._io.io.to(name).emit('gamerule', match[1], match[2]);
+
+                } else if (match = line.match(/\[Server thread\/INFO\]: Done/)) {
+
+                    // server started
+                    self._io.io.to(name).emit('status', 'started');
+                    self._redis.hset('mcadmin:server:' + name, "status", "RUNNING" );
+
+                } else if (match = line.match(/\[Server thread\/INFO\]: Stopping the server/)) {
+
+                    // server stopped
+                    self._io.io.to(name).emit('status', 'stopped');
+                    self._redis.hset('mcadmin:server:' + name, "status", "STOPPED" );
+
+                } else if (match = line.match( new RegExp ("\\[Server thread\\/INFO\\]: (" + self._gameRules.join("|") + ") = (.*)") )) {
+
+                    // gamerule status
+                    self._redis.hset('mcadmin:server:' + name, "gamerule:" + match[1], match[2] );
+
+                } else if (match = line.match(/No game rule called \'(.*?)\' is available/)) {
+
+                    // gamerule status
+                    self._redis.hset('mcadmin:server:' + name, "gamerule:" + match[1], 'not available' );
+                } else if (match = line.match(/\[Server thread\/INFO\]: Opped (.*)/) ) {
+                    self._io.io.to(name).emit('useradm', 'op', match[1] );
+                } else if (match = line.match(/\[Server thread\/INFO\]: De-opped (.*)/) ) {
+                    self._io.io.to(name).emit('useradm', 'deop', match[1] );
+                } else if (match = line.match(/\[Server thread\/INFO\]: Added (.*?) to the whitelist/) ) {
+                    self._io.io.to(name).emit('useradm', 'wla', match[1] );
+                } else if (match = line.match(/\[Server thread\/INFO\]: Removed (.*?) from the whitelist/) ) {
+                    self._io.io.to(name).emit('useradm', 'wlr', match[1] );
+                } else if (match = line.match(/\[Server thread\/INFO\]: Turned (.*?) the whitelist/) ) {
+                    if (match[1] == 'on') {
+                        self._io.io.to(name).emit('hideelem', '.jsl-whitelist' );
+                    } else {
+                        self._io.io.to(name).emit('showelem', '.jsl-whitelist');
+                    }
+
+                }
 
             }
 
@@ -99,9 +149,10 @@ var client = {
         });
     },
 
-    init: function(host, port, name, io) {
+    init: function(host, port, name, io, gameRules) {
         this._io = io;
         this._name = name;
+        this._gameRules = gameRules;
         self = this;
         setInterval(function() { self.connect(host, port); } , 1000);
     },

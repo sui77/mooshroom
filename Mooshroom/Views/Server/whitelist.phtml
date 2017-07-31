@@ -1,61 +1,93 @@
-<div class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <?php include '_tabs.phtml'; ?>
-                <div class="card">
-                    <div class="header">
-                    </div>
+<div class="col-md-12">
 
-                    <?php $ops = $this->server->getWhitelist();
-                    if (count($ops) == 0) { ?>
-                        <div class="content">
-                            Nobody whitelisted.
-                        </div>
-                    <?php } else { ?>
-                        <div class="content table-responsive table-full-width">
-                            <table class="table table-striped">
-                                <thead>
-                                <th>Avatar</th>
-                                <th>Name</th>
-                                <?php if ($this->server->isRunning()) { ?><th>Action</th><?php } ?>
-                                </thead>
-                                <tbody>
-                                <?php foreach ($ops as $op) { ?>
-                                    <tr>
-                                        <td><img src="data:image/png;base64,<?=\Mooshroom\Mojang::getHead($op['uuid'])?>"></td>
-                                        <td><?=$op['name']?><br><?=$op['uuid']?></td>
-                                        <?php if ($this->server->isRunning()) { ?>
-                                            <td><a href="/server/<?=$this->server->getName()?>/whitelist?username=<?=$op['name']?>">delete</a></td>
-                                        <?php } ?>
-                                    </tr>
-                                <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php } ?>
+    <?php include '_control.phtml'; ?>
 
+    <div class="card">
+
+        <?php include '_tabs.phtml'; ?>
+
+        <div class="card-content">
+
+
+
+
+        <div class="alert alert-warning jsl-whitelist" <?=($this->server->getServerProperties()->get('white-list')?'style="display:none"':'')?>>
+            <div class="row">
+                <div class="col-xs-6">
+                    Whitelist is not enabled.
                 </div>
-
-                <div class="card">
-                    <div class="content">
-                        <?php if ($this->server->isRunning()) { ?>
-                            <form method="post" class="upform">
-                                <div class="input-group">
-                                    <input type="text" name="username" class="form-control border-input">
-                                    <span class="input-group-btn">
-                                                <input type="submit" class="form-control btn btn-info btn-fill btn-wd" value="add" >
-                                          </span>
-                                </div>
-                            </form>
-                        <?php } else { ?>
-                            You can not edit the whitelist as long as the server is not running.
-                        <?php } ?>
-                    </div>
+                <div class="col-xs-6">
+                    <a href="#" data-server="<?=$this->server->getName()?>" data-cmd="whitelist on" class="js-scmd btn btn-danger pull-right">enable whitelist</a>
                 </div>
             </div>
+        </div>
+
+
+        <?php $ops = $this->server->getWhitelist(); ?>
+
+
+
+        <table class="table table-responsive table-striped">
+            <thead>
+                <th>Avatar</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+            <?php if (count($ops) == 0) { ?>
+                <tr class="">
+                    <td colspan="3">Whitelist is empty.</td>
+                </tr>
+            <?php } ?>
+            <?php foreach ($ops as $op) { ?>
+                <tr class="wl-<?=$op['name']?>">
+                    <td><img src="data:image/png;base64,<?=\Mooshroom\Mojang::getHead($op['uuid'])?>"></td>
+                    <td><?=$op['name']?><br><?=$op['uuid']?></td>
+                    <?php if ($this->server->isRunning()) { ?>
+                        <td>
+                        <a href="#" data-server="<?=$this->server->getName()?>" data-cmd="whitelist remove <?=$op['name']?>" class="js-scmd btn btn-simple btn-danger btn-icon remove"><i class="ti-close"></i></a>
+                        </td>
+                    <?php } ?>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+
 
 
         </div>
+
+        <div class="card-content">
+            <form method="post" id="addwl">
+                <div class="input-group">
+                    <input id="input-field" type="text" name="username" class="form-control border-input">
+                    <span class="input-group-btn">
+                                <input type="submit" class="btn btn-info" value="add" >
+                    </span>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+
+<script>
+    $('.js-scmd').click(function() {
+        self = this;
+        $.post( '/ajax/scmd',
+                {cmd: $(this).data('cmd'), server: $(this).data('server') },
+                function (data) {
+                }
+        );
+    });
+
+    $('#addwl').submit(function(e) {
+            e.preventDefault();
+            $.post('/server/<?=$this->server->getName()?>/whitelist', {username: $('#input-field').val()
+            }, function (data) {
+                $('#input-field').val('')
+            });
+
+    });
+
+</script>

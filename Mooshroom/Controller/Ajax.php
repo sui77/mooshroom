@@ -14,6 +14,13 @@ class Ajax extends ControllerAbstract {
         $this->assign('errormsg', $this->getParam('errormsg'));
     }
 
+    public function scmdAction() {
+        $server = \Mooshroom\Model\Server::getInstance( $_POST['server'] );
+        $server->getHost()->getSupervisor()->sendProcessStdin( 'moo_' . $_POST['server'], $_POST['cmd'] );
+        echo 'ok';
+        exit();
+    }
+
     public function pluginsearchAction() {
         $r = json_decode(SpigetAPI::searchResource($_POST['q'], 'name', 10, 1, '', 'name,icon,testedVersions,tag'), 1);
 

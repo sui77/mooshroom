@@ -14,6 +14,7 @@ class Upload extends ControllerAbstract {
 
     public function init() {
         parent::init();
+        $this->_setActiveNav( $this->_params['type'] );
     }
 
     public function indexAction() {

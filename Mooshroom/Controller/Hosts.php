@@ -11,6 +11,7 @@ class Hosts extends ControllerAbstract {
 
     public function indexAction() {
         $this->title = 'Hosts';
+        $this->_setActiveNav('hosts');
     }
 
 }

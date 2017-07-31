@@ -1,132 +1,134 @@
-<div class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
+<div class="row">
 
-                <div class="card">
-                    <div class="header">
-                    </div>
+    <div class="col-sm-6">
 
-                    <?php if (count($this->files) == 0) { ?>
-                        <div class="content">
-                            No files.
-                        </div>
-                    <?php } else { ?>
-                        <div class="content table-responsive table-full-width">
-                            <table class="table table-striped">
-                                <thead>
-                                    <th>File</th>
-                                    <th>Action</th>
-                                </thead>
-                                <tbody id="filelist">
-                                <?php foreach ($this->files as $file) { ?>
-                                    <tr>
-                                        <td><?=$file?></td>
-                                        <td></td>
-                                    </tr>
-                                <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php } ?>
-                </div>
-
-
-
-                <div class="card">
-                    <div class="panel-heading">
-                        <ul class="nav nav-tabs">
+        <div class="card">
+            <div class="card-content">
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
                             <li class="active"><a href="#up1" data-toggle="tab">Upload</a></li>
-                            <li><a href="#up2" data-toggle="tab">Upload from URL</a></li>
+                            <li><a href="#up2" data-toggle="tab">Upload URL</a></li>
                             <?php if ($this->getParam('type') == 'binaries') { ?><li><a href="#up3" data-toggle="tab">Vanilla</a></li><?php } ?>
                             <?php if ($this->getParam('type') == 'plugins') { ?><li><a href="#up4" data-toggle="tab">Spiget API</a></li><?php } ?>
                         </ul>
                     </div>
+                </div>
+                <div id="my-tab-content" class="tab-content text-center">
+                    <div class="tab-pane fade in active" id="up1">
 
-                    <div class="panel-body">
-                        <div class="tab-content">
-                            <div class="tab-pane fade in active" id="up1">
-
-                                <form action="/upload/upload/<?=$this->getParam('type')?>" class="js-upload form-horizontal form-label-left" method="post">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="files[]">File</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <div id="uploadinput">
-                                                <input data-target="/ajax/upload" type="file" name="files[]" multiple>
-                                            </div>
-                                            <div id="progress" class="progress" style="display:none">
-                                                <div class="progress-bar progress-bar-success"></div>
-                                            </div>
-                                        </div>
+                        <form action="/upload/upload/<?=$this->getParam('type')?>" class="js-upload form-horizontal form-label-left" method="post">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="files[]">File</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div id="uploadinput">
+                                        <input data-target="/ajax/upload" type="file" name="files[]" class="form-control">
                                     </div>
-                                </form>
-
-                            </div>
-                            <div class="tab-pane fade" id="up2">
-
-                                <form class="form-horizontal form-label-left">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Url</label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="input-group">
-                                            <input id="url-simple" class="form-control">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default btngrp js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-simple">Upload</button>
-                                            </span>
-                                        </div>
+                                    <div id="progress" class="progress" style="display:none">
+                                        <div class="progress-bar progress-bar-success"></div>
                                     </div>
                                 </div>
-                                </form>
-
                             </div>
-                            <div class="tab-pane fade" id="up3">
+                        </form>
 
-                                <form class="form-horizontal form-label-left">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Minecraft vanilla version</label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <div class="input-group">
-                                            <select id="url-mojang" class="form-control">
-                                                <?php foreach (\Mooshroom\Mojang::getDownloadUrls() as $k => $v) { ?>
-                                                    <option value="<?=htmlspecialchars($v)?>">minecraft_server.<?=$k?></option>
-                                                <?php } ?>
-                                            </select>
-                                            <span class="input-group-btn">
-                                            <button class="btn btn-default btngrp js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-mojang">Upload</button>
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                </form>
-
-                            </div>
-                            <div class="tab-pane fade" id="up4">
-
-                                <form class="form-horizontal form-label-left">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Search for a plugin</label>
-                                        <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <div class="input-group">
-                                                <input id="q" class="form-control">
-                                                <span class="input-group-btn">
-                                            <button class="js-pluginsearch btn btn-default btngrp">Search</button>
-                                        </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div id="searchresult"></div>
-
-                            </div>
-                        </div>
                     </div>
+                    <div class="tab-pane fade" id="up2">
+
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Url</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="input-group">
+                                        <input id="url-simple" class="form-control">
+                                        <span class="input-group-btn">
+                                                        <button class="btn btn-default btngrp js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-simple">Upload</button>
+                                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="tab-pane fade" id="up3">
+
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Version</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="input-group">
+                                        <select id="url-mojang" class="form-control">
+                                            <?php foreach (\Mooshroom\Mojang::getDownloadUrls() as $k => $v) { ?>
+                                                <option value="<?=htmlspecialchars($v)?>">minecraft_server.<?=$k?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <span class="input-group-btn">
+                                                    <button class="btn btn-default btngrp js-uploadurl" data-target="/upload/uploadurl/<?=$this->getParam('type')?>" data-input="#url-mojang">Upload</button>
+                                                </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="tab-pane fade" id="up4">
+
+                        <form class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="delete">Search for a plugin</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="input-group">
+                                        <input id="q" class="form-control">
+                                        <span class="input-group-btn">
+                                                    <button class="js-pluginsearch btn btn-default btngrp">Search</button>
+                                                </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="searchresult"></div>
+
+                    </div>
+
                 </div>
             </div>
         </div>
+
     </div>
+
+
+    <div class="col-sm-6">
+
+        <div class="card">
+
+            <?php if (count($this->files) == 0) { ?>
+                <div class="card-content">
+                    No files.
+                </div>
+            <?php } else { ?>
+                <div class="card-table">
+
+                    <table class="table table-striped">
+                        <thead>
+                        <th>File</th>
+                        <th>Action</th>
+                        </thead>
+                        <tbody id="filelist">
+                        <?php foreach ($this->files as $file) { ?>
+                            <tr>
+                                <td><?=$file?></td>
+                                <td></td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+
+                </div>
+            <?php } ?>
+        </div>
+
+    </div>
+
 </div>
-
-
 
 
 

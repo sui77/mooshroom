@@ -1,0 +1,177 @@
+{
+    "announceAdvancements": {
+        "cmd": "announceAdvancements",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Ausgabe von <a href=\"\/Fortschritte\" title=\"Fortschritte\">Fortschritten<\/a> in der <a href=\"\/Chat\" title=\"Chat\">Chat<\/a>-Leiste ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> werden errungene Fortschritte nicht im Chat f\u00fcr alle Spieler sichtbar angek\u00fcndigt."
+    },
+    "commandBlockOutput": {
+        "cmd": "commandBlockOutput",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Befehlsblock-Ausgabe ein\/aus. Standard = true. Bei false werden die Ergebnismeldungen von aktivierten Befehlsbl\u00f6cken nicht mehr in der Chat-Konsole der Spieler angezeigt und nicht mehr als \"[CHAT]\" in die Protokolldateien von Client und Server geschrieben. Ausnahme: Von Befehlsbl\u00f6cken ausgef\u00fchrte Chat-Befehle (z.B. \/say) werden weiterhin mit Anzeige und Protokollierung ausgef\u00fchrt. Beispiel: in der Einstellung true gibt der im Befehlsblock ausgef\u00fchrte Befehl \/time set day im Chat die Ergebnismeldung \"[@: Zeit auf 1000 gesetzt]\" aus und schreibt ins Protokoll \"[CHAT] [@: Zeit auf 1000 gesetzt]\", bei false nicht. Siehe auch logAdminCommands und sendCommandFeedback."
+    },
+    "disableElytraMovementCheck": {
+        "cmd": "disableElytraMovementCheck",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Beim Gleiten mit den <a href=\"\/Elytren\" title=\"Elytren\">Elytren<\/a> kann man durch bestimmte Flugbewegungen pl\u00f6tzliche Bewegungs\u00e4nderungen erzeugen, die die Cheating-Pr\u00fcfung des <a href=\"\/Client-Server-Konzept\" title=\"Client-Server-Konzept\">Servers<\/a> nicht von echtem Cheating (Fly-Hack) unterscheiden kann, sodass die Warnung erzeugt wird: <code>[Server] Server thread\/WARN: &lt;Spielername&gt; moved too quickly!<\/code> (siehe Fehler ). Server-Plugins, die auf diese Warnung reagieren, w\u00fcrden den Spieler dann automatisch vom Server werfen, obwohl er nur mit den Elytren geflogen ist. Um dies zu unterbinden, kann die Cheating-Pr\u00fcfung f\u00fcr die Elytren ausgeschaltet werden."
+    },
+    "doDaylightCycle": {
+        "cmd": "doDaylightCycle",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "<a href=\"\/Tag-Nacht-Rhythmus\" title=\"Tag-Nacht-Rhythmus\">Tag-Nacht-Rhythmus<\/a> ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> stoppt der Rhythmus sofort, bei <i>true<\/i> l\u00e4uft er weiter. Das beeinflusst nur das Wandern von Sonne und Mond. Die Game <a href=\"\/Tick\" title=\"Tick\">Ticks<\/a> laufen unver\u00e4ndert weiter."
+    },
+    "doEntityDrops": {
+        "cmd": "doEntityDrops",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Droppen von Gegenst\u00e4nden beim Zerst\u00f6ren von leblosen <a href=\"\/Objekt\" title=\"Objekt\">Objekten<\/a> ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> droppen leblose Objekte (Loren, Boote, Rahmen, Bilder, fallender Sand oder Kies) keine Gegenst\u00e4nde mehr. <a href=\"\/Werfer\" title=\"Werfer\">Werfer<\/a> oder <a href=\"\/Spender\" title=\"Spender\">Spender<\/a> funktionieren aber weiterhin."
+    },
+    "doFireTick": {
+        "cmd": "doFireTick",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Ausbreitung von <a href=\"\/Feuer\" title=\"Feuer\">Feuer<\/a> ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> brennt ein Feuer ewig und breitet sich nicht weiter aus."
+    },
+    "doLimitedCrafting": {
+        "cmd": "doLimitedCrafting",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "<a href=\"\/Crafting\" title=\"Crafting\">Crafting<\/a> ein\/aus. Standard = <i>false<\/i>. Bei <i>true<\/i> kann man Rezepte nur dann craften, wenn es die <a href=\"\/Fortschritte\" title=\"Fortschritte\">Fortschritte<\/a> erm\u00f6glichen."
+    },
+    "doMobLoot": {
+        "cmd": "doMobLoot",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Droppen von Gegenst\u00e4nden durch <a href=\"\/Kreatur\" title=\"Kreatur\">Kreaturen<\/a> ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> droppen weder Monster noch Tiere Gegenst\u00e4nde. Welche Gegenst\u00e4nde das sind, kann der <a href=\"\/Drop#.C3.9Cbersicht_der_Drops\" title=\"Drop\">Drop-Liste<\/a> entnommen werden. Erfahrungskugeln werden dann auch nicht mehr gedroppt."
+    },
+    "doMobSpawning": {
+        "cmd": "doMobSpawning",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "<a href=\"\/Spawnen\" title=\"Spawnen\" class=\"mw-redirect\">Spawnen<\/a> von Kreaturen ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> spawnen Kreaturen nicht mehr nat\u00fcrlich. Bereits vorhandene Kreaturen bleiben beim Umschalten der Regel erhalten, sie verschwinden nicht. Mit Spawn-Eiern k\u00f6nnen Kreaturen auch bei ausgeschalteter Regel weiterhin erzeugt werden. Auch <a href=\"\/Monsterspawner\" title=\"Monsterspawner\">Monsterspawner<\/a> in Verliesen funktionieren weiterhin. Damit Monster grunds\u00e4tzlich erscheinen, darf der <a href=\"\/Schwierigkeitsgrad\" title=\"Schwierigkeitsgrad\">Schwierigkeitsgrad<\/a> nicht \"friedlich\" sein. Das Nicht-Spawnen von Tieren kann man testen, indem man mit dem <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/kill\" title=\"Befehl\/kill\">\/kill<\/a> @e[type=!player]<\/code> alle <a href=\"\/Kreatur\" title=\"Kreatur\">Kreaturen<\/a> t\u00f6tet und pr\u00fcft, ob danach neue Tiere spawnen."
+    },
+    "doTileDrops": {
+        "cmd": "doTileDrops",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Droppen von Gegenst\u00e4nden beim Blockabbau ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> droppen Bl\u00f6cke - wie im Kreativmodus - beim Abbau keine Gegenst\u00e4nde mehr. Weder Erz, noch Holz, noch Weizen etc. Nur Erfahrungskugeln werden z.B. beim Abbau von Kohle gedroppt."
+    },
+    "doWeatherCycle": {
+        "cmd": "doWeatherCycle",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "<a href=\"\/Wetter\" title=\"Wetter\">Wetter<\/a> ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> stoppt der Rhythmus sofort, bei <i>true<\/i> l\u00e4uft er weiter."
+    },
+    "gameLoopFunction": {
+        "cmd": "gameLoopFunction",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Standard = <code>-<\/code>. Legt eine Funktion fest, die in jedem <a href=\"\/Tick\" title=\"Tick\">Tick<\/a> einmal aufgerufen wird. Siehe <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/function\" title=\"Befehl\/function\">\/function<\/a><\/code>"
+    },
+    "keepInventory": {
+        "cmd": "keepInventory",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Das eigene <a href=\"\/Inventar\" title=\"Inventar\">Inventar<\/a> bleibt nach dem Tod erhalten ein\/aus. Standard = <i>false<\/i>. Bei <i>true<\/i> bleibt das Inventar komplett erhalten - auch wenn man in Lava f\u00e4llt."
+    },
+    "logAdminCommands": {
+        "cmd": "logAdminCommands",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Protokollieren von Befehl-Ergebnismeldungen ein\/aus. Standard = <i>true<\/i>. Wird die Regel auf <i>false<\/i> gesetzt, werden die Ergebnismeldungen von Befehlen nicht mehr in die Protokolldateien von <a href=\"\/Client-Server-Konzept\" title=\"Client-Server-Konzept\">Client und Server<\/a> geschrieben (Client siehe <i><a href=\"\/.minecraft\" title=\".minecraft\">.minecraft<\/a>\/logs<\/i>, Server siehe Unterordner <i>logs<\/i> im Serverordner). Chat-Ausgaben (\"[CHAT]\") und Chat-Befehle werden weiterhin ausgegeben. Beispiel: Der Spieler oyo123 aktiviert einen Befehlsblock mit dem Befehl <code>\/time set night<\/code> und gibt im Chat zwei Befehle ein: <code>\/time set day<\/code> und <code>\/say huhu<\/code>. Bei der Einstellung <i>true<\/i> steht in der Protokolldatei:\r\n<pre> [11:26:30] [Server thread\/INFO]: [@: Zeit auf 13000 gesetzt]             &lt;=== Ergebnismeldung\r\n [11:26:30] [Client thread\/INFO]: [CHAT] Zeit auf 13000 gesetzt\r\n [11:26:36] [Server thread\/INFO]: [oyo123: Zeit auf 1000 gesetzt]         &lt;=== Ergebnismeldung\r\n [11:26:36] [Client thread\/INFO]: [CHAT] Zeit auf 1000 gesetzt\r\n [11:26:40] [Server thread\/INFO]: [oyo123] huhu                           &lt;=== Chat\r\n [11:26:40] [Client thread\/INFO]: [CHAT] [oyo123] huhu\r\n<\/pre>\r\n<p>Bei der Einstellung <i>false<\/i> steht in der Protokolldatei:<\/p>\r\n<pre> [11:26:30] [Client thread\/INFO]: [CHAT] Zeit auf 13000 gesetzt\r\n [11:26:36] [Client thread\/INFO]: [CHAT] Zeit auf 1000 gesetzt\r\n [11:26:40] [Server thread\/INFO]: [oyo123] huhu\r\n [11:26:40] [Client thread\/INFO]: [CHAT] [oyo123] huhu\r\n<\/pre>\r\n<p>Siehe auch <i>commandBlockOutput<\/i> und <i>sendCommandFeedback<\/i>.<\/p>\r\n"
+    },
+    "maxCommandChainLength": {
+        "cmd": "maxCommandChainLength",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Standard = 65536. Wird die Anzahl auf 0 gesetzt oder negativ, kann kein <a href=\"\/Ketten-Befehlsblock\" title=\"Ketten-Befehlsblock\" class=\"mw-redirect\">Ketten-Befehlsblock<\/a> mehr <a href=\"\/Befehl\" title=\"Befehl\">Befehle<\/a> ausf\u00fchren. Jeder andere Wert sorgt daf\u00fcr das nur diese Anzahl an Ketten-Befehlsbl\u00f6cken in einer Kette aktiviert werden k\u00f6nnen."
+    },
+    "maxEntityCramming": {
+        "cmd": "maxEntityCramming",
+        "type": "integer",
+        "default": "true",
+        "value": "undefined",
+        "en": "Standard = 24. Wird die Anzahl auf 0 gesetzt, so wird die Spielregel deaktiviert. Ber\u00fchren sich mehr als 24 Kreaturen erstickt die 25. Kreatur."
+    },
+    "mobGriefing": {
+        "cmd": "mobGriefing",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Zerst\u00f6rungen durch Monster ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> explodieren Creeper, sprengen aber keine Bl\u00f6cke mehr. (Station\u00e4re <a href=\"\/Objekt\" title=\"Objekt\">Objekte<\/a> wie <a href=\"\/Rahmen\" title=\"Rahmen\">Rahmen<\/a> oder <a href=\"\/Gem%C3%A4lde\" title=\"Gem\u00e4lde\">Gem\u00e4lde<\/a> werden \u2013 wie alle anderen Objekte \u2013 zerst\u00f6rt.) Endermen nehmen keine Bl\u00f6cke mehr auf und Dorfbewohner keine Gegenst\u00e4nde. Zombies schlagen nicht mehr an T\u00fcren (und zerbrechen sie auch nicht im Schwierigkeitsgrad \"schwer\"). Wither t\u00f6ten Lebewesen, und Ghasts schleudern Feuerb\u00e4lle, aber beide zerst\u00f6ren dadurch keine Bl\u00f6cke. Der Enderdrache zerst\u00f6rt keine Bl\u00f6cke beim Fliegen."
+    },
+    "naturalRegeneration": {
+        "cmd": "naturalRegeneration",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Regenerierung der <a href=\"\/Gesundheit\" title=\"Gesundheit\">Gesundheit<\/a> ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> regeneriert sich die Gesundheit nicht mehr, trotz Nahrungsaufnahme. Nur mit <a href=\"\/Statuseffekt\" title=\"Statuseffekt\">Statuseffekten<\/a> kann die Gesundheit noch aufgef\u00fcllt werden."
+    },
+    "randomTickSpeed": {
+        "cmd": "randomTickSpeed",
+        "type": "integer",
+        "default": "true",
+        "value": "undefined",
+        "en": "H\u00e4ufigkeit von zuf\u00e4lligen Ereignissen. Standard = 3. Minecraft ist ein <a href=\"\/Tick\" title=\"Tick\">Tick<\/a>-basiertes Spiel, d. h. auch wenn der Spieler still steht, l\u00e4uft das Spiel mit jedem Tick (= 1\/20 Sekunde) weiter, was man z.B. an der Bewegung von <a href=\"\/Kreatur\" title=\"Kreatur\">Kreaturen<\/a> sieht. Die Welt ist um den Spieler herum st\u00e4ndig in Bewegung: In einem Umkreis von 15 <a href=\"\/Chunk\" title=\"Chunk\">Chunks<\/a> um jeden Spieler werden in jeder Sektion (16 x 16 x 16 = 4096 Bl\u00f6cke) standardm\u00e4\u00dfig 3 Positionen zuf\u00e4llig ausgew\u00e4hlt und erhalten einen Ansto\u00df (<i>Block Tick<\/i>). Luft und die meisten Bl\u00f6cke ignorieren diesen Ansto\u00df, aber einige nutzen ihn f\u00fcr eine spontane Aktion: <a href=\"\/Pflanzen\" title=\"Pflanzen\" class=\"mw-redirect\">Pflanzen<\/a> wachsen oder sterben ab, <a href=\"\/Feuer\" title=\"Feuer\">Feuer<\/a> geht aus, <a href=\"\/Eis\" title=\"Eis\">Eis<\/a> schmilzt, <a href=\"\/Laub\" title=\"Laub\">Laub<\/a> f\u00e4llt ab, <a href=\"\/Ackerboden\" title=\"Ackerboden\">Ackerboden<\/a> wird nass, <a href=\"\/Erde\" title=\"Erde\">Erde<\/a> wird zum <a href=\"\/Grasblock\" title=\"Grasblock\">Grasblock<\/a> etc. Wird der Wert erh\u00f6ht, passieren alle diese Ereignisse schneller, weil mehr Positionen einen Ansto\u00df erhalten, wodurch die Wahrscheinlichkeit steigt, dass ein bestimmter Block getroffen wird. Der Wert 1000 bedeutet, dass pro Tick 1000 zuf\u00e4llige Positionen in einer Sektion einen Ansto\u00df erhalten. Der Wert 4096 bedeutet aber nicht, dass jede Position einen Ansto\u00df erh\u00e4lt, denn die Positionen werden ja zuf\u00e4llig ausgew\u00e4hlt. Zu hohe Werte bewirken m\u00f6glicherweise, dass der Rechner \u00fcberlastet wird und kein Effekt zu sehen ist. Wird der Wert auf 0 gesetzt, erh\u00e4lt keine Position mehr einen Ansto\u00df, d. h. diese zuf\u00e4lligen Ereignisse finden nicht mehr statt. Wird der Wert weggelassen, wird die aktuelle Einstellung angezeigt. Statt einer Zahl kann auch ein Wort als Wert angegeben werden (z.B. <i>true<\/i> oder <i>false<\/i>), was aber sinnlos ist. Die Wirkung des aktuellen Wertes ist bei zerfallendem Laub besonders anschaulich zu sehen (dazu bei einem Baum zuvor alles Holz entfernen)."
+    },
+    "reducedDebugInfo": {
+        "cmd": "reducedDebugInfo",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Reduzierte Anzeige im <a href=\"\/Debug-Bildschirm\" title=\"Debug-Bildschirm\">Debug-Bildschirm<\/a> ein\/aus. Standard = <i>false<\/i>. Bei <i>true<\/i> werden die meisten Informationen zur Orientierung und zur Analyse der Umgebung f\u00fcr die Welt im Debug-Bildschirm deaktiviert. Die Einstellung \"false\" hat keine Wirkung, wenn die Deaktivierung bereits \u00fcber das <a href=\"\/Men%C3%BC\/Optionen\/Chateinstellungen\" title=\"Men\u00fc\/Optionen\/Chateinstellungen\">Men\u00fc\/Optionen\/Chateinstellungen<\/a> vorgenommen wurde."
+    },
+    "sendCommandFeedback": {
+        "cmd": "sendCommandFeedback",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Chatbefehl-Ausgabe ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> werden die Ergebnismeldungen von in der Chat-Konsole eingegebenen Befehlen nicht mehr angezeigt und nicht mehr als \"[CHAT]\" in die Protokolldateien von <a href=\"\/Client-Server-Konzept\" title=\"Client-Server-Konzept\">Client und Server<\/a> geschrieben. Ausnahme: Chat-Befehle (z.B. \/say) werden weiterhin mit Anzeige und Protokollierung ausgef\u00fchrt. Beispiel: in der Einstellung <i>true<\/i> gibt der in der Chat-Konsole eingegebene <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/time\" title=\"Befehl\/time\">\/time<\/a> set day<\/code> die Ergebnismeldung \"Zeit auf 1000 gesetzt\" aus und schreibt ins Protokoll \"[CHAT] [Zeit auf 1000 gesetzt]\", bei <i>false<\/i> nicht. Siehe auch <i>commandBlockOutput<\/i> und <i>logAdminCommands<\/i>."
+    },
+    "showDeathMessages": {
+        "cmd": "showDeathMessages",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Sichtbarkeit von <a href=\"\/Tod\" title=\"Tod\">Todesmeldungen<\/a> im Chat ein\/aus. Standard = <i>true<\/i>. Bei <i>false<\/i> werden keine Todesmeldungen im Chat angezeigt."
+    },
+    "spawnRadius": {
+        "cmd": "spawnRadius",
+        "type": "integer",
+        "default": "true",
+        "value": "undefined",
+        "en": "Gibt den Radius an, in dem man um den Welt-Spawnpunkt erscheint. Standard = 10."
+    },
+    "spectatorsGenerateChunks": {
+        "cmd": "spectatorsGenerateChunks",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Gibt an, ob Spieler im <a href=\"\/Zuschauermodus\" title=\"Zuschauermodus\">Zuschauermodus<\/a> neue <a href=\"\/Chunk\" title=\"Chunk\">Chunks<\/a> generieren. Bei <i>false<\/i> fliegt der Spieler dann in ungeladene Chunks. Standard = <i>true<\/i>, Ausnahme: <a href=\"\/Hardcore_Modus\" title=\"Hardcore Modus\" class=\"mw-redirect\">Hardcore-Modus<\/a>"
+    },
+    "Freitext": {
+        "cmd": "Freitext",
+        "type": "boolean",
+        "default": "true",
+        "value": "undefined",
+        "en": "Punktestand f\u00fcr die <a href=\"\/Anzeigetafel\" title=\"Anzeigetafel\">Anzeigetafel<\/a>. Als <i>Freitext<\/i> kann ein beliebiges Wort eingegeben werden. Die so definierte Pseudo-Grundeinstellung wird vom <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/stats\" title=\"Befehl\/stats\">\/stats<\/a><\/code> verwendet, um den Punktestand eines oder mehrerer Spieler zu ver\u00e4ndern. Es k\u00f6nnen beliebig viele Pseudo-Grundeinstellungen eingegeben werden. Der Wert einer einmal eingegebenen Pseudo-Grundeinstellung kann ver\u00e4ndert, aber sie kann nicht mehr gel\u00f6scht werden. Allerdings scheint dieses umst\u00e4ndliche Verfahren \u00fcberfl\u00fcssig zu sein, weil man dasselbe Ergebnis auch einfacher erreichen kann (siehe <a href=\"\/Befehl\" title=\"Befehl\">Befehl<\/a> <code><a href=\"\/Befehl\/stats\" title=\"Befehl\/stats\">\/stats<\/a><\/code>)."
+    }
+}

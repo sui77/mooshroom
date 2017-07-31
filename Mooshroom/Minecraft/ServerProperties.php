@@ -42,11 +42,13 @@ class ServerProperties {
     public function set($key, $value = null) {
         if (is_array($key) && is_null($value)) {
             foreach ($key as $k => $v) {
+                echo $k . " " . $v . '<br>';
                 $this->_data[$k]['value'] = $v;
             }
         } else {
             $this->_data[$key]['value'] = $value;
         }
+
         $this->_write();
     }
 
@@ -60,7 +62,7 @@ class ServerProperties {
         fclose($fp);
 
         if ($this->_file != $this->_origFile) {
-            $this->_ssh->scpSend($this->_file, $this->_origFile);
+            echo $this->_ssh->scpSend($this->_file, $this->_origFile);
         }
     }
 
