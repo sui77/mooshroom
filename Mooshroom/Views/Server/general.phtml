@@ -54,6 +54,24 @@
             </div>
         </form>
 
+            <?=$this->server->getServerProperties()->get('query.port')?>
+            <?php
+            $Query = new \xPaw\MinecraftQuery( );
+
+            try
+            {
+                $Query->Connect( $this->server->getHost()->get('hostname'), $this->server->getServerProperties()->get('query.port') );
+
+                print_r( $Query->GetInfo( ) );
+                echo '<hr>players:';
+                print_r( $Query->GetPlayers( ) );
+            }
+            catch( MinecraftQueryException $e )
+            {
+                echo $e->getMessage( );
+            }
+
+            ?>
 
         <hr>
 
