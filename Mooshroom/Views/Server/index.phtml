@@ -1,6 +1,5 @@
 <div class="card">
 
-
     <div class="card-table">
 
         <table class="table table-striped">
@@ -12,10 +11,10 @@
             <th>Actions</th>
             </thead>
             <tbody>
-            <?php foreach ($this->servers as $s) {  ?>
+            <?php foreach ($this->servers as $s) { ?>
                 <tr>
                     <td><?=$s->get('id')?></td>
-                    <td><a href="/server/<?=$s->get('name')?>/general"><?=$s->get('name')?></a></td>
+                    <td><a href="/server/<?=$s->getId()?>/general"><?=$s->get('name')?></a></td>
                     <td><?=$s->get('host')?></td>
                     <td><?=$s->getStatus()?></td>
                     <td>...</td>
@@ -23,9 +22,6 @@
             <?php } ?>
             </tbody>
         </table>
-
-
-
 
     </div>
     <div class="card-footer text-center">

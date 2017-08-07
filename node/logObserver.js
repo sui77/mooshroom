@@ -28,13 +28,14 @@ console.log(data);
                 var name = tmp2[1];
                 var path = tmp2[2];
                 console.log("===" + name + "===");
-                console.log('observing ' + name + "\n");
+                console.log('observing ' + name + " (" + path + ")\n");
                 if (typeof tails[name] != 'undefined') {
                     tails[name].unwatch();
                     delete (tails[name]);
                 }
 
-                    tails[name]  = new Tail(path);
+                try {
+                    tails[name] = new Tail(path);
                     tails[name].name = name;
                     tails[name].on("line", function (data) {
                         socket.write(this.name + ' ' + data + '|||');
@@ -47,7 +48,10 @@ console.log(data);
                         delete(tails[name]);
                         console.log('ERROR: ', error);
                     });
-
+                } catch ( e) {
+                    delete(tails[name]);
+                    console.log(e.toString());
+                }
 
 
             }

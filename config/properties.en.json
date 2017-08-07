@@ -25,7 +25,13 @@
     },
     "difficulty": {
         "cmd": "difficulty",
-        "type": "integer (0-3)",
+        "type": "select",
+        "values" : {
+            "0": "Peaceful",
+            "1": "Easy",
+            "2": "Normal",
+            "3": "Hard"
+        },
         "default": "1",
         "value": "1",
         "en": "Defines the <a href=\"\/Difficulty\" title=\"Difficulty\">difficulty<\/a> (such as damage dealt by mobs and the way hunger and poison affects players) of the server.\r\n<dl>\r\n<dd><b>0<\/b> - Peaceful<\/dd>\r\n<dd><b>1<\/b> - Easy<\/dd>\r\n<dd><b>2<\/b> - Normal<\/dd>\r\n<dd><b>3<\/b> - Hard<\/dd>\r\n<\/dl>\r\n",
@@ -65,7 +71,13 @@
     },
     "gamemode": {
         "cmd": "gamemode",
-        "type": "integer (0-3)",
+        "type": "select",
+        "values" : {
+            "0": "Survival",
+            "1": "Creative",
+            "2": "Adventure",
+            "3": "Spectator"
+        },
         "default": "0",
         "value": "0",
         "en": "Defines the <a href=\"\/Game_mode\" title=\"Game mode\" class=\"mw-redirect\">mode of gameplay<\/a>.\r\n<dl>\r\n<dd><b>0<\/b> - Survival<\/dd>\r\n<dd><b>1<\/b> - Creative<\/dd>\r\n<dd><b>2<\/b> - Adventure<\/dd>\r\n<dd><b>3<\/b> - Spectator<\/dd>\r\n<\/dl>\r\n",
@@ -177,7 +189,13 @@
     },
     "op-permission-level": {
         "cmd": "op-permission-level",
-        "type": "integer (1-4)",
+        "type": "select",
+        "values" : {
+            "1": "Bypass spawn protection",
+            "2": "Singleplayer cheats",
+            "3": "Most multiplayer commands",
+            "4": "All commands"
+        },
         "default": "4",
         "value": "4",
         "en": "Sets the default permission level for ops when using \/op. All levels inherit abilities and commands from levels before them.\r\n<dl>\r\n<dd><b>1<\/b> - Ops can bypass spawn protection.<\/dd>\r\n<dd><b>2<\/b> - Ops can use all singleplayer cheats commands (except \/publish, as it is not on servers; along with \/debug) and use command blocks. Command blocks and Realms operators\/owners have this level.<\/dd>\r\n<dd><b>3<\/b> - Ops can use most multiplayer-exclusive commands (all except level 4 commands).<\/dd>\r\n<dd><b>4<\/b> - Ops can use all commands including \/stop, \/save-all, \/save-on, and \/save-off.<\/dd>\r\n<\/dl>\r\n",

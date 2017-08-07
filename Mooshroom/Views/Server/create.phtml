@@ -16,7 +16,7 @@
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <select name="host" class="form-control col-md-7 col-xs-12">
                                     <?php foreach ($this->hosts as $host) { ?>
-                                        <option value="<?=htmlspecialchars($host->getName())?>"><?=htmlspecialchars($host->getName() . ' | ' . $host->get('hostname') )?></option>
+                                        <option value="<?=htmlspecialchars($host->getId())?>"><?=htmlspecialchars($host->getName() . ' | ' . $host->get('hostname') )?></option>
                                     <?php } ?>
                                 </select>
                             </div>

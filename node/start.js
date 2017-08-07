@@ -45,24 +45,3 @@ redis.smembers('mcadmin:hosts', function(err, r) {
    console.log(r);
 });
 
-
-// log socket server
-/*
-var redis = require("redis").createClient( serverConfig.redis  )
-var net = require('net');
-var server = net.createServer(function(socket) {
-
-    socket.on('data', function(data) {
-        var tmp = data.toString().split(' ');
-        tmp.pop();
-        myIo.io.to(tmp[0]).emit('log', data.toString().trim() + "\n");
-        redis.lpush('mcadmin:log:' + tmp[0], data.toString().trim() );
-    });
-
-    socket.on('error', function(e) {
-        console.log(e);
-    });
-});
-
-server.listen(1337, '127.0.0.1');
-*/

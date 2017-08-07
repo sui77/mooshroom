@@ -40,7 +40,7 @@ class Hosts extends KeyValueModelAbstract {
 
     public function getSupervisor() {
         if (is_null($this->_supervisor)) {
-            $this->_supervisor = new SupervisorRpcClient($this->get('supervisorapi'));
+            $this->_supervisor = new SupervisorRpcClient( 'http://' . $this->get('supervisorapiuser') . ':' . $this->get('supervisorapipass') . '@' . $this->get('hostname') . ':' . $this->get('supervisorapiport') . '/RPC2');
         }
         return $this->_supervisor;
     }

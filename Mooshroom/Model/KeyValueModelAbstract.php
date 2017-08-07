@@ -11,8 +11,12 @@ abstract class KeyValueModelAbstract {
 
     protected static $_redisKey = 'mcadmin:undefined';
     protected $_redis;
+    protected $_id;
 
-    public function get($key, $default = '') {
+    public function get($key = null, $default = '') {
+        if ($key == null) {
+            return $this->_data;
+        }
         return isset($this->_data[$key]) ? $this->_data[$key] : $default;
     }
 
@@ -20,7 +24,11 @@ abstract class KeyValueModelAbstract {
      * @return null|string
      */
     public function getName() {
-        return $this->_name;
+        return $this->get('name');
+    }
+
+    public function getId() {
+        return $this->_id;
     }
 
     public function set($key, $value = null) {
@@ -33,7 +41,7 @@ abstract class KeyValueModelAbstract {
         foreach ($key as $k => $v) {
             if (!isset($this->_data[$k]) || $this->_data[$k] != $v) {
                 $this->_data[$k] = $v;
-                $redis->hset(static::$_redisKey . ':' . $this->getName(), $k, $v);
+                $redis->hset(static::$_redisKey . ':' . $this->getId(), $k, $v);
                 $m = 'onChange_' . $k;
                 if (method_exists($this, $m)) {
                     $this->$m($v);
@@ -42,40 +50,40 @@ abstract class KeyValueModelAbstract {
         }
     }
 
-    protected function __construct($_name) {
-        $this->_name = $_name;
+    protected function __construct($_id) {
+        $this->_id = $_id;
         $this->_redis = new Client( Config::get('redis') );
         $this->reload();
     }
 
     public function reload() {
-        if ($this->_data = $this->_redis->hgetall(static::$_redisKey . ':' . $this->getName())) {
+        if ($this->_data = $this->_redis->hgetall(static::$_redisKey . ':' . $this->getId())) {
             return;
         }
         $this->_name = null;
     }
 
     public function delete() {
-        $this->_redis->srem(static::$_redisKey, $this->getName() );
-        $this->_redis->del(static::$_redisKey . ':' . $this->getName() );
+        $this->_redis->srem(static::$_redisKey, $this->getId() );
+        $this->_redis->del(static::$_redisKey . ':' . $this->getId() );
     }
 
     public static function create($name, $data = null) {
-        if (! ($s = static::getInstance($name))) {
+
 
             $redis = new Client(Config::get('redis'));
             $id = $redis->hincrby('IDs', static::$_redisKey, 1);
-            $redis->sadd(static::$_redisKey, $name);
-            $redis->hset(static::$_redisKey . ':' . $name, 'name', $name);
-            $redis->hset(static::$_redisKey . ':' . $name, 'id', $id);
-            $s = static::getInstance($name);
+            $redis->sadd(static::$_redisKey, $id);
+            $redis->hset(static::$_redisKey . ':' . $id, 'name', $name);
+            $redis->hset(static::$_redisKey . ':' . $id, 'id', $id);
+            $s = static::getInstance($id);
 
             if (is_array($data)) {
                 foreach ($data as $k => $v) {
                     $s->set($k, $v);
                 }
             }
-        }
+
         return $s;
     }
 
@@ -84,11 +92,12 @@ abstract class KeyValueModelAbstract {
      * @param $name
      * @return $this
      */
-    public static function getInstance($name) {
-        $key = get_called_class() . '_' . $name;
+    public static function getInstance($id) {
+
+        $key = get_called_class() . '_' . $id;
         if (!isset(self::$_instances[$key])) {
-            $i = new static($name);
-            if ($i->getName() === null) {
+            $i = new static($id);
+            if ($i->getId() === null) {
                 return false;
             }
             self::$_instances[$key] = $i;

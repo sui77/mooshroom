@@ -6,15 +6,13 @@
             <thead>
             <th>ID</th>
             <th>Name</th>
-            <th>Hostname/IP</th>
             <th>Actions</th>
             </thead>
             <tbody>
-            <?php foreach ($this->hosts as $host) {  ?>
+            <?php foreach (\Mooshroom\Model\Worlds::getAll() as $world) {  ?>
                 <tr>
                     <td><?=$host->get('id')?></td>
                     <td><?=$host->get('name')?></td>
-                    <td><?=$host->get('hostname')?></td>
                     <td><a href="/hosts/<?=$host->getId()?>/detail"><i class="ti-pencil"></i></a></td>
                 </tr>
             <?php } ?>
@@ -23,11 +21,8 @@
 
     </div>
 
-    <div class="card-content">
-        To add a new host, log in as root to the new server and execute the installer script:
-        <div style="font-family:courier,serif;color:#eee;background-color:#000;padding:5px;">
-            wget -O - http://<?=$_SERVER['SERVER_NAME']?>/api/getinstaller &gt; install.php; php install.php node<br>
-        </div>
+    <div class="card-footer text-center">
+        <a href="/worlds/create/new"><button class="btn btn-success btn-center">Create new world</button></a>
     </div>
 
 </div>

@@ -38,7 +38,10 @@ class Api extends ControllerAbstract {
             'port' => $data['port'],
             'sshUsername' => $data['sshUsername'],
             'home' => $data['home'],
-            'supervisorapi' => $data['supervisor']
+            //'supervisorapi' => $data['supervisor'],
+            'supervisorapiuser' => $data['supervisorapiuser'],
+            'supervisorapipass' => $data['supervisorapipass'],
+            'supervisorapiport' => $data['supervisorapiport'],
         ));
         print_r($data);
     }

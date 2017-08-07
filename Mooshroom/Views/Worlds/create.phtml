@@ -1,0 +1,78 @@
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-content">
+
+
+            <form class="form-horizontal form-label-left" method="post">
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="name" value="<?=htmlspecialchars($this->formdata['name'])?>" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Hostname/IP</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="hostname" value="<?=htmlspecialchars($this->formdata['hostname'])?>" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">ssh port</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="port" value="<?=htmlspecialchars($this->formdata['port'])?>" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">ssh username</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="sshUsername" value="<?=htmlspecialchars($this->formdata['sshUsername'])?>" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">ssh home directory</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="home" value="<?=htmlspecialchars($this->formdata['home'])?>" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Supervisor API Username</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="supervisorapiuser" value="<?=htmlspecialchars($this->formdata['supervisorapiuser'])?>" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Supervisor API Password</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="supervisorapipass" value="<?=htmlspecialchars($this->formdata['supervisorapipass'])?>" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Supervisor API Port</label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input type="text" name="supervisorapiport" value="<?=htmlspecialchars($this->formdata['supervisorapiport'])?>" class="form-control col-md-7 col-xs-12">
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+

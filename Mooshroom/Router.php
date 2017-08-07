@@ -6,19 +6,57 @@ use Mooshroom\Controller\Error;
 
 class Router {
 
+    private static $_instance;
+
     private $_routesConfig = array();
 
-    private $_params = array(
-        'controller' => 'Error',
-        'action' => 'error404',
-    );
+    private $_params = array();
 
-    public function __construct() {
+    private function __construct() {
         $this->_routesConfig = include Config::get('baseDir') . '/config/routes.inc.php';
     }
 
-
     public function route($uri) {
+        $tmp = explode('?', $uri);
+        $path = explode('/', $tmp[0] );
+
+
+        $currentRoute = '';
+
+        foreach ($this->_routesConfig as $name => $route) {
+            $routePath = explode('/', $route['url']);
+
+            foreach ($routePath as $n => $sub) {
+
+                if (substr($sub, 0, 1) != ':' && isset($path[$n]) && $sub != $path[$n]) {
+                    break;
+                } elseif (isset($path[$n]) && $sub == $path[$n] && $currentRoute == '') {
+                    $currentRoute = $name;
+                } elseif (substr($sub, 0, 1) == ':') {
+                    if (isset($path[$n])) {
+                        $this->_params[substr($sub, 1)] = $path[$n];
+                    } else if (isset($route['defaults'][substr($sub, 1)])) {
+                        $this->_params[substr($sub, 1)] = $route['defaults'][substr($sub, 1)];
+                    }
+                    $currentRoute = $name;
+                }
+            }
+        }
+        if ($currentRoute != null) {
+            foreach ($this->_routesConfig[$currentRoute]['defaults'] as $k => $v) {
+                if (!isset($this->_params[$k])) {
+                    $this->_params[$k] = $v;
+                }
+            }
+        } else {
+            $this->_params['controller'] = 'Error';
+            $this->_params['action'] = 'error404';
+        }
+
+        return $this;
+    }
+
+    public function xroute($uri) {
         $tmp = explode('?', $uri);
 
         foreach ($this->_routesConfig as $name => $route) {
@@ -45,6 +83,16 @@ class Router {
         return $this;
     }
 
+    public function url($routeName, $params = array()) {
+        return;
+        $r = $this->_routesConfig[$routeName]['regex'];
+        $r = stripslashes(preg_replace('/^\^|\$$/', '', $r));
+        foreach ($params as $param) {
+            $r = preg_replace('/\(.*?\)/', $param, $r);
+        }
+        echo $r;
+        exit();
+    }
 
     public function execute() {
         $controllerClass =  '\Mooshroom\Controller\\' . $this->_params['controller'];
@@ -64,4 +112,10 @@ class Router {
         $controller->execute($action);
     }
 
+    public static function getInstance() {
+        if (is_null(self::$_instance)) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
 }

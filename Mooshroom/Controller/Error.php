@@ -6,6 +6,7 @@ class Error extends ControllerAbstract {
 
     public function init() {
         parent::init();
+        $this->title = 'Error';
         $this->assign('errormsg', $this->getParam('errormsg'));
     }
 

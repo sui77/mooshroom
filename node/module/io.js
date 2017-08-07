@@ -36,13 +36,13 @@ var pio = {
         socket.join('all');
 
         socket.on('auth', function(d, cb) {
-            console.log('auth', d);
+//            console.log('auth', d);
             var cb = typeof cb == "function" ? cb : function() {};
             self.isTokenValid(d.username, d.token, function(r) {
                 if (r) {
                     self.redis.hgetall('mcadmin:user:' + d.username, function(err, r2) {
-                        console.log('mcadmin:user:' + d.username);
-                        console.log(r2);
+//                        console.log('mcadmin:user:' + d.username);
+//s                        console.log(r2);
                         if (r2 != null) {
                             socket.userdata = r2;
                             socket.userdata.name = d.username;

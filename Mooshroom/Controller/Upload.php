@@ -34,9 +34,9 @@ class Upload extends ControllerAbstract {
             fputs($fp, $f);
             fclose($fp);
 
-            $host = \Mooshroom\Model\Hosts::getInstance('localhost');
+            $host = \Mooshroom\Model\Hosts::getInstance('1');
             $host->scpSend($tmp, Config::get('files.plugins.localDir') . '/' . $filename );
-
+            $host->ssh('chmod 777 "' . Config::get('files.plugins.localDir') . '/' . $filename . '"' );
 
         }
 
@@ -51,13 +51,15 @@ class Upload extends ControllerAbstract {
         $tmp = explode('/', $url);
         $filename = $tmp[ count($tmp) - 1];
 
-        if (false && preg_match(Config::get('files.' . $this->getParam('type') . '.type'), $filename)) {
+        if (preg_match(Config::get('files.' . $this->getParam('type') . '.type'), $filename)) {
             $tmp = Config::get('tmpDir') . '/' . $filename;
             copy($url, $tmp);
 
 
-            $host = \Mooshroom\Model\Hosts::getInstance('localhost');
+
+            $host = \Mooshroom\Model\Hosts::getInstance('1');
             $host->scpSend($tmp, Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $filename );
+            $host->ssh('chmod 777 "' . Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $filename . '"' );
             echo json_encode(
                 array($filename)
             );
@@ -77,8 +79,9 @@ class Upload extends ControllerAbstract {
         }
 
         if (file_exists($_FILES['files']['tmp_name'][0]) && preg_match(Config::get('files.' . $this->getParam('type') . '.type'), $_FILES['files']['name'][0] )) {
-            \Mooshroom\Model\Hosts::getInstance('localhost')->scpSend( $_FILES['files']['tmp_name'][0], Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $_FILES['files']['name'][0]);
-
+            $host = \Mooshroom\Model\Hosts::getInstance('1');
+            $host->scpSend( $_FILES['files']['tmp_name'][0], Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $_FILES['files']['name'][0]);
+            $host->ssh('chmod 777 "' . Config::get('files.' . $this->getParam('type') . '.localDir') . '/' . $_FILES['files']['name'][0] . '"' );
             echo json_encode(
                 array( $_FILES['files']['name'][0] )
             );

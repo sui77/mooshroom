@@ -10,6 +10,13 @@ return
             'icon'   => 'ti-server',
         ),
         array(
+            'name'   => 'worlds',
+            'url'    => '/worlds',
+            'title'  => 'Minecraft Worlds',
+            'active' => false,
+            'icon'   => 'ti-world',
+        ),
+        array(
             'name'  => 'hosts',
             'url'   => '/hosts',
             'title' => 'Hosts',

@@ -50,15 +50,16 @@ class Server extends ControllerAbstract {
 
         if (isset($_POST['name'])) {
             $this->formdata = $_POST;
-            \Mooshroom\Model\Server::create($_POST['name'], $_POST);
-            header('Location: /server/' . urlencode($_POST['name']) . '/general');
+            $s = \Mooshroom\Model\Server::create($_POST['name'], $_POST);
+
+            header('Location: /server/' . $s->getId() . '/general');
         }
 
     }
 
     public function accepteulaAction() {
         $this->server->acceptEula();
-        header('Location: ' . $_SESSION['lastUri']);
+        header('Location: /server/' . $this->server->getId() . '/general');
         exit();
     }
 
@@ -67,13 +68,13 @@ class Server extends ControllerAbstract {
         if (isset($_POST['sp'])) {
             $this->server->set('restartneeded', 1);
             $this->server->getServerProperties()->set( $_POST['sp'] );
-            header('Location: /server/' . $this->server->getName() . '/serverproperties');
+            header('Location: /server/' . $this->server->getId() . '/serverproperties');
         }
     }
 
     public function gamerulesAction() {
         if (isset($_POST['action'])) {
-            $this->server->getHost()->getSupervisor()->sendProcessStdin( 'moo_'.$this->server->getName(), 'gamerule ' . $_POST['key'] . ' ' . $_POST['value'] );
+            $this->server->cmd( 'gamerule ' . $_POST['key'] . ' ' . $_POST['value'] );
             echo "X";
             echo '/gamerule ' . $_POST['key'] . ' ' . $_POST['value'];
             exit();
@@ -125,9 +126,19 @@ class Server extends ControllerAbstract {
 
     }
 
+    public function addpluginAction() {
+        $this->server->addPlugin($_POST['name']);
+        exit('ok');
+    }
+
+    public function removepluginAction() {
+        $this->server->removeplugin($_POST['name']);
+        exit('ok');
+    }
+
     public function switchpluginAction() {
         $this->server->set('restartneeded', 1);
-        if ($_POST['checked'] == 'true') {
+        if ($_POST['value'] == 'true') {
             $this->server->enablePlugin( $_POST['name'] );
         } else {
             $this->server->disablePlugin( $_POST['name'] );

@@ -10,7 +10,7 @@
                         <a href="<?=$this->server->getEulaUrl()?>"><?=$this->server->getEulaUrl()?></a>
                     </div>
                     <div class="col-xs-2">
-                        <a href="/server/<?=$this->server->getName()?>/accepteula"><button class="btn btn-success pull-right">Agree</button></a>
+                        <a href="/server/<?=$this->server->getId()?>/accepteula"><button class="btn btn-success pull-right">Agree</button></a>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
 
 <script>
     $(function() {
-        myIo.emit('join', '<?=$this->server->getName()?>');
+        myIo.emit('join', '<?=$this->server->getId()?>');
 
         $('.js-server-control').click(function() {
             $('.js-server-status').hide();
@@ -43,7 +43,7 @@
             } else {
                 $('.js-server-status-stopping').show();
             }
-            $.post('/server/<?=$this->server->getName()?>/' + $(this).data('action'), {
+            $.post('/server/<?=$this->server->getId()?>/' + $(this).data('action'), {
             }, function (data) {
 
 

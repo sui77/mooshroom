@@ -19,7 +19,7 @@ class Configfiles {
         $files = $this->_host->ssh('du -a ' . $this->_gameDir);
         $files = explode("\n", $files);
         foreach ($files as $f) {
-            if (preg_match('/\.yml|\.csv|\.properties|\.json$/', $f)) {
+            if (preg_match('/\.yml|\.csv|\.properties|\.json$/', $f) && !preg_match('/\/world\/(stats|advancements)\//', $f)) {
                 $configfiles[] = explode('/', 'root' . preg_replace('/^[^\/]*/', '', trim(str_replace($this->_gameDir, '', $f))));
             }
         }

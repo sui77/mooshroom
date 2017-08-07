@@ -6,51 +6,88 @@
 
         <?php include '_tabs.phtml'; ?>
 
+
+
         <div class="card-content">
 
-            <input class="js-plugins">
-
-            <?php
-                $plugins = $this->server->getPlugins();
-                foreach ($plugins as $name => $status) { ?>
-                <div style="margin:5px;">
-                    <input type="checkbox" class="js-switch js-plugin" name="<?=htmlspecialchars($name)?>" <?=($status?'checked':'')?> /> <?=htmlspecialchars($name)?><br>
+            <form class="form-horizontal js-addplugin" action="/server/<?=$this->server->getId()?>/addplugin">
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="plugin">Available Plugins:</label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="input-group">
+                    <select name="name" class="form-control col-md-7 col-xs-12">
+                        <?php foreach (\Mooshroom\Model\Binaries::getAll('plugins') as $plugin) { ?>
+                            <option value="<?=htmlspecialchars($plugin)?>"><?=htmlspecialchars($plugin)?></option>
+                        <?php } ?>
+                    </select>
+                        <span class="input-group-btn">
+                            <input class="btn btn-default btngrp" type="submit" value="Add">
+                        </span>
+                    </div>
                 </div>
-            <?php } ?>
-            <?php if (count($plugins) == 0) { ?>
-                No Plugins installed.
-            <?php } ?>
+            </div>
+            </form>
+            <hr>
+        </div>
+
+
+        <div class="card-content">
+            <?php $plugins = $this->server->getPlugins(); ?>
+            <table class="table table-responsive table-striped">
+                <thead>
+                <th>Name</th>
+                <th>Actions</th>
+                </thead>
+                <tbody>
+                <?php if (count($plugins) == 0) { ?>
+                    <tr class="">
+                        <td colspan="2">No plugins yet.</td>
+                    </tr>
+                <?php } ?>
+                <?php foreach ($plugins as $name => $status) { ?>
+                    <tr class="plugin-<?=$name?>">
+                        <td><?=$name?></td>
+                        <td>
+                            <input class="js-gamerule switch-icon switch" <?=($status) ? 'checked' : '' ?> type="checkbox" data-name="<?=htmlspecialchars($name)?>" value="true" data-url="/server/<?=$this->server->getId()?>/switchplugin">
+                        </td>
+                    </tr>
+                <?php } ?>
+                </tbody>
+            </table>
+
+
         </div>
 
     </div>
 </div>
 
+
 <script>
 
-    var substringMatcher = function(q, cb) {
+    $(function() {
 
-        var strs = <?=json_encode( \Mooshroom\Model\Binaries::getAll('plugins'))?>;
-        var matches, substringRegex;
-        matches = [];
-        substrRegex = new RegExp(q, 'i');
-        $.each(strs, function(i, str) {
-            if (substrRegex.test(str)) {
-                matches.push({name: str});
-            }
+        $('.js-addplugin').submit(function(e) {
+            e.preventDefault();
+            $.post($(this).attr('action'), $(this).serialize(), function(data) {
+                //$('input[name=cmd]').val('');
+            });
         });
-        cb(matches);
-    };
 
-    $('input.js-plugins').tagsinput({
-        tagClass: function(item) {
-            return "label label-primary label-success";
-        },
-        typeaheadjs: {
-            name: 'aclgroups',
-            displayKey: 'name',
-            valueKey: 'name',
-            source: substringMatcher //aclgroups.ttAdapter()
-        },
+
+        $('.switch').bootstrapSwitch({
+            onColor: 'primary',
+            onSwitchChange: function() {
+                $.post($(this).data('url'), {
+                    action: 'enable',
+                    name: $(this).data('name'),
+                    value: $(this).prop('checked')
+                });
+            }
+
+        });
+
+
+
 
     });
 </script>

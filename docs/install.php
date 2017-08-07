@@ -383,7 +383,10 @@ class MooshroomInstaller {
         fputs($fp, "HSET mcadmin:hosts:localhost home " . $this->_linuxHomeDir. "\r\n");
         fputs($fp, "HSET mcadmin:hosts:localhost id 1\r\n");
         fputs($fp, "HSET mcadmin:hosts:localhost port 22\r\n");
-        fputs($fp, "HSET mcadmin:hosts:localhost supervisorapi http://" . $this->_supervisorRpc['username'] . ":" . $this->_supervisorRpc['password'] . "@localhost:" . $this->_supervisorRpc['port'] . "/RPC2\r\n");
+//        fputs($fp, "HSET mcadmin:hosts:localhost supervisorapi http://" . $this->_supervisorRpc['username'] . ":" . $this->_supervisorRpc['password'] . "@localhost:" . $this->_supervisorRpc['port'] . "/RPC2\r\n");
+        fputs($fp, "HSET mcadmin:hosts:localhost supervisorapiuser " . $this->_supervisorRpc['username'] . "\r\n");
+        fputs($fp, "HSET mcadmin:hosts:localhost supervisorapipass " . $this->_supervisorRpc['password'] . "\r\n");
+        fputs($fp, "HSET mcadmin:hosts:localhost supervisorapiport " . $this->_supervisorRpc['port'] . "\r\n");
         fputs($fp, "SADD mcadmin:user " . $this->_cpUser . "\r\n");
         fputs($fp, "HSET mcadmin:user:" . $this->_cpUser . " id 1\r\n");
         fputs($fp, "HSET mcadmin:user:" . $this->_cpUser . " username " . $this->_cpUser . "\r\n");

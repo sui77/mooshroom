@@ -30,7 +30,7 @@
                         <td><?=$op['name']?><br><?=$op['uuid']?></td>
                         <?php if ($this->server->isRunning()) { ?>
                             <td>
-                                <a href="#" data-server="<?=$this->server->getName()?>" data-cmd="deop <?=$op['name']?>" class="js-scmd btn btn-simple btn-danger btn-icon remove"><i class="ti-close"></i></a>
+                                <a href="#" data-server="<?=$this->server->getId()?>" data-cmd="deop <?=$op['name']?>" class="js-scmd btn btn-simple btn-danger btn-icon remove"><i class="ti-close"></i></a>
                             </td>
                         <?php } ?>
                     </tr>
@@ -68,8 +68,7 @@
 
     $('#addwl').submit(function(e) {
         e.preventDefault();
-        $.post('/server/<?=$this->server->getName()?>/ops', {username: $('#input-field').val()
-        }, function (data) {
+        $.post('/ajax/scmd', { server: <?=$this->server->getId()?>, cmd: 'op ' + $('#input-field').val() }, function (data) {
             $('#input-field').val('')
         });
 

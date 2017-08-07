@@ -24,10 +24,16 @@
 
                             <?php if ($v['type'] == 'boolean') { ?>
 
-                                <input class="js-gamerule switch-icon switch" <?=($v['value'] == 'true') ? 'checked' : '' ?> type="checkbox" data-name="<?=$k?>" value="true" data-url="/server/<?=$this->server->getName()?>/gamerules">
+                                <input class="js-gamerule switch-icon switch" <?=($v['value'] == 'true') ? 'checked' : '' ?> type="checkbox" data-name="<?=$k?>" value="true" data-url="/server/<?=$this->server->getId()?>/gamerules">
                                 <input type="hidden" id="hidden-<?=$k?>" name="sp[<?=$k?>]" value="<?=$v['value']?>">
+                            <?php } else if (preg_match('/^select/', $v['type'], $m)) { ?>
+                                <select name="sp[<?=$name?>]" class="form-control col-md-7 col-xs-12">
+                                    <?php foreach ($v['values'] as $k2 => $v2) { ?>
+                                        <option value="<?=htmlspecialchars($k2)?>" <?=($v['value']== $k2 ? 'selected' : '')?>><?=htmlspecialchars($k2 . ' - ' . $v2)?></option>
+                                    <?php } ?>
+                                </select>
 
-                            <?php } else if (preg_match('/^integer/', $v['type'])) { ?>
+                            <?php } else if (preg_match('/^integer/', $v['type'], $m)) { ?>
                                 <input type="text" name="sp[<?=htmlspecialchars($k)?>]" value="<?=htmlspecialchars($v['value'])?>" class="form-control col-md-7 col-xs-12">
                             <?php } else if ($v['type'] == 'string') { ?>
                                 <input type="text" name="sp[<?=htmlspecialchars($k)?>]" value="<?=htmlspecialchars($v['value'])?>" class="form-control col-md-7 col-xs-12">

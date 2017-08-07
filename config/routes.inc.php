@@ -3,77 +3,90 @@
 return array(
 
     'home' => array(
-        'regex' => '^\/$',
-        'controller' => 'Server',
-        'action' => 'index',
-        'params' => array(),
+        'url' => '/',
+        'defaults' => array(
+            'controller' => 'Server',
+            'action' => 'index',
+        )
     ),
 
     'hosts_action' => array(
-        'regex' => '^\/hosts\/(.*)',
-        'controller' => 'Hosts',
-        'params' => array('action'),
+        'url' => '/hosts/:hostname/:action',
+        'defaults' => array(
+            'controller' => 'Hosts',
+            'action' => 'index',
+        )
     ),
 
     'hosts' => array(
-        'regex' => '^\/hosts',
-        'controller' => 'Hosts',
+        'url' => '/hosts',
         'action' => 'index',
-        'params' => array(),
+        'defaults' => array(
+            'controller' => 'Hosts',
+            'action' => 'index',
+        )
+    ),
+
+    'worlds_action' => array(
+        'url' => '/worlds/:action',
+        'defaults' => array(
+            'controller' => 'Worlds',
+            'action' => 'index',
+        )
     ),
 
 
     'upload' => array(
-        'regex' =>  '^\/upload\/(.*)\/(.*)',
-        'controller' => 'Upload',
-        'params' => array('action', 'type'),
+        'url' => '/upload/:action/:type',
+        'defaults' => array(
+            'controller' => 'Upload',
+            'action' => 'index',
+        )
     ),
 
 
 
-    'server_add' => array(
-        'regex' => '^\/server\/add',
-        'controller' => 'Server',
-        'action' => 'create',
-        'params' => array(),
-    ),
+
 
     'server_delete' => array(
-        'regex' => '^\/server\/delete\/(.*)\/(.*)',
-        'controller' => 'Server',
-        'action' => 'delete',
-        'params' => array('server', 'token'),
+        'url' => '/server/delete/:server/:token',
+        'defaults' => array(
+            'controller' => 'Server',
+            'action' => 'index',
+        )
     ),
 
     'server_action' => array(
-        'regex' => '^\/server\/(.*)\/(.*)',
-        'controller' => 'Server',
-        'params' => array('server', 'action'),
+        'url' => '/server/:server/:action',
+        'defaults' => array(
+            'controller' => 'Server',
+            'action' => 'index',
+        )
     ),
 
-    'server' => array(
-        'regex' => '^\/server',
-        'controller' => 'Server',
-        'action' => 'index',
-        'params' => array(),
-    ),
+
 
     'ajax' => array(
-        'regex' => '^\/ajax\/(.*)',
-        'controller' => 'Ajax',
-        'params' => array('action'),
+        'url' => '/ajax/:action',
+        'defaults' => array(
+            'controller' => 'Ajax',
+            'action' => 'index',
+        )
     ),
 
     'api' => array(
-        'regex' => '^\/api\/(.*)',
-        'controller' => 'Api',
-        'params' => array('action'),
+        'url' => '/api/:action',
+        'defaults' => array(
+            'controller' => 'Api',
+            'action' => 'index',
+        )
     ),
 
     'logout' => array(
-        'regex' => '^\/logout',
-        'controller' => 'Index',
-        'action' => 'logout',
-        'params' => array(),
+        'url' => '/logout',
+        'defaults' => array(
+            'controller' => 'Index',
+            'action' => 'logout',
+        )
     )
 );

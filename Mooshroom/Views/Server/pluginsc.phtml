@@ -45,7 +45,7 @@ function rprintFiles(&$files, $d = 0, $fullpath = './', $baseUrl) {
                 <div class="card-content">
                     <?php
                         $files = $s->getConfigfiles()->getFiles();
-                        rprintFiles($files['root'], 25, './', '/server/' . $s->getName() . '/pluginsc');
+                        rprintFiles($files['root'], 25, './', '/server/' . $s->getId() . '/pluginsc');
                     ?>
                 </div>
             </div>

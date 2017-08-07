@@ -17,7 +17,7 @@
                     Whitelist is not enabled.
                 </div>
                 <div class="col-xs-6">
-                    <a href="#" data-server="<?=$this->server->getName()?>" data-cmd="whitelist on" class="js-scmd btn btn-danger pull-right">enable whitelist</a>
+                    <a href="#" data-server="<?=$this->server->getId()?>" data-cmd="whitelist on" class="js-scmd btn btn-danger pull-right">enable whitelist</a>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
                     <td><?=$op['name']?><br><?=$op['uuid']?></td>
                     <?php if ($this->server->isRunning()) { ?>
                         <td>
-                        <a href="#" data-server="<?=$this->server->getName()?>" data-cmd="whitelist remove <?=$op['name']?>" class="js-scmd btn btn-simple btn-danger btn-icon remove"><i class="ti-close"></i></a>
+                        <a href="#" data-server="<?=$this->server->getId()?>" data-cmd="whitelist remove <?=$op['name']?>" class="js-scmd btn btn-simple btn-danger btn-icon remove"><i class="ti-close"></i></a>
                         </td>
                     <?php } ?>
                 </tr>
@@ -82,11 +82,10 @@
     });
 
     $('#addwl').submit(function(e) {
-            e.preventDefault();
-            $.post('/server/<?=$this->server->getName()?>/whitelist', {username: $('#input-field').val()
-            }, function (data) {
-                $('#input-field').val('')
-            });
+        e.preventDefault();
+        $.post('/ajax/scmd', { server: <?=$this->server->getId()?>, cmd: 'whitelist add ' + $('#input-field').val() }, function (data) {
+            $('#input-field').val('')
+        });
 
     });
 

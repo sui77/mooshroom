@@ -16,7 +16,7 @@ class Ajax extends ControllerAbstract {
 
     public function scmdAction() {
         $server = \Mooshroom\Model\Server::getInstance( $_POST['server'] );
-        $server->getHost()->getSupervisor()->sendProcessStdin( 'moo_' . $_POST['server'], $_POST['cmd'] );
+        $server->cmd($_POST['cmd'] );
         echo 'ok';
         exit();
     }

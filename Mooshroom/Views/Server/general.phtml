@@ -4,8 +4,8 @@
 
     <div class="card">
         <?php include '_tabs.phtml'; ?>
-        <div class="content">
-        <form class="form-horizontal form-label-left" method="post">
+        <div class="card-content">
+        <form class="form-horizontal" method="post">
 
             <div class="form-group">
                 <label class="col-md-3 col-sm-3 col-xs-12" style="text-align:right" for="name">Name</label>
@@ -53,7 +53,7 @@
                 </div>
             </div>
         </form>
-
+<?php /*
             <?=$this->server->getServerProperties()->get('query.port')?>
             <?php
             $Query = new \xPaw\MinecraftQuery( );
@@ -70,7 +70,7 @@
             {
                 echo $e->getMessage( );
             }
-
+*/
             ?>
 
         <hr>

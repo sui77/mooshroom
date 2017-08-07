@@ -2,29 +2,22 @@ var client = {
 
     _io: null,
 
-    _name: '',
-
     _client: null,
 
     _isConnected: false,
 
     _buf: '',
 
+    _data: [],
+
     _gameRules: [],
 
-    observe: function (name) {
-        console.log("observe " + name);
+    observe: function (id) {
         var self = this;
-        self._redis.hmget('mcadmin:server:' + name, 'name', 'host', function(err, r2) {
-                    console.log(r2);
-                    console.log(n + " " + self._name + "  | " + r2[1]);
-                    if (self._name == r2[1]) {
-                        console.log('client write...');
-                        self._redis.hget('mcadmin:hosts:' + self._name, 'home', function(err, r3) {
-
-                            self._client.write('observe ' + r2[0].trim() + ' ' + r3 + '/moo_' + r2[0].trim() + '/logs/latest.log|||');
-                        });
-
+        self._redis.hmget('mcadmin:server:' + id, 'logfile', 'host', function(err, r) {
+                    if (self._data['id'] == r[1]) {
+                        console.log('observe ' + id + ' ' + r[0] + '|||');
+                        self._client.write('observe ' + id + ' ' + r[0] + '|||');
                     }
 
         });
@@ -62,7 +55,7 @@ var client = {
 
         this._client.on('error', function(ex) {
             self._isConnected = false;
-            console.log(ex);
+            //console.log(ex);
         });
 
         this._client.on('data', function(data) {
@@ -85,8 +78,8 @@ var client = {
                     }
                 } );
 
-                console.log(line);
-                console.log(self._gameRules.join("|"));
+                console.log(name + " " + line);
+
                 var match;
                 if (match = line.match(/\[Server thread\/INFO\]: Game rule (.*?) has been updated to (.*)/)) {
 
@@ -149,12 +142,18 @@ var client = {
         });
     },
 
-    init: function(host, port, name, io, gameRules) {
+    init: function(host, port, id, io, gameRules) {
         this._io = io;
-        this._name = name;
         this._gameRules = gameRules;
+
         self = this;
-        setInterval(function() { self.connect(host, port); } , 1000);
+        self._redis.hgetall('mcadmin:hosts:' + id, function(err, r) {
+            console.log('init ' + id);
+            console.log(r);
+            self._data = r;
+            setInterval(function() { self.connect(host, port); } , 1000);
+        });
+
     },
 
 }

@@ -4,19 +4,17 @@ namespace Mooshroom\Model;
 
 use Mooshroom\Config;
 use Mooshroom\Configfiles;
-use Mooshroom\JobQueue;
-use Mooshroom\MCServerStatus\Minecraft\Stats;
 use Mooshroom\Minecraft\GameRules;
 use Mooshroom\Minecraft\ServerProperties;
-use Mooshroom\Ssh;
-use Mooshroom\SupervisorRpcClient;
 use Predis\Client;
 
 class Server extends KeyValueModelAbstract {
 
     protected static $_redisKey = 'mcadmin:server';
 
-    private $_status = null;
+    protected function __construct($_name) {
+        parent::__construct($_name);
+    }
 
     protected function onChange_memory($value) {
         $this->set('restartneeded', 1);
@@ -28,17 +26,18 @@ class Server extends KeyValueModelAbstract {
         $this->_setJar();
     }
 
-    protected function __construct($_name) {
-        parent::__construct($_name);
+    public function getGameDirectory() {
+        return $this->getHost()->get('home') . '/moo_' . $this->getId() . '_' . $this->getName();
     }
 
-    public function getGameDirectory() {
-        return $this->getHost()->get('home') . '/moo_' . $this->getName();
+    public function getProcessName() {
+        return 'moo_' . $this->getId() . '_' . $this->getName();
     }
 
     public function getStatus($refresh = true) {
+
         if ($refresh) {
-            $status = $this->getHost()->getSupervisor()->getProcessInfo('moo_' . $this->getName(), $refresh);
+            $status = $this->getHost()->getSupervisor()->getProcessInfo($this->getProcessName(), $refresh);
 
             if (in_array($status['statename'], array('STOPPED', 'BACKOFF', 'EXITED', 'FATAL'))) {
                 $this->set('status', 'STOPPED');
@@ -50,12 +49,18 @@ class Server extends KeyValueModelAbstract {
         return $this->get('status');
     }
 
-
     public function isRunning() {
         return $this->getStatus() == 'RUNNING';
     }
 
     public function getStatusText() {
+        $status = $this->getHost()->getSupervisor()->getProcessInfo($this->getProcessName());
+        if ($status['statename'] == 'RUNNING') {
+            return 'Uptime: <span class="js-uptime" data-seconds="' . ($status['now'] - $status['start']) . '"></span>';
+        } else {
+            return 'Stopped ' . date('Y-m-d H:i:s', $status['stop']);
+        }
+        print_r($status);
         return 'blah';
     }
 
@@ -103,18 +108,19 @@ class Server extends KeyValueModelAbstract {
         $this->getHost()->ssh('echo "#' . date('r') . '" > ' . $this->getGameDirectory() . '/eula.txt');
         $this->getHost()->ssh('echo "eula=true" >> ' . $this->getGameDirectory() . '/eula.txt');
         $this->set('eula', 'true');
-        $this->control('restart');
-        //$this->getHost()->getSupervisor()->restartProcess( 'mc_' . $this->getName() );
+        $this->control('start');
     }
 
     public function getPlugins() {
         $plugins = array();
-        /*$dir = opendir( Config::get('files.plugins.localDir'));
-        while ($f = readdir($dir)) {
-            if (preg_match('/\.jar$/', $f)) {
-                $plugins[ $f ] = false;
+
+        $remotePlugins = $this->getHost()->ls( $this->getGameDirectory() . '/plugins_available');
+        foreach ($remotePlugins as $name) {
+            if (preg_match('/\.jar$/', $name)) {
+                $plugins[$name] = false;
             }
-        }*/
+        }
+
         $remotePlugins = $this->getHost()->ls( $this->getGameDirectory() . '/plugins');
         foreach ($remotePlugins as $name) {
             if (preg_match('/\.jar$/', $name)) {
@@ -132,39 +138,47 @@ class Server extends KeyValueModelAbstract {
 
     public function getLog() {
         $redis = new Client(Config::get('redis'));
-        $log = $redis->lrange('mcadmin:log:' . $this->getName(), 0, 100 );
+        $log = $redis->lrange('mcadmin:log:' . $this->getId(), 0, 100 );
         return array_reverse($log);
     }
 
+    public function addPlugin( $name) {
+        $this->getHost()->scpSend( Config::get('files.plugins.localDir') . '/' . $name, $this->getGameDirectory() . '/plugins_available/' . $name);
+    }
+
+    public function removePlugin( $name) {
+        $this->getHost()->ssh( 'rm ' . $this->getGameDirectory() . '/plugins/' . $name);
+        $this->getHost()->ssh( 'rm ' . $this->getGameDirectory() . '/plugins_available/' . $name);
+    }
+
+
     public function enablePlugin( $name ) {
-        $this->getHost()->ssh('ln -s /home/minecraft/mcadmin_files/plugins/' . $name . ' ' . $this->getGameDirectory() . '/plugins/' . $name);
+        echo $this->getHost()->ssh('cd ' . $this->getGameDirectory() . '/plugins; ln -s "../plugins_available/' . $name . '"');
+        echo 'ln -s ' . $this->getGameDirectory() . '/plugins_available/' . $name . ' ' . $this->getGameDirectory() . '/plugins/' . $name;
     }
 
     public function disablePlugin($name) {
-        $this->getHost()->ssh('rm ' . $this->getGameDirectory() . '/plugins/' . $name);
+        $this->getHost()->ssh('rm "' . $this->getGameDirectory() . '/plugins/' . $name . '"');
     }
 
     public function cmd($cmd) {
-        $r = $this->getHost()->getSupervisor()->sendProcessStdin('moo_' . $this->getName(), $cmd . "\r\n");
+        $r = $this->getHost()->getSupervisor()->sendProcessStdin($this->getProcessName(), $cmd . "\r\n");
     }
 
     public function delete() {
+
         parent::delete();
-        $this->_redis->del(static::$_redisKey . ':log:' . $this->getName() );
+        $this->_redis->del(static::$_redisKey . ':log:' . $this->getId() );
         $this->getHost()->ssh('rm -rf ' . $this->getGameDirectory());
+
 
         try {
             $supervisor = $this->getHost()->getSupervisor();
-            //$supervisor->stopProcess('mc_' . $this->getName());
-            try {
-                $supervisor->sendProcessStdin('moo_' . $this->getName(), 'stop');
-            } catch (\Exception $e) {
-
-            }
-            sleep(2);
-            $supervisor->removeProcessGroup('moo_' . $this->getName());
+            $this->getHost()->ssh('rm ' . '/var/lib/mooshroom/supervisord.conf/' . $this->getProcessName() .'.conf');
+            $supervisor->removeProcessGroup($this->getProcessName());
         } catch (Exception $e) {
             echo $e->getMessage();
+            exit();
         }
 
     }
@@ -186,7 +200,7 @@ class Server extends KeyValueModelAbstract {
         if ($action == 'stop' || $action == 'restart') {
             echo "stop\n";
             $this->set('status', 'STOPPING');
-            try { $this->getHost()->getSupervisor()->sendProcessStdin('moo_' . $this->getName(), 'stop'); } catch (\Exception $e) { print_r($e); exit(); }
+            $this->cmd('stop');
             for ($i=0; $i<10; $i++) {
                 echo time() . " " . $i . "\n";
                 $s = $this->getStatus(1);
@@ -202,15 +216,15 @@ class Server extends KeyValueModelAbstract {
             echo "restart\n";
             $this->set('status', 'STARTING');
 
-            try { echo $this->getHost()->getSupervisor()->removeProcessGroup('moo_' . $this->getName()); } catch (\Exception $e) { print_r($e); }
-            try { echo $this->getHost()->getSupervisor()->addProcessGroup('moo_' . $this->getName()); } catch (\Exception $e) { print_r($e);  }
+            try { echo $this->getHost()->getSupervisor()->removeProcessGroup($this->getProcessName()); } catch (\Exception $e) { print_r($e); }
+            try { echo $this->getHost()->getSupervisor()->addProcessGroup($this->getProcessName()); } catch (\Exception $e) { print_r($e);  }
             echo "restart end\n";
 
         } else if ($action == 'start' || $action == 'restart') {
             echo "start\n";
 
             $this->set('status', 'STARTING');
-            try { $this->getHost()->getSupervisor()->startProcess('moo_' . $this->getName()); } catch (\Exception $e) { }
+            try { $this->getHost()->getSupervisor()->startProcess($this->getProcessName()); } catch (\Exception $e) { }
         }
     }
 
@@ -222,7 +236,7 @@ class Server extends KeyValueModelAbstract {
         if (true || $this->get('gamerules') < time() + 60*60) {
             $xG = new GameRules();
             foreach ($xG->getData() as $k => $v) {
-                $this->getHost()->getSupervisor()->sendProcessStdin('moo_' . $this->getName(), 'gamerule ' . $k);
+                $this->cmd('gamerule ' . $k);
             }
             $this->set('gamerules', time());
             $this->reload();
@@ -242,21 +256,7 @@ class Server extends KeyValueModelAbstract {
 
     }
 
-    public function addWhitelist($user) {
-        $this->getHost()->getSupervisor()->sendProcessStdin('moo_' . $this->getName(), 'whitelist add ' . $user . "\n");
-    }
 
-    public function removeWhitelist($user) {
-        $this->getHost()->getSupervisor()->sendProcessStdin('moo_' . $this->getName(),'whitelist remove ' . $user . "\n");
-    }
-
-    public function addOp($user, $level) {
-        $this->getHost()->getSupervisor()->sendProcessStdin('moo_' . $this->getName(), 'op ' . $user . "\n");
-    }
-
-    public function removeOp($user) {
-        $this->getHost()->getSupervisor()->sendProcessStdin('moo_' . $this->getName(),'deop ' . $user . "\n");
-    }
 
     public function getWhitelist() {
         $wl = $this->getHost()->ssh('cat ' . $this->getGameDirectory() . '/whitelist.json');
@@ -268,21 +268,23 @@ class Server extends KeyValueModelAbstract {
     }
 
     public static function create($name, $data = null) {
-        if (! ($s = self::getInstance($name))) {
-            $s = parent::create($name, $data);
-            $s->createGameDirectory();
-            $s->generateSupervisorConfig();
-        }
+
+        $s = parent::create($name, $data);
+        $s->createGameDirectory();
+        $s->generateSupervisorConfig();
+
         return $s;
     }
 
     public function createGameDirectory() {
         $host = $this->getHost();
         $host->ssh("mkdir " . $this->getGameDirectory() );
+        $host->ssh("mkdir " . $this->getGameDirectory() . '/plugins_available');
         $host->ssh("mkdir " . $this->getGameDirectory() . '/plugins');
         $host->ssh("mkdir " . $this->getGameDirectory() . '/plugins/WorldEdit');
         $host->ssh("ln -s ~/mcadmin_files/schematics " . $this->getGameDirectory() . '/plugins/WorldEdit/schematics');
         $this->_setJar();
+        $this->set('logfile', $this->getGameDirectory() . '/logs/latest.log');
 
         $tmpFile = Config::get('tmpDir') . '/' .uniqid('server.properties');
 
@@ -306,16 +308,16 @@ class Server extends KeyValueModelAbstract {
             '{MEMORY}'  => $this->get('memory'),
             '{GAMEDIR}' => $this->getGameDirectory(),
             '{USER}'    => $this->getHost()->get('sshUsername'),
-            '{NAME}'    => 'moo_' . $this->getName(),
+            '{NAME}'    => $this->getProcessName(),
         );
         $file = str_replace( array_keys($replace), array_values($replace), $file);
         $tmpFile = Config::get('tmpDir') . '/' .uniqid('supervisor.conf');
         $fp = fopen( $tmpFile, 'w' );
         fputs($fp, $file);
         fclose($fp);
-        $this->getHost()->ssh('rm ' . '/var/lib/mooshroom/supervisord.conf/' . $this->getName() .'.conf');
-        $this->getHost()->scpSend($tmpFile, '/var/lib/mooshroom/supervisord.conf/' . $this->getName() .'.conf');
-        $this->getHost()->getSupervisor()->addProcessGroup('moo_' . $this->getName());
+        $this->getHost()->ssh('rm ' . '/var/lib/mooshroom/supervisord.conf/' . $this->getProcessName() .'.conf');
+        $this->getHost()->scpSend($tmpFile, '/var/lib/mooshroom/supervisord.conf/' . $this->getProcessName() .'.conf');
+        $this->getHost()->getSupervisor()->addProcessGroup($this->getProcessName());
     }
 
 
